@@ -1,6 +1,9 @@
 
+import java.awt.TextArea;
+
 import jess.JessException;
 import jess.Rete;
+import jess.awt.TextAreaWriter;
 
 public class Mechanisms {
 
@@ -13,6 +16,7 @@ public class Mechanisms {
 			JessEngine.batch("modules/module-definitions.clp");
 			JessEngine.reset();
 			JessEngine.batch(strAppraisalModuleTemplates);
+			
 		} catch (JessException e) {
 			e.printStackTrace();
 		}

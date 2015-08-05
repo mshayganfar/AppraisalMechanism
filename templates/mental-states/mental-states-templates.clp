@@ -1,3 +1,8 @@
+(deftemplate MENTAL-STATE::point 
+"A 2D point" 
+(slot x (type INTEGER))
+(slot y (type INTEGER)))
+
 (deftemplate MENTAL-STATE::belief
 "Robot's belief based on SharedPlans theory."
 (slot belief (type STRING)))
