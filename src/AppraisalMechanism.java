@@ -1,4 +1,6 @@
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Paint;
 
 import javax.swing.JFrame;
 
@@ -7,7 +9,12 @@ import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.*;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
+import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
+
 import jess.*;
+
+import org.apache.commons.collections15.Transformer;
 
 /*
  * Copyright (c) 2015, Mahni Shayganfar
@@ -33,30 +40,42 @@ public class AppraisalMechanism {
 			JessEngine.batch(strMentalStatesTemplates);
 			JessEngine.batch("rules/rules.clp");
 			
-		    Fact fact1 = new Fact("belief", JessEngine);
-		    fact1.setSlotValue("belief", new Value("astronaut-frustrated", RU.STRING));
-		    JessEngine.assertFact(fact1);
+		    Fact beliefFact = new Fact("belief", JessEngine);
+		    beliefFact.setSlotValue("belief", new Value("astronaut-frustrated", RU.STRING));
+		    JessEngine.assertFact(beliefFact);
 			
-		    Fact fact2 = new Fact("belief", JessEngine);
-		    fact2.setSlotValue("belief", new Value("astronaut-sadness", RU.STRING));
-		    JessEngine.assertFact(fact2);
+		    Fact intentionFact = new Fact("intention", JessEngine);
+		    intentionFact.setSlotValue("intention", new Value("acknowledge-emotion", RU.STRING));
+		    JessEngine.assertFact(intentionFact);
 		    
 		    JessEngine.run();
 			
 		    JessEngine.eval("(facts)");
 		    
 		    Graph<Fact, String> graph = new DirectedSparseGraph<Fact, String>();
-		    graph.addVertex(fact1);
-		    graph.addVertex(fact2);
-		    graph.addEdge("Edge-1", fact1, fact2, EdgeType.DIRECTED);
+		    graph.addVertex(beliefFact);
+		    graph.addVertex(intentionFact);
+		    graph.addEdge("Bel2Int", beliefFact, intentionFact, EdgeType.DIRECTED);
 		    
 		    System.out.println("The graph = " + graph.toString());
 		    
-//		    SimpleGraphView sgv = new SimpleGraphView();
 		    Layout<Fact, String> layout = new CircleLayout<>(graph);
 		    layout.setSize(new Dimension(300,300));
 		    BasicVisualizationServer<Fact, String> vv = new BasicVisualizationServer<Fact, String>(layout);
 		    vv.setPreferredSize(new Dimension(350, 350));
+		    
+		    Transformer<Fact, Paint> beliefPaint = new Transformer<Fact, Paint>() {
+		    	public Paint transform(Fact fact) {
+		    		if (fact.getName().contains("belief"))
+		    			return Color.RED;
+		    		else if (fact.getName().contains("intention"))
+		    			return Color.GREEN;
+		    		return Color.YELLOW;
+		    	}
+		    };
+		    
+		    vv.getRenderContext().setVertexFillPaintTransformer(beliefPaint);
+		    vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
 		    
 		    JFrame frame = new JFrame("My Graph View");
 		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
