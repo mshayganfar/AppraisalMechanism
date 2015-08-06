@@ -60,6 +60,7 @@ public class AppraisalMechanism {
 		    
 		    System.out.println("The graph = " + graph.toString());
 		    
+		    
 		    Layout<Fact, String> layout = new CircleLayout<>(graph);
 		    layout.setSize(new Dimension(300,300));
 		    VisualizationViewer<Fact, String> vv = new VisualizationViewer<Fact, String>(layout);
@@ -76,7 +77,9 @@ public class AppraisalMechanism {
 		    };
 		    
 		    vv.getRenderContext().setVertexFillPaintTransformer(beliefPaint);
-		    vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
+		    vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<String>());
+		    
+		    vv.setVertexToolTipTransformer(new ToStringLabeller<Fact>());
 		    
 		    DefaultModalGraphMouse gm = new DefaultModalGraphMouse();
 		    gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
