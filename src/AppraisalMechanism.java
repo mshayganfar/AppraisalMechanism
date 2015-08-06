@@ -8,9 +8,10 @@ import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.*;
 import edu.uci.ics.jung.graph.util.EdgeType;
-import edu.uci.ics.jung.visualization.BasicVisualizationServer;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
-import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 import jess.*;
 
@@ -61,7 +62,7 @@ public class AppraisalMechanism {
 		    
 		    Layout<Fact, String> layout = new CircleLayout<>(graph);
 		    layout.setSize(new Dimension(300,300));
-		    BasicVisualizationServer<Fact, String> vv = new BasicVisualizationServer<Fact, String>(layout);
+		    VisualizationViewer<Fact, String> vv = new VisualizationViewer<Fact, String>(layout);
 		    vv.setPreferredSize(new Dimension(350, 350));
 		    
 		    Transformer<Fact, Paint> beliefPaint = new Transformer<Fact, Paint>() {
@@ -76,6 +77,10 @@ public class AppraisalMechanism {
 		    
 		    vv.getRenderContext().setVertexFillPaintTransformer(beliefPaint);
 		    vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
+		    
+		    DefaultModalGraphMouse gm = new DefaultModalGraphMouse();
+		    gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+		    vv.setGraphMouse(gm);
 		    
 		    JFrame frame = new JFrame("My Graph View");
 		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
