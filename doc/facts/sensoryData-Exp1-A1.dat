@@ -1,0 +1,7 @@
+(UTTERANCE::emotion-valence (task "install-panel") (event "ee-au-01") (valence-type NEGATIVE))
+(UTTERANCE::propose-status (task "install-panel") (event "ee-au-01") (phase END) (status UNLIKELY))
+(UTTERANCE::when (task "install-panel") (event "ee-au-01") (time-span FUTURE))
+(UTTERANCE::causality (task "install-panel") (event "ee-au-01") (cause "measurement-tool-problem") (effect "finish-task"))
+(UTTERANCE::propose-stop (task "install-panel") (event "ee-au-01"))
+(UTTERANCE::verbal-emotion-somatic-marker (task "install-panel") (event "ee-au-01") (valence -0.5) (arousal -0.5) (stance 0.1))
+(UTTERANCE::verbal-emotion-instance (task "install-panel") (event "ee-au-01") (emotion-instance FRUSTRATION))

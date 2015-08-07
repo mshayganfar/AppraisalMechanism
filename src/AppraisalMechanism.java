@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.*;
-import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
@@ -34,67 +33,75 @@ public class AppraisalMechanism {
 	protected static final String strMentalStatesTemplates = "templates/mental-states/mental-states-templates.clp";
 	
 	public static void main(String[] args) {
+		
+		Rete JessEngine = null;
+		Fact beliefFact = null, intentionFact = null;
+		
 	    try {
-	    	Rete JessEngine = new Rete();
+	    	JessEngine = new Rete();
 	    	
 	    	JessEngine.batch("modules/module-definitions.clp");
 			JessEngine.batch(strMentalStatesTemplates);
 			JessEngine.batch("rules/rules.clp");
 			
-		    Fact beliefFact = new Fact("belief", JessEngine);
+			JessEngine.executeCommand("(load-facts facts/sensoryData.dat)");
+			
+		    beliefFact = new Fact("belief", JessEngine);
 		    beliefFact.setSlotValue("belief", new Value("astronaut-frustrated", RU.STRING));
 		    JessEngine.assertFact(beliefFact);
 			
-		    Fact intentionFact = new Fact("intention", JessEngine);
+		    intentionFact = new Fact("intention", JessEngine);
 		    intentionFact.setSlotValue("intention", new Value("acknowledge-emotion", RU.STRING));
 		    JessEngine.assertFact(intentionFact);
 		    
 		    JessEngine.run();
 			
 		    JessEngine.eval("(facts)");
-		    
-		    Graph<Fact, String> graph = new DirectedSparseGraph<Fact, String>();
-		    graph.addVertex(beliefFact);
-		    graph.addVertex(intentionFact);
-		    graph.addEdge("Bel2Int", beliefFact, intentionFact, EdgeType.DIRECTED);
-		    
-		    System.out.println("The graph = " + graph.toString());
-		    
-		    
-		    Layout<Fact, String> layout = new CircleLayout<>(graph);
-		    layout.setSize(new Dimension(300,300));
-		    VisualizationViewer<Fact, String> vv = new VisualizationViewer<Fact, String>(layout);
-		    vv.setPreferredSize(new Dimension(350, 350));
-		    
-		    Transformer<Fact, Paint> beliefPaint = new Transformer<Fact, Paint>() {
-		    	public Paint transform(Fact fact) {
-		    		if (fact.getName().contains("belief"))
-		    			return Color.RED;
-		    		else if (fact.getName().contains("intention"))
-		    			return Color.GREEN;
-		    		return Color.YELLOW;
-		    	}
-		    };
-		    
-		    vv.getRenderContext().setVertexFillPaintTransformer(beliefPaint);
-		    vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<String>());
-		    
-		    vv.setVertexToolTipTransformer(new ToStringLabeller<Fact>());
-		    
-		    DefaultModalGraphMouse gm = new DefaultModalGraphMouse();
-		    gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
-		    vv.setGraphMouse(gm);
-		    
-		    JFrame frame = new JFrame("My Graph View");
-		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		    frame.getContentPane().add(vv);
-		    frame.pack();
-		    frame.setVisible(true);
 		} catch (JessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+	    Graph<Fact, String> graph = new DirectedSparseGraph<Fact, String>();
+//	    graph.addVertex(beliefFact);
+//	    graph.addVertex(intentionFact);
+//	    graph.addEdge("Bel2Int", beliefFact, intentionFact, EdgeType.DIRECTED);
+	    
+	    System.out.println("The graph = " + graph.toString());
+	    
+	    java.util.Iterator factList = JessEngine.listFacts();
+	    
+	    while(factList.hasNext()) {
+	    	graph.addVertex((Fact)factList.next());
+	    }
+	    
+	    Layout<Fact, String> layout = new CircleLayout<>(graph);
+	    layout.setSize(new Dimension(300,300));
+	    VisualizationViewer<Fact, String> vv = new VisualizationViewer<Fact, String>(layout);
+	    vv.setPreferredSize(new Dimension(350, 350));
+	    
+	    Transformer<Fact, Paint> factPaint = new Transformer<Fact, Paint>() {
+	    	public Paint transform(Fact fact) {
+	    		if (fact.getName().contains("belief"))
+	    			return Color.RED;
+	    		else if (fact.getName().contains("intention"))
+	    			return Color.GREEN;
+	    		return Color.YELLOW;
+	    	}
+	    };
+	    
+	    vv.getRenderContext().setVertexFillPaintTransformer(factPaint);
+	    vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<String>());
+	    
+	    vv.setVertexToolTipTransformer(new ToStringLabeller<Fact>());
+	    
+	    DefaultModalGraphMouse gm = new DefaultModalGraphMouse();
+	    gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+	    vv.setGraphMouse(gm);
+	    
+	    JFrame frame = new JFrame("Mental States (Graph View)");
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.getContentPane().add(vv);
+	    frame.pack();
+	    frame.setVisible(true);
 	}
-
 }
