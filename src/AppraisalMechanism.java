@@ -85,7 +85,13 @@ public class AppraisalMechanism {
 	    			return Color.RED;
 	    		else if (fact.getName().contains("intention"))
 	    			return Color.GREEN;
-	    		return Color.YELLOW;
+	    		else if (fact.getName().contains("motive"))
+	    			return Color.YELLOW;
+	    		else if (fact.getName().contains("goal"))
+	    			return Color.BLUE;
+	    		else if (fact.getName().contains("emotion"))
+	    			return Color.MAGENTA;
+	    		return Color.BLACK;
 	    	}
 	    };
 	    
