@@ -55,7 +55,7 @@ public class MentalGraph {
 				while(factList.hasNext()) {
 		    		factTarget = (Fact)factList.next();
 			    		
-					if (factTarget.getSlotValue("id").toString().contains("I")) {
+					if (factTarget.getSlotValue("id").toString().contains("M")) {
 						if(factTarget.getSlotValue("id").toString().substring(2, factSource.getSlotValue("id").toString().indexOf("-")).equals(strFactId))
 							return factTarget;
 					}

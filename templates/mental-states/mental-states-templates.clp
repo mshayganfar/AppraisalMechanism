@@ -15,6 +15,7 @@
 
 (deftemplate MENTAL-STATE::motive
 "Robot's motive."
+(slot id (type STRING))
 (slot motive (type STRING)))
 
 (deftemplate MENTAL-STATE::goal

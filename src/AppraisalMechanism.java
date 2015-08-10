@@ -30,14 +30,13 @@ import org.apache.commons.collections15.Transformer;
 
 public class AppraisalMechanism {
 	
-//	private enum AGENT_TYPE {ROBOT, HUMAN};
-
 	protected static final String strMentalStatesTemplates = "templates/mental-states/mental-states-templates.clp";
+	
+	private static Rete JessEngine = null;
 	
 	public static void main(String[] args) {
 		
-		Rete JessEngine = null;
-		Fact beliefFact1 = null, beliefFact2 = null, intentionFact = null;
+		MentalStates ms = new MentalStates();
 		
 	    try {
 	    	JessEngine = new Rete();
@@ -48,33 +47,11 @@ public class AppraisalMechanism {
 			
 //			JessEngine.executeCommand("(load-facts facts/sensoryData.dat)");
 			
-		    beliefFact1 = new Fact("belief", JessEngine);
-		    beliefFact1.setSlotValue("id", new Value("B1-1", RU.STRING));
-		    beliefFact1.setSlotValue("task", new Value("install-panel", RU.STRING));
-		    beliefFact1.setSlotValue("event", new Value("ee-au-01", RU.STRING));
-		    beliefFact1.setSlotValue("agent", new Value("ROBOT", RU.SYMBOL));
-		    beliefFact1.setSlotValue("belief", new Value("astronaut-frustrated", RU.STRING));
-		    beliefFact1.setSlotValue("belief-type", new Value("PRIVATE", RU.SYMBOL));
-		    beliefFact1.setSlotValue("belief-about", new Value("OTHER", RU.SYMBOL));
-		    JessEngine.assertFact(beliefFact1);
+			ms.assertBelief(JessEngine, "B1-1", "install-panel", "ee-au-01", "ROBOT", "astronaut-frustrated", "PRIVATE", "OTHER");
+			ms.assertBelief(JessEngine, "B1-2", "install-panel", "ee-au-01", "ROBOT", "disfunctional-measurement-tool", "PRIVATE", "ENVIRONMENT");
 			
-		    beliefFact2 = new Fact("belief", JessEngine);
-		    beliefFact2.setSlotValue("id", new Value("B1-2", RU.STRING));
-		    beliefFact2.setSlotValue("task", new Value("install-panel", RU.STRING));
-		    beliefFact2.setSlotValue("event", new Value("ee-au-01", RU.STRING));
-		    beliefFact2.setSlotValue("agent", new Value("ROBOT", RU.SYMBOL));
-		    beliefFact2.setSlotValue("belief", new Value("disfunctional-measurement-tool", RU.STRING));
-		    beliefFact2.setSlotValue("belief-type", new Value("PRIVATE", RU.SYMBOL));
-		    beliefFact2.setSlotValue("belief-about", new Value("ENVIRONMENT", RU.SYMBOL));
-		    JessEngine.assertFact(beliefFact2);
-		    
-		    intentionFact = new Fact("intention", JessEngine);
-		    intentionFact.setSlotValue("id", new Value("I1-1", RU.STRING));
-		    intentionFact.setSlotValue("intention", new Value("acknowledge-emotion", RU.STRING));
-		    JessEngine.assertFact(intentionFact);
-		    
-		    System.out.println(beliefFact2.getSlotValue("id"));
-		    
+			ms.assertMotive(JessEngine, "M1-1", "acknowledge-emotion");
+			
 		    JessEngine.run();
 			
 		    JessEngine.eval("(facts)");
@@ -83,20 +60,9 @@ public class AppraisalMechanism {
 		}
 
 	    Graph<Fact, String> graph = new DirectedSparseGraph<Fact, String>();
-//	    graph.addVertex(beliefFact);
-//	    graph.addVertex(intentionFact);
-//	    graph.addEdge("Bel2Int", beliefFact, intentionFact, EdgeType.DIRECTED);
-	    
-//	    System.out.println("The graph = " + graph.toString());
 	    
 	    MentalGraph mg = new MentalGraph();
 	    mg.createGraph(JessEngine, graph);
-	    
-//	    java.util.Iterator factList = JessEngine.listFacts();
-//	    
-//	    while(factList.hasNext()) {
-//	    	graph.addVertex((Fact)factList.next());
-//	    }
 	    
 	    Layout<Fact, String> layout = new CircleLayout<>(graph);
 	    layout.setSize(new Dimension(300,300));
