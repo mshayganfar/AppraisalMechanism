@@ -1,6 +1,19 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Paint;
 import java.util.Iterator;
 
+import javax.swing.JFrame;
+
+import org.apache.commons.collections15.Transformer;
+
+import edu.uci.ics.jung.algorithms.layout.CircleLayout;
+import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 
 import jess.Fact;
 import jess.JessException;
@@ -39,6 +52,8 @@ public class MentalGraph {
 				e.printStackTrace();
 			}
 	    }
+	    
+	    initializeGraph(graph);
 	}
 	
 	private Fact findTargetNode(Rete JessEngine, Fact factSource) {
@@ -51,7 +66,6 @@ public class MentalGraph {
 		try {
 			if (factSource.getSlotValue("id").toString().contains("B")) {
 				strFactId = factSource.getSlotValue("id").toString().substring(2, factSource.getSlotValue("id").toString().indexOf("-"));
-				System.out.println(strFactId);
 				while(factList.hasNext()) {
 		    		factTarget = (Fact)factList.next();
 			    		
@@ -100,5 +114,45 @@ public class MentalGraph {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	private void initializeGraph(Graph<Fact, String> graph) {
+		
+		Layout<Fact, String> layout = new CircleLayout<>(graph);
+	    layout.setSize(new Dimension(300,300));
+	    
+	    VisualizationViewer<Fact, String> vv = new VisualizationViewer<Fact, String>(layout);
+	    vv.setPreferredSize(new Dimension(350, 350));
+	    
+	    Transformer<Fact, Paint> factPaint = new Transformer<Fact, Paint>() {
+	    	public Paint transform(Fact fact) {
+	    		if (fact.getName().contains("belief"))
+	    			return Color.RED;
+	    		else if (fact.getName().contains("intention"))
+	    			return Color.GREEN;
+	    		else if (fact.getName().contains("motive"))
+	    			return Color.YELLOW;
+	    		else if (fact.getName().contains("goal"))
+	    			return Color.BLUE;
+	    		else if (fact.getName().contains("emotion"))
+	    			return Color.MAGENTA;
+	    		return Color.BLACK;
+	    	}
+	    };
+	    
+	    vv.getRenderContext().setVertexFillPaintTransformer(factPaint);
+	    vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<String>());
+	    
+	    vv.setVertexToolTipTransformer(new ToStringLabeller<Fact>());
+	    
+	    DefaultModalGraphMouse gm = new DefaultModalGraphMouse();
+	    gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+	    vv.setGraphMouse(gm);
+	    
+	    JFrame frame = new JFrame("Mental States (Graph View)");
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.getContentPane().add(vv);
+	    frame.pack();
+	    frame.setVisible(true);
 	}
 }
