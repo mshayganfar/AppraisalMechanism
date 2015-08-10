@@ -45,7 +45,7 @@ public class MentalStates {
 	
 	public void assertIntention(Rete JessEngine, String strIntentionId, String strTask, String strEvent, String strAgent, String strIntention) {
 		try {
-			IntentionFact = new Fact("motive", JessEngine);
+			IntentionFact = new Fact("intention", JessEngine);
 			IntentionFact.setSlotValue("id", new Value(strIntentionId, RU.STRING));
 			IntentionFact.setSlotValue("task", new Value(strTask, RU.STRING));
 			IntentionFact.setSlotValue("event", new Value(strEvent, RU.STRING));
@@ -59,7 +59,7 @@ public class MentalStates {
 	
 	public void assertGoal(Rete JessEngine, String strGoalId, String strTask, String strEvent, String strAgent, String strGoal) {
 		try {
-			GoalFact = new Fact("motive", JessEngine);
+			GoalFact = new Fact("goal", JessEngine);
 			GoalFact.setSlotValue("id", new Value(strGoalId, RU.STRING));
 			GoalFact.setSlotValue("task", new Value(strTask, RU.STRING));
 			GoalFact.setSlotValue("event", new Value(strEvent, RU.STRING));
