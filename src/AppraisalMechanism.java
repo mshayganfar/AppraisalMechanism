@@ -36,9 +36,9 @@ public class AppraisalMechanism {
 			
 //			JessEngine.executeCommand("(load-facts facts/sensoryData.dat)");
 			
-			ms.assertBelief(JessEngine, "B1-1", "install-panel", "ee-au-01", "ROBOT", "astronaut-frustrated", "PRIVATE", "OTHER");
-			ms.assertBelief(JessEngine, "B1-2", "install-panel", "ee-au-01", "ROBOT", "disfunctional-measurement-tool", "PRIVATE", "ENVIRONMENT");
-			ms.assertMotive(JessEngine, "M1-1", "acknowledge-emotion");
+			ms.assertBelief(JessEngine, "B1-1", "install-panel", "ee-au-01", "ROBOT", "PRIVATE", "OTHER", "astronaut-frustrated");
+			ms.assertBelief(JessEngine, "B1-2", "install-panel", "ee-au-01", "ROBOT", "PRIVATE", "ENVIRONMENT", "disfunctional-measurement-tool");
+			ms.assertMotive(JessEngine, "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
 		    JessEngine.run();
 			
 		    JessEngine.eval("(facts)");
