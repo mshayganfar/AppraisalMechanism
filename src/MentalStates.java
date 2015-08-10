@@ -7,8 +7,10 @@ import jess.Value;
 
 public class MentalStates {
 
-	private Fact beliefFact = null;
-	private Fact MotiveFact = null;
+	private Fact beliefFact    = null;
+	private Fact MotiveFact    = null;
+	private Fact IntentionFact = null;
+	private Fact GoalFact      = null;
 	
 	public void assertBelief(Rete JessEngine, String strBeliefId, String strTask, String strEvent, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief) {
 		try {
@@ -35,6 +37,48 @@ public class MentalStates {
 			MotiveFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
 			MotiveFact.setSlotValue("motive", new Value(strMotive, RU.STRING));
 		    JessEngine.assertFact(MotiveFact);
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void assertIntention(Rete JessEngine, String strIntentionId, String strTask, String strEvent, String strAgent, String strIntention) {
+		try {
+			IntentionFact = new Fact("motive", JessEngine);
+			IntentionFact.setSlotValue("id", new Value(strIntentionId, RU.STRING));
+			IntentionFact.setSlotValue("task", new Value(strTask, RU.STRING));
+			IntentionFact.setSlotValue("event", new Value(strEvent, RU.STRING));
+			IntentionFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
+			IntentionFact.setSlotValue("motive", new Value(strIntention, RU.STRING));
+		    JessEngine.assertFact(IntentionFact);
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void assertGoal(Rete JessEngine, String strGoalId, String strTask, String strEvent, String strAgent, String strGoal) {
+		try {
+			GoalFact = new Fact("motive", JessEngine);
+			GoalFact.setSlotValue("id", new Value(strGoalId, RU.STRING));
+			GoalFact.setSlotValue("task", new Value(strTask, RU.STRING));
+			GoalFact.setSlotValue("event", new Value(strEvent, RU.STRING));
+			GoalFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
+			GoalFact.setSlotValue("motive", new Value(strGoal, RU.STRING));
+		    JessEngine.assertFact(GoalFact);
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void assertEmotionInstance(Rete JessEngine, String strEmotionInstanceId, String strTask, String strEvent, String strAgent, String strEmotionInstance) {
+		try {
+			GoalFact = new Fact("motive", JessEngine);
+			GoalFact.setSlotValue("id", new Value(strEmotionInstanceId, RU.STRING));
+			GoalFact.setSlotValue("task", new Value(strTask, RU.STRING));
+			GoalFact.setSlotValue("event", new Value(strEvent, RU.STRING));
+			GoalFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
+			GoalFact.setSlotValue("motive", new Value(strEmotionInstance, RU.SYMBOL));
+		    JessEngine.assertFact(GoalFact);
 		} catch (JessException e) {
 			e.printStackTrace();
 		}
