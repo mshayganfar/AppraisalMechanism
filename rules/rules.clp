@@ -12,4 +12,5 @@
 "To check rules."
 (MENTAL-STATE::belief (belief "astronaut-frustrated"))
 =>
-(assert (MENTAL-STATE::belief (belief "astronaut-anger"))))
+(printout t "belief-asserted" crlf))
+;(assert (MENTAL-STATE::belief (belief "astronaut-anger"))))

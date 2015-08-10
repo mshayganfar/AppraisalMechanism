@@ -9,82 +9,93 @@ import jess.Rete;
 
 public class MentalGraph {
 	
-	public void addEdges(Rete JessEngine, Graph<Fact, String> graph) {
+	public void createGraph(Rete JessEngine, Graph<Fact, String> graph) {
 		
-		Fact factTemp = null;
+		Fact factTemp = null, factSource = null, factTarget = null;
 		
 		Iterator<Fact> factList = JessEngine.listFacts();
 		
 	    while(factList.hasNext()) {
 	    	factTemp = (Fact)factList.next();
-	    	
 	    	graph.addVertex(factTemp);
-	    	
+	    }
+	    
+	    factList = JessEngine.listFacts();
+	    String strEdgePart1, strEdgePart2;
+	    
+	    while(factList.hasNext()) {
 	    	try {
-				System.out.println(factTemp.getSlotValue("id").toString().contains("B"));
+	    		factSource = (Fact)factList.next();
+	    		
+	    		graph.addVertex(factTemp);
+	    		factTarget = findTargetNode(JessEngine, factSource);
+
+	    		if(factTarget != null) {
+	    			strEdgePart1 = factSource.getSlotValue("id").toString().charAt(1) + "2" + factTarget.getSlotValue("id").toString().charAt(1);
+		    		strEdgePart2 = factSource.getSlotValue("id").toString().substring(factSource.getSlotValue("id").toString().indexOf("-"), factSource.getSlotValue("id").toString().length()-1);
+	    			graph.addEdge(strEdgePart1 + strEdgePart2, factSource, factTarget);
+	    		}
 			} catch (JessException e) {
 				e.printStackTrace();
 			}
 	    }
 	}
 	
-	private Fact findTargetNode(Iterator<Fact> factList, Fact fact) {
+	private Fact findTargetNode(Rete JessEngine, Fact factSource) {
 		
-		String strId;
-		Fact factTemp = null;
+		String strFactId;
+		Fact factTarget = null;
+		
+		Iterator<Fact> factList = JessEngine.listFacts();
 		
 		try {
-			if (fact.getSlotValue("id").toString().contains("B")) {
-				strId = fact.getSlotValue("id").toString().substring(1, fact.getSlotValue("id").toString().indexOf("-"));
+			if (factSource.getSlotValue("id").toString().contains("B")) {
+				strFactId = factSource.getSlotValue("id").toString().substring(2, factSource.getSlotValue("id").toString().indexOf("-"));
+				System.out.println(strFactId);
 				while(factList.hasNext()) {
-		    		factTemp = (Fact)factList.next();
+		    		factTarget = (Fact)factList.next();
 			    		
-					if (factTemp.getSlotValue("id").toString().contains("M")) {
-						if(factTemp.getSlotValue("id").toString().regionMatches(1, strId, 0, strId.length()))
-							return factTemp;
+					if (factTarget.getSlotValue("id").toString().contains("I")) {
+						if(factTarget.getSlotValue("id").toString().substring(2, factSource.getSlotValue("id").toString().indexOf("-")).equals(strFactId))
+							return factTarget;
 					}
 			    }
-				return null;
 			}
-			else if (fact.getSlotValue("id").toString().contains("M")) {
-				strId = fact.getSlotValue("id").toString().substring(1, fact.getSlotValue("id").toString().indexOf("-"));
+			else if (factSource.getSlotValue("id").toString().contains("M")) {
+				strFactId = factSource.getSlotValue("id").toString().substring(2, factSource.getSlotValue("id").toString().indexOf("-"));
 				while(factList.hasNext()) {
-		    		factTemp = (Fact)factList.next();
+		    		factTarget = (Fact)factList.next();
 		    		
-					if (factTemp.getSlotValue("id").toString().contains("I")) {
-						if(factTemp.getSlotValue("id").toString().regionMatches(1, strId, 0, strId.length()))
-							return factTemp;
+					if (factTarget.getSlotValue("id").toString().contains("I")) {
+						if(factTarget.getSlotValue("id").toString().substring(2, factSource.getSlotValue("id").toString().indexOf("-")).equals(strFactId))
+							return factTarget;
 					}
 			    }
-				return null;
 			}
-			else if (fact.getSlotValue("id").toString().contains("I")) {
-				strId = fact.getSlotValue("id").toString().substring(1, fact.getSlotValue("id").toString().indexOf("-"));
+			else if (factSource.getSlotValue("id").toString().contains("I")) {
+				strFactId = factSource.getSlotValue("id").toString().substring(2, factSource.getSlotValue("id").toString().indexOf("-"));
 				while(factList.hasNext()) {
-		    		factTemp = (Fact)factList.next();
+		    		factTarget = (Fact)factList.next();
 			    		
-					if (factTemp.getSlotValue("id").toString().contains("G")) {
-						if(factTemp.getSlotValue("id").toString().regionMatches(1, strId, 0, strId.length()))
-							return factTemp;
+					if (factTarget.getSlotValue("id").toString().contains("G")) {
+						if(factTarget.getSlotValue("id").toString().substring(2, factSource.getSlotValue("id").toString().indexOf("-")).equals(strFactId))
+							return factTarget;
 					}
 			    }
-				return null;
 			}
-			else if (fact.getSlotValue("id").toString().contains("E")) {
-				strId = fact.getSlotValue("id").toString().substring(1, fact.getSlotValue("id").toString().indexOf("-"));
+			else if (factSource.getSlotValue("id").toString().contains("E")) {
+				strFactId = factSource.getSlotValue("id").toString().substring(2, factSource.getSlotValue("id").toString().indexOf("-"));
 				while(factList.hasNext()) {
-		    		factTemp = (Fact)factList.next();
+		    		factTarget = (Fact)factList.next();
 			    		
-					if (factTemp.getSlotValue("id").toString().contains("G")) {
-						if(factTemp.getSlotValue("id").toString().regionMatches(1, strId, 0, strId.length()))
-							return factTemp;
+					if (factTarget.getSlotValue("id").toString().contains("G")) {
+						if(factTarget.getSlotValue("id").toString().substring(2, factSource.getSlotValue("id").toString().indexOf("-")).equals(strFactId))
+							return factTarget;
 					}
 			    }
-				return null;
 			}
-			else {
-				return null;
-			}
+
+			return null;
 		} catch (JessException e) {
 			e.printStackTrace();
 			return null;

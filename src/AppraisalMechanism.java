@@ -87,10 +87,10 @@ public class AppraisalMechanism {
 //	    graph.addVertex(intentionFact);
 //	    graph.addEdge("Bel2Int", beliefFact, intentionFact, EdgeType.DIRECTED);
 	    
-	    System.out.println("The graph = " + graph.toString());
+//	    System.out.println("The graph = " + graph.toString());
 	    
 	    MentalGraph mg = new MentalGraph();
-	    mg.addEdges(JessEngine, graph);
+	    mg.createGraph(JessEngine, graph);
 	    
 //	    java.util.Iterator factList = JessEngine.listFacts();
 //	    
