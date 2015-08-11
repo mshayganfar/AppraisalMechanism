@@ -47,14 +47,14 @@ public class AppraisalMechanism {
 			ms.assertEmotionInstance(JessEngine, "E1-1", "install-panel", "ee-au-01", "HUMAN", "FRUSTRATION");
 		    JessEngine.run();
 			
-		    Fact tempFact = ms.getFact(JessEngine, "B1-1");
-		    Map<String, String> beliefMap = new HashMap<String, String>();
-		    beliefMap.put("id", "B2-1");
-		    beliefMap.put("task", "instal-panel2");
-		    beliefMap.put("event", "ee-au-02");
-		    beliefMap.put("agent", "HUMAN");
+		    Fact tempFact = ms.getFact(JessEngine, "E1-1");
+		    Map<String, String> emotionMap = new HashMap<String, String>();
+		    emotionMap.put("id", "E2-1");
+		    emotionMap.put("task", "instal-panel2");
+		    emotionMap.put("event", "ee-au-02");
+		    emotionMap.put("agent", "HUMAN");
 		    System.out.println(tempFact);
-		    if(tempFact != null) ms.modifyBelief(tempFact, beliefMap);
+		    if(tempFact != null) ms.modifyEmotionInstance(tempFact, emotionMap);
 		    
 		    JessEngine.eval("(facts)");
 		} catch (JessException e) {

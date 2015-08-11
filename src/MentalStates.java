@@ -113,9 +113,9 @@ public class MentalStates {
 			if(beliefParameters.containsKey("id")) beliefFact.setSlotValue("id", new Value(beliefParameters.get("id"), RU.STRING));
 			if(beliefParameters.containsKey("task")) beliefFact.setSlotValue("task", new Value(beliefParameters.get("task"), RU.STRING));
 			if(beliefParameters.containsKey("event")) beliefFact.setSlotValue("event", new Value(beliefParameters.get("event"), RU.STRING));
-			if(beliefParameters.containsKey("agent")) beliefFact.setSlotValue("agent", new Value(beliefParameters.get("agent"), RU.STRING));
-			if(beliefParameters.containsKey("belief-type")) beliefFact.setSlotValue("belief-type", new Value(beliefParameters.get("belief-type"), RU.STRING));
-			if(beliefParameters.containsKey("belief-about")) beliefFact.setSlotValue("belief-about", new Value(beliefParameters.get("belief-about"), RU.STRING));
+			if(beliefParameters.containsKey("agent")) beliefFact.setSlotValue("agent", new Value(beliefParameters.get("agent"), RU.SYMBOL));
+			if(beliefParameters.containsKey("belief-type")) beliefFact.setSlotValue("belief-type", new Value(beliefParameters.get("belief-type"), RU.SYMBOL));
+			if(beliefParameters.containsKey("belief-about")) beliefFact.setSlotValue("belief-about", new Value(beliefParameters.get("belief-about"), RU.SYMBOL));
 			if(beliefParameters.containsKey("belief")) beliefFact.setSlotValue("belief", new Value(beliefParameters.get("belief"), RU.STRING));
 		} catch (JessException e) {
 			e.printStackTrace();
@@ -127,8 +127,44 @@ public class MentalStates {
 			if(intentionParameters.containsKey("id")) intentionFact.setSlotValue("id", new Value(intentionParameters.get("id"), RU.STRING));
 			if(intentionParameters.containsKey("task")) intentionFact.setSlotValue("task", new Value(intentionParameters.get("task"), RU.STRING));
 			if(intentionParameters.containsKey("event")) intentionFact.setSlotValue("event", new Value(intentionParameters.get("event"), RU.STRING));
-			if(intentionParameters.containsKey("agent")) intentionFact.setSlotValue("agent", new Value(intentionParameters.get("agent"), RU.STRING));
+			if(intentionParameters.containsKey("agent")) intentionFact.setSlotValue("agent", new Value(intentionParameters.get("agent"), RU.SYMBOL));
 			if(intentionParameters.containsKey("intention")) intentionFact.setSlotValue("intention", new Value(intentionParameters.get("intention"), RU.STRING));
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void modifyGoal(Fact goalFact, Map<String, String> goalParameters) {
+		try {
+			if(goalParameters.containsKey("id")) goalFact.setSlotValue("id", new Value(goalParameters.get("id"), RU.STRING));
+			if(goalParameters.containsKey("task")) goalFact.setSlotValue("task", new Value(goalParameters.get("task"), RU.STRING));
+			if(goalParameters.containsKey("event")) goalFact.setSlotValue("event", new Value(goalParameters.get("event"), RU.STRING));
+			if(goalParameters.containsKey("agent")) goalFact.setSlotValue("agent", new Value(goalParameters.get("agent"), RU.SYMBOL));
+			if(goalParameters.containsKey("goal")) goalFact.setSlotValue("goal", new Value(goalParameters.get("goal"), RU.STRING));
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void modifyMotive(Fact motiveFact, Map<String, String> motiveParameters) {
+		try {
+			if(motiveParameters.containsKey("id")) motiveFact.setSlotValue("id", new Value(motiveParameters.get("id"), RU.STRING));
+			if(motiveParameters.containsKey("task")) motiveFact.setSlotValue("task", new Value(motiveParameters.get("task"), RU.STRING));
+			if(motiveParameters.containsKey("event")) motiveFact.setSlotValue("event", new Value(motiveParameters.get("event"), RU.STRING));
+			if(motiveParameters.containsKey("agent")) motiveFact.setSlotValue("agent", new Value(motiveParameters.get("agent"), RU.SYMBOL));
+			if(motiveParameters.containsKey("motive")) motiveFact.setSlotValue("motive", new Value(motiveParameters.get("motive"), RU.STRING));
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void modifyEmotionInstance(Fact emotionInstanceFact, Map<String, String> emotionInstanceParameters) {
+		try {
+			if(emotionInstanceParameters.containsKey("id")) emotionInstanceFact.setSlotValue("id", new Value(emotionInstanceParameters.get("id"), RU.STRING));
+			if(emotionInstanceParameters.containsKey("task")) emotionInstanceFact.setSlotValue("task", new Value(emotionInstanceParameters.get("task"), RU.STRING));
+			if(emotionInstanceParameters.containsKey("event")) emotionInstanceFact.setSlotValue("event", new Value(emotionInstanceParameters.get("event"), RU.STRING));
+			if(emotionInstanceParameters.containsKey("agent")) emotionInstanceFact.setSlotValue("agent", new Value(emotionInstanceParameters.get("agent"), RU.SYMBOL));
+			if(emotionInstanceParameters.containsKey("emotion-instance")) emotionInstanceFact.setSlotValue("emotion-instance", new Value(emotionInstanceParameters.get("emotion-instance"), RU.SYMBOL));
 		} catch (JessException e) {
 			e.printStackTrace();
 		}
