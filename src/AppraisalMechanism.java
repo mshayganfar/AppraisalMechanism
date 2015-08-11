@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.uci.ics.jung.graph.*;
 
 import jess.*;
@@ -44,6 +47,15 @@ public class AppraisalMechanism {
 			ms.assertEmotionInstance(JessEngine, "E1-1", "install-panel", "ee-au-01", "HUMAN", "FRUSTRATION");
 		    JessEngine.run();
 			
+		    Fact tempFact = ms.getFact(JessEngine, "B1-1");
+		    Map<String, String> beliefMap = new HashMap<String, String>();
+		    beliefMap.put("id", "B2-1");
+		    beliefMap.put("task", "instal-panel2");
+		    beliefMap.put("event", "ee-au-02");
+		    beliefMap.put("agent", "HUMAN");
+		    System.out.println(tempFact);
+		    if(tempFact != null) ms.modifyBelief(tempFact, beliefMap);
+		    
 		    JessEngine.eval("(facts)");
 		} catch (JessException e) {
 			e.printStackTrace();
