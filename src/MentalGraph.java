@@ -9,6 +9,7 @@ import org.apache.commons.collections15.Transformer;
 
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
@@ -22,7 +23,13 @@ import jess.Rete;
 
 public class MentalGraph {
 	
-	public void createGraph(Rete JessEngine, Graph<Fact, String> graph) {
+	private static Graph<Fact, String> graph = null;
+	
+	public MentalGraph() {
+		this.graph = new DirectedSparseGraph<Fact, String>();
+	}
+	
+	public void createGraph(Rete JessEngine) {
 		
 		Fact factTemp = null, factSource = null, factTarget = null;
 		
@@ -41,7 +48,7 @@ public class MentalGraph {
 	    		factSource = (Fact)factList.next();
 	    		
 	    		graph.addVertex(factTemp);
-	    		factTarget = findTargetNode(JessEngine, factSource);
+	    		factTarget = findTargetVertex(JessEngine, factSource);
 
 	    		if(factTarget != null) {
 	    			strEdgePart1 = factSource.getSlotValue("id").toString().charAt(1) + "2" + factTarget.getSlotValue("id").toString().charAt(1);
@@ -53,10 +60,10 @@ public class MentalGraph {
 			}
 	    }
 	    
-	    initializeGraph(graph);
+	    initializeGraph();
 	}
 	
-	private Fact findTargetNode(Rete JessEngine, Fact factSource) {
+	private Fact findTargetVertex(Rete JessEngine, Fact factSource) {
 		
 		String strFactId;
 		Fact factTarget = null;
@@ -116,7 +123,7 @@ public class MentalGraph {
 		}
 	}
 	
-	private void initializeGraph(Graph<Fact, String> graph) {
+	private void initializeGraph() {
 		
 		Layout<Fact, String> layout = new CircleLayout<>(graph);
 	    layout.setSize(new Dimension(300,300));
@@ -154,5 +161,15 @@ public class MentalGraph {
 	    frame.getContentPane().add(vv);
 	    frame.pack();
 	    frame.setVisible(true);
+	}
+	
+	//Example: mg.removeVertex(JessEngine, ms.getFact(JessEngine, "G1-1"));
+	public void removeVertex(Rete JessEngine, Fact targetFact) {
+		try {
+			JessEngine.retract(targetFact);
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		graph.removeVertex(targetFact);
 	}
 }

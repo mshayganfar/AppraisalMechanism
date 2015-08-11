@@ -22,13 +22,11 @@ public class AppraisalMechanism {
 	protected static final String strMentalStatesTemplates = "templates/mental-states/mental-states-templates.clp";
 	
 	private static Rete JessEngine = null;
-	private static Graph<Fact, String> graph = null;
-	private static MentalStates ms = null;
 	
 	public static void main(String[] args) {
 		
-		ms = new MentalStates();
-		graph = new DirectedSparseGraph<Fact, String>();
+		MentalStates ms = new MentalStates();
+		MentalGraph mg = new MentalGraph();
 		
 	    try {
 	    	JessEngine = new Rete();
@@ -47,21 +45,11 @@ public class AppraisalMechanism {
 			ms.assertEmotionInstance(JessEngine, "E1-1", "install-panel", "ee-au-01", "HUMAN", "FRUSTRATION");
 		    JessEngine.run();
 			
-		    Fact tempFact = ms.getFact(JessEngine, "E1-1");
-		    Map<String, String> emotionMap = new HashMap<String, String>();
-		    emotionMap.put("id", "E2-1");
-		    emotionMap.put("task", "instal-panel2");
-		    emotionMap.put("event", "ee-au-02");
-		    emotionMap.put("agent", "HUMAN");
-		    System.out.println(tempFact);
-		    if(tempFact != null) ms.modifyEmotionInstance(tempFact, emotionMap);
-		    
 		    JessEngine.eval("(facts)");
 		} catch (JessException e) {
 			e.printStackTrace();
 		}
 
-	    MentalGraph mg = new MentalGraph();
-	    mg.createGraph(JessEngine, graph);
+	    mg.createGraph(JessEngine);
 	}
 }

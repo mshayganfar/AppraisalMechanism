@@ -7,6 +7,7 @@ import jess.RU;
 import jess.Rete;
 import jess.Value;
 
+enum FACT_TYPE {BELIEF, INTENTION, MOTIVE, GOAL, EMOTION_INSTANCE};
 
 public class MentalStates {
 
@@ -90,15 +91,15 @@ public class MentalStates {
 	
 	public Fact getFact(Rete JessEngine, String strFactID) {
 		
-		Fact factTarget = null;
+		Fact targetFact = null;
 		Iterator<Fact> factList = JessEngine.listFacts();
 		
 		while(factList.hasNext()) {
 			try {
-				factTarget = (Fact)factList.next();
+				targetFact = (Fact)factList.next();
 				
-				if (factTarget.getSlotValue("id").toString().substring(1, factTarget.getSlotValue("id").toString().length()-1).equals(strFactID)) {
-					return factTarget;
+				if (targetFact.getSlotValue("id").toString().substring(1, targetFact.getSlotValue("id").toString().length()-1).equals(strFactID)) {
+					return targetFact;
 				}
 			} catch (JessException e) {
 				e.printStackTrace();
@@ -107,6 +108,53 @@ public class MentalStates {
 		
 		return null;
 	}
+	
+	// Example: ms.getFactID(JessEngine, FACT_TYPE.GOAL, "fix-problem");
+	//returns: Fact's ID in working memory.
+	public String getFactID(Rete JessEngine, FACT_TYPE factType, String strFact) {
+		
+		Fact targetFact = null;
+		Iterator<Fact> factList = JessEngine.listFacts();
+		
+		while(factList.hasNext()) {
+			try {
+				targetFact = (Fact)factList.next();
+				
+				if(targetFact.getName().contains("belief") && factType.equals(FACT_TYPE.BELIEF)) {
+					if (targetFact.getSlotValue("belief").toString().substring(1, targetFact.getSlotValue("belief").toString().length()-1).equals(strFact))
+						return targetFact.getSlotValue("id").toString();
+				}
+				else if(targetFact.getName().contains("intention") && factType.equals(FACT_TYPE.INTENTION)) {
+					if (targetFact.getSlotValue("intention").toString().substring(1, targetFact.getSlotValue("intention").toString().length()-1).equals(strFact))
+						return targetFact.getSlotValue("id").toString();
+				}
+				else if(targetFact.getName().contains("motive") && factType.equals(FACT_TYPE.MOTIVE)) {
+					if (targetFact.getSlotValue("motive").toString().substring(1, targetFact.getSlotValue("motive").toString().length()-1).equals(strFact))
+						return targetFact.getSlotValue("id").toString();
+				}
+				else if(targetFact.getName().contains("goal") && factType.equals(FACT_TYPE.GOAL)) {
+					if (targetFact.getSlotValue("goal").toString().substring(1, targetFact.getSlotValue("goal").toString().length()-1).equals(strFact))
+						return targetFact.getSlotValue("id").toString();
+				}
+				else if(targetFact.getName().contains("emotion-instance") && factType.equals(FACT_TYPE.EMOTION_INSTANCE)) {
+					if (targetFact.getSlotValue("emotion-instance").toString().substring(1, targetFact.getSlotValue("emotion-instance").toString().length()-1).equals(strFact))
+						return targetFact.getSlotValue("id").toString();
+				}
+			} catch (JessException e) {
+				e.printStackTrace();
+			}
+	    }
+		
+		return null;
+	}
+	
+	//Example (modifying vetices):
+	
+//    Fact tempFact = ms.getFact(JessEngine, "E1-1");
+//    Map<String, String> emotionMap = new HashMap<String, String>();
+//    emotionMap.put("id", "E2-1");
+//    emotionMap.put("agent", "HUMAN");
+//    if(tempFact != null) ms.modifyEmotionInstance(tempFact, emotionMap);
 	
 	public void modifyBelief(Fact beliefFact, Map<String, String> beliefParameters) {
 		try {
