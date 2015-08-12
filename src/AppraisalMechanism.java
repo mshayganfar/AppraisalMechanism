@@ -25,6 +25,7 @@ public class AppraisalMechanism {
 	
 	public static void main(String[] args) {
 		
+		AppraisalProcesses ap = new AppraisalProcesses();
 		MentalStates ms = new MentalStates();
 		MentalGraph mg = new MentalGraph();
 		
@@ -51,5 +52,7 @@ public class AppraisalMechanism {
 		}
 
 	    mg.createGraph(JessEngine);
+	    
+	    System.out.println(ap.isEventRelevant(JessEngine, ms, mg));
 	}
 }

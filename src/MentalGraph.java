@@ -2,23 +2,26 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Paint;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JFrame;
+
+import jess.Fact;
+import jess.JessException;
+import jess.Rete;
 
 import org.apache.commons.collections15.Transformer;
 
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
+import edu.uci.ics.jung.algorithms.shortestpath.ShortestPath;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
-
-import jess.Fact;
-import jess.JessException;
-import jess.Rete;
 
 
 public class MentalGraph {
@@ -171,5 +174,10 @@ public class MentalGraph {
 			e.printStackTrace();
 		}
 		graph.removeVertex(targetFact);
+	}
+	
+	public List<String> getShortestPath(Fact sourceVertex, Fact sinkVertex) {
+		
+		return new DijkstraShortestPath<Fact, String>(graph).getPath(sourceVertex, sinkVertex); 
 	}
 }
