@@ -8,6 +8,8 @@ import jess.Rete;
 import jess.Value;
 
 enum FACT_TYPE {BELIEF, INTENTION, MOTIVE, GOAL, EMOTION_INSTANCE};
+enum BELIEF_TYPE {EXTERNAL_EVENT, INTERNAL_EVENT, NONE};
+enum EVENT_TYPE {UTTERANCE, ACTION, EMOTION, NONE};
 
 public class MentalStates {
 
@@ -17,12 +19,13 @@ public class MentalStates {
 	private Fact GoalFact            = null;
 	private Fact EmotionInstanceFact = null;
 	
-	public void assertBelief(Rete JessEngine, String strBeliefID, String strTask, String strEvent, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief) {
+	public void assertBelief(Rete JessEngine, String strBeliefID, String strTask, String strEvent, String strEventType, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief) {
 		try {
 			beliefFact = new Fact("belief", JessEngine);
 			beliefFact.setSlotValue("id", new Value(strBeliefID, RU.STRING));
 		    beliefFact.setSlotValue("task", new Value(strTask, RU.STRING));
 		    beliefFact.setSlotValue("event", new Value(strEvent, RU.STRING));
+		    beliefFact.setSlotValue("event-type", new Value(strEventType, RU.SYMBOL));
 		    beliefFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
 		    beliefFact.setSlotValue("belief-type", new Value(strBeliefType, RU.SYMBOL));
 		    beliefFact.setSlotValue("belief-about", new Value(strBeliefAbout, RU.SYMBOL));
@@ -216,5 +219,28 @@ public class MentalStates {
 		} catch (JessException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public BELIEF_TYPE getFactEventType(Rete JessEngine, String beliefFactID) {
+		
+		Fact targetFact = null;
+		Iterator<Fact> factList = JessEngine.listFacts();
+		
+		while(factList.hasNext()) {
+			try {
+				targetFact = (Fact)factList.next();
+				
+				if(targetFact.getName().contains("belief")) {
+					if (targetFact.getSlotValue("belief-about").equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
+						return BELIEF_TYPE.EXTERNAL_EVENT;
+					else if (targetFact.getSlotValue("belief-about").equals(BELIEF_TYPE.INTERNAL_EVENT.toString()))
+						return BELIEF_TYPE.INTERNAL_EVENT;
+				}
+			} catch (JessException e) {
+				e.printStackTrace();
+			}
+	    }
+		
+		return BELIEF_TYPE.NONE;
 	}
 }

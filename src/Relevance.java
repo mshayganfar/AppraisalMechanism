@@ -4,7 +4,7 @@ import java.util.Map;
 import jess.Fact;
 import jess.Rete;
 
-public class RelevanceAppraisalProcess {
+public class Relevance extends AppraisalProcesses {
 	
 	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., B1-1.
 	public double isEventRelevant(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph) {
@@ -35,9 +35,6 @@ public class RelevanceAppraisalProcess {
 		return (((weights.get("strength") * getBeliefStrength()) + (weights.get("accuracy") * getBeliefAccuracy()) + (weights.get("frequency") * getBeliefFrequency()) 
 				+ (weights.get("recency") * getBeliefRecency()) + (weights.get("saliency")*getBeliefSaliency()) + (weights.get("persistence")*getBeliefPersistence()))/6.0);
 	}
-	
-	// The return value can be computed according to the emotional status of the human.
-	private double getHumanEmotionalThreshold() { return 0.0; }
 	
 	// Min = 0.0 and Max = 1.0
 	private double getBeliefStrengthWeight()    { return 1.0; }

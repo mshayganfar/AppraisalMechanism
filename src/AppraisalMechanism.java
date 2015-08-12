@@ -25,7 +25,7 @@ public class AppraisalMechanism {
 	
 	public static void main(String[] args) {
 		
-		RelevanceAppraisalProcess rap = new RelevanceAppraisalProcess();
+		Relevance rap = new Relevance();
 		MentalStates ms = new MentalStates();
 		MentalGraph mg = new MentalGraph();
 		
@@ -38,8 +38,8 @@ public class AppraisalMechanism {
 			
 //			JessEngine.executeCommand("(load-facts facts/sensoryData.dat)");
 			
-			ms.assertBelief(JessEngine, "B1-1", "install-panel", "ee-au-01", "ROBOT", "PRIVATE", "OTHER", "astronaut-frustrated");
-			ms.assertBelief(JessEngine, "B1-2", "install-panel", "ee-au-01", "ROBOT", "PRIVATE", "ENVIRONMENT", "disfunctional-measurement-tool");
+			ms.assertBelief(JessEngine, "B1-1", "install-panel", "ee-au-01", "UTTERANCE", "ROBOT", "PRIVATE", "OTHER", "astronaut-frustrated");
+			ms.assertBelief(JessEngine, "B1-2", "install-panel", "ee-au-01", "UTTERANCE", "ROBOT", "PRIVATE", "ENVIRONMENT", "disfunctional-measurement-tool");
 			ms.assertMotive(JessEngine, "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
 			ms.assertIntention(JessEngine, "I1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
 			ms.assertGoal(JessEngine, "G1-1", "install-panel", "ee-au-01", "ROBOT", "fix-problem");
@@ -52,6 +52,8 @@ public class AppraisalMechanism {
 		}
 
 	    mg.createGraph(JessEngine);
+	    
+	    System.out.println(ms.getFactEventType(JessEngine, "B1-1"));
 	    
 	    System.out.println(rap.isEventRelevant(JessEngine, ms, mg));
 	}
