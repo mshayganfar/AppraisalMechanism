@@ -20,35 +20,4 @@ public class Relevance extends AppraisalProcesses {
 				return 0;
 		}
 	}
-	
-	private double getBeliefUtility(Fact beliefFact) {
-		
-		Map<String, Double> weights =  new HashMap<String, Double>();
-		
-		weights.put("strength", getBeliefStrengthWeight());
-		weights.put("accuracy", getBeliefAccuracyWeight());
-		weights.put("frequency", getBeliefFrequencyWeight());
-		weights.put("recency", getBeliefRecencyWeight());
-		weights.put("saliency", getBeliefSaliencyWeight());
-		weights.put("persistence", getBeliefPersistenceWeight());
-		
-		return (((weights.get("strength") * getBeliefStrength()) + (weights.get("accuracy") * getBeliefAccuracy()) + (weights.get("frequency") * getBeliefFrequency()) 
-				+ (weights.get("recency") * getBeliefRecency()) + (weights.get("saliency")*getBeliefSaliency()) + (weights.get("persistence")*getBeliefPersistence()))/6.0);
-	}
-	
-	// Min = 0.0 and Max = 1.0
-	private double getBeliefStrengthWeight()    { return 1.0; }
-	private double getBeliefAccuracyWeight()    { return 1.0; }
-	private double getBeliefFrequencyWeight()   { return 1.0; }
-	private double getBeliefRecencyWeight()     { return 1.0; }
-	private double getBeliefSaliencyWeight()    { return 1.0; }
-	private double getBeliefPersistenceWeight() { return 1.0; }
-	
-	// Min = 0.0 and Max = 1.0
-	private double getBeliefStrength()    { return 1.0; }
-	private double getBeliefAccuracy()    { return 1.0; }
-	private double getBeliefFrequency()   { return 1.0; }
-	private double getBeliefRecency()     { return 1.0; }
-	private double getBeliefSaliency()    { return 1.0; }
-	private double getBeliefPersistence() { return 1.0; }
 }

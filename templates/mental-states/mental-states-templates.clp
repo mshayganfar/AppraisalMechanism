@@ -21,7 +21,13 @@
 (slot task (type STRING))
 (slot event (type STRING))
 (slot agent (type SYMBOL) (allowed-values ROBOT HUMAN UNKNOWN) (default UNKNOWN))
-(slot motive (type STRING)))
+(slot motive (type STRING))
+(slot motive-status (type SYMBOL) (allowed-values ACTIVE PASSIVE UNKNOWN) (default UNKNOWN))
+(slot insistence (type SYMBOL) (allowed-values HIGH LOW MEDIUM UNKNOWN) (default UNKNOWN))
+(slot importance (type SYMBOL) (allowed-values IMPORTANT UNIMPORTANT NEUTRAL UNKNOWN) (default UNKNOWN))
+(slot urgency (type SYMBOL) (allowed-values URGENT NONURGENT NEUTRAL UNKNOWN) (default UNKNOWN))
+(slot intensity (type SYMBOL) (allowed-values HIGH LOW MEDIUM UNKNOWN) (default UNKNOWN))
+(slot failure-disruptiveness (type SYMBOL) (allowed-values HIGH DISRUPTIVE NONDISRUPTIVE NEUTRAL UNKNOWN) (default UNKNOWN)))
 
 (deftemplate MENTAL-STATE::intention
 "Robot's intention or belief about human's intention."
@@ -29,7 +35,12 @@
 (slot task (type STRING))
 (slot event (type STRING))
 (slot agent (type SYMBOL) (allowed-values ROBOT HUMAN UNKNOWN) (default UNKNOWN))
-(slot intention (type STRING)))
+(slot intention (type STRING))
+(slot temporal-status (type SYMBOL) (allowed-values CONSISTENT INCONSISTENT UNKNOWN) (default UNKNOWN))
+(slot direct-experience (type SYMBOL) (allowed-values SIMILAR DISSIMILAR UNKNOWN) (default UNKNOWN))
+(slot certainty (type SYMBOL) (allowed-values CERTAIN UNCERTAIN UNKNOWN) (default UNKNOWN))
+(slot ambivalence (type SYMBOL) (allowed-values AMBIVALENT UNAMBIVALENT UNKNOWN) (default UNKNOWN))
+(slot affective-cognitive-consistency (type SYMBOL) (allowed-values CONSISTENT INCONSISTENT UNKNOWN) (default UNKNOWN)))
 
 (deftemplate MENTAL-STATE::goal
 "Robot's goal or belief about human's goal."
@@ -37,7 +48,10 @@
 (slot task (type STRING))
 (slot event (type STRING))
 (slot agent (type SYMBOL) (allowed-values ROBOT HUMAN UNKNOWN) (default UNKNOWN))
-(slot goal (type STRING)))
+(slot goal (type STRING))
+(slot proximity (type SYMBOL) (allowed-values PROXIMAL DISTAL UNKNOWN) (default UNKNOWN))
+(slot specificity (type SYMBOL) (allowed-values SPECIFIC GENERAL UNKNOWN) (default UNKNOWN))
+(slot difficulty (type SYMBOL) (allowed-values DIFFICULT EASY UNKNOWN) (default UNKNOWN)))
 
 (deftemplate MENTAL-STATE::emotion-instance
 "Robot's emotion instance or or belief about human's emotion instance."

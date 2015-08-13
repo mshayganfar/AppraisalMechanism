@@ -40,7 +40,7 @@ public class AppraisalMechanism {
 			
 			ms.assertBelief(JessEngine, "B1-1", "install-panel", "ee-au-01", "UTTERANCE", "ROBOT", "PRIVATE", "OTHER", "astronaut-frustrated");
 			ms.assertBelief(JessEngine, "B1-2", "install-panel", "ee-au-01", "UTTERANCE", "ROBOT", "PRIVATE", "ENVIRONMENT", "disfunctional-measurement-tool");
-			ms.assertMotive(JessEngine, "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
+			ms.assertMotive(JessEngine, "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion", "ACTIVE");
 			ms.assertIntention(JessEngine, "I1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
 			ms.assertGoal(JessEngine, "G1-1", "install-panel", "ee-au-01", "ROBOT", "fix-problem");
 			ms.assertEmotionInstance(JessEngine, "E1-1", "install-panel", "ee-au-01", "HUMAN", "FRUSTRATION");
@@ -57,6 +57,7 @@ public class AppraisalMechanism {
 	    
 	    System.out.println(rap.isEventRelevant(JessEngine, ms, mg));
 	    
-	    mg.getShortestPathVertices(ms.getFact(JessEngine, "B1-1"), ms.getFact(JessEngine, "G1-1"));
+	    Desirability d = new Desirability();
+	    System.out.println(d.getPathUtility(JessEngine, ms, mg, "B1-1"));
 	}
 }

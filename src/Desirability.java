@@ -61,10 +61,8 @@ public class Desirability extends AppraisalProcesses{
 						if ((targetFact.getName().contains("belief"))) {
 							strBeliefID = targetFact.getSlotValue("id").toString();
 							if (strBeliefID.contains("B" + intEventTurn + "-"))
-								if (mentalStates.getBeliefEventType(JessEngine, strBeliefID).equals("UTTERANCE")) {
-									List<Edge> pathList = mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, strBeliefID), mentalStates.getFact(JessEngine, "G1-1"));
-									if (pathList.size() > 0) mentalStateUtilityValue += getPathUtility(pathList);
-								}
+								if (mentalStates.getBeliefEventType(JessEngine, strBeliefID).equals("UTTERANCE"))
+									mentalStateUtilityValue += getPathUtility(JessEngine, mentalStates, mentalGraph, strBeliefID);
 						}
 					} catch (JessException e) {
 						e.printStackTrace();
@@ -80,7 +78,23 @@ public class Desirability extends AppraisalProcesses{
 		return 0.0;
 	}
 	
-	private double getPathUtility(List<Edge> pathList) {
+	public double getPathUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, String strBeliefID) {
+		
+		double dblBeliefUtilityValue    = 0.0;
+		double dblIntentionUtilityValue = 0.0;
+		double dblMotiveUtilityValue    = 0.0;
+		double dblGoalUtilityValue      = 0.0;
+		double dblEmotionUtilityValue   = 0.0;
+		
+		List<Fact> pathList = mentalGraph.getShortestPathVertices(mentalStates.getFact(JessEngine, strBeliefID), mentalStates.getFact(JessEngine, "G1-1"));
+		
+		for (int i = 0 ; i < pathList.size() ; i++) {
+			if (pathList.get(i).getName().toString().contains("belief")) dblBeliefUtilityValue = getBeliefUtility(pathList.get(i));
+			if (pathList.get(i).getName().toString().contains("motive")) dblMotiveUtilityValue = getMotiveUtility(pathList.get(i));
+			if (pathList.get(i).getName().toString().contains("intention")) dblIntentionUtilityValue = getIntentionUtility(pathList.get(i));
+			if (pathList.get(i).getName().toString().contains("goal")) dblGoalUtilityValue = getBeliefUtility(pathList.get(i));
+			if (pathList.get(i).getName().toString().contains("emotion-instance")) dblEmotionUtilityValue = getBeliefUtility(pathList.get(i));
+		}
 		
 		return 0.0;
 	}
