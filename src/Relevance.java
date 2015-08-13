@@ -1,7 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
-
-import jess.Fact;
 import jess.Rete;
 
 public class Relevance extends AppraisalProcesses {
