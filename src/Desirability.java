@@ -9,19 +9,19 @@ import jess.Rete;
 public class Desirability extends AppraisalProcesses{
 	
 	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., B1-1.
-	public boolean isEventDesirable(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph) {
+	public boolean isEventDesirable(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, int intEventTurn) {
 		
 		double deltaUtility = 0.0;
 		
 		List<String> shortestPathList = mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, "B1-1"), mentalStates.getFact(JessEngine, "G1-1"));
 		
-		if (mentalStates.getFactEventType(JessEngine, "B1-1").equals(BELIEF_TYPE.EXTERNAL_EVENT))
+		if (mentalStates.getBeliefEventType(JessEngine, "B1-1").equals(BELIEF_TYPE.EXTERNAL_EVENT))
 		{
-			double utteranceUtility = getUtteranceUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.UTTERANCE);
+			double utteranceUtility = getUtteranceUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.UTTERANCE, intEventTurn);
 //			double actionUtility    = getActionUtility();
 //			double emotionUtility   = getEmotionUtility();
 		}
-		else if (mentalStates.getFactEventType(JessEngine, "B1-1").equals(BELIEF_TYPE.INTERNAL_EVENT)){
+		else if (mentalStates.getBeliefEventType(JessEngine, "B1-1").equals(BELIEF_TYPE.INTERNAL_EVENT)){
 			
 		}
 		
@@ -31,9 +31,9 @@ public class Desirability extends AppraisalProcesses{
 			return false;
 	}
 	
-	private double getUtteranceUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, EVENT_TYPE eventType) {
+	private double getUtteranceUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, EVENT_TYPE eventType, int intEventTurn) {
 		
-		return getMentalStateUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.UTTERANCE);
+		return getMentalStateUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.UTTERANCE, intEventTurn);
 	}
 	
 //	private double getActionUtility() {
@@ -44,7 +44,10 @@ public class Desirability extends AppraisalProcesses{
 //		
 //	}
 	
-	private double getMentalStateUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, EVENT_TYPE eventType) {
+	private double getMentalStateUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, EVENT_TYPE eventType, int intEventTurn) {
+		
+		String strBeliefID = null;
+		double mentalStateUtilityValue = 0.0;
 		
 		switch (eventType) {
 			case UTTERANCE:
@@ -55,19 +58,29 @@ public class Desirability extends AppraisalProcesses{
 					try {
 						targetFact = (Fact)factList.next();
 						
-						if ((targetFact.getName().contains("belief")) /*&& (targetFact.getFActEventType, e.g., utterance)*/) {
-							mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, targetFact.getSlotValue("id").toString()), mentalStates.getFact(JessEngine, "G1-1"));
+						if ((targetFact.getName().contains("belief"))) {
+							strBeliefID = targetFact.getSlotValue("id").toString();
+							if (strBeliefID.contains("B" + intEventTurn + "-"))
+								if (mentalStates.getBeliefEventType(JessEngine, strBeliefID).equals("UTTERANCE")) {
+									List<String> pathList = mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, strBeliefID), mentalStates.getFact(JessEngine, "G1-1"));
+									if (pathList.size() > 0) mentalStateUtilityValue += getPathUtility(pathList);
+								}
 						}
 					} catch (JessException e) {
 						e.printStackTrace();
 					}
 			    }
-				return 0;
+				return mentalStateUtilityValue;
 			case ACTION:
 //				return ;
 			case EMOTION:
 //				return ;
 		}
+		
+		return 0.0;
+	}
+	
+	private double getPathUtility(List<String> pathList) {
 		
 		return 0.0;
 	}

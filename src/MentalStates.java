@@ -221,7 +221,7 @@ public class MentalStates {
 		}
 	}
 	
-	public BELIEF_TYPE getFactEventType(Rete JessEngine, String beliefFactID) {
+	public BELIEF_TYPE getBeliefType(Rete JessEngine, String beliefFactID) {
 		
 		Fact targetFact = null;
 		Iterator<Fact> factList = JessEngine.listFacts();
@@ -230,11 +230,13 @@ public class MentalStates {
 			try {
 				targetFact = (Fact)factList.next();
 				
-				if(targetFact.getName().contains("belief")) {
-					if (targetFact.getSlotValue("belief-about").equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
-						return BELIEF_TYPE.EXTERNAL_EVENT;
-					else if (targetFact.getSlotValue("belief-about").equals(BELIEF_TYPE.INTERNAL_EVENT.toString()))
-						return BELIEF_TYPE.INTERNAL_EVENT;
+				if (targetFact.getName().contains("belief")) {
+					if (targetFact.getSlotValue("id").toString().equals(beliefFactID)) {
+						if (targetFact.getSlotValue("belief-about").equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
+							return BELIEF_TYPE.EXTERNAL_EVENT;
+						else if (targetFact.getSlotValue("belief-about").equals(BELIEF_TYPE.INTERNAL_EVENT.toString()))
+							return BELIEF_TYPE.INTERNAL_EVENT;
+					}
 				}
 			} catch (JessException e) {
 				e.printStackTrace();
@@ -242,5 +244,27 @@ public class MentalStates {
 	    }
 		
 		return BELIEF_TYPE.NONE;
+	}
+	
+	public String getBeliefEventType(Rete JessEngine, String beliefFactID) {
+		
+		Fact targetFact = null;
+		Iterator<Fact> factList = JessEngine.listFacts();
+		
+		while(factList.hasNext()) {
+			try {
+				targetFact = (Fact)factList.next();
+				
+				if (targetFact.getName().contains("belief")) {
+					if (targetFact.getSlotValue("id").toString().equals(beliefFactID)) {
+						return targetFact.getSlotValue("event-type").toString();
+					}
+				}
+			} catch (JessException e) {
+				e.printStackTrace();
+			}
+	    }
+		
+		return null;
 	}
 }

@@ -53,7 +53,7 @@ public class AppraisalMechanism {
 
 	    mg.createGraph(JessEngine);
 	    
-	    System.out.println(ms.getFactEventType(JessEngine, "B1-1"));
+	    System.out.println(ms.getBeliefType(JessEngine, "B1-1"));
 	    
 	    System.out.println(rap.isEventRelevant(JessEngine, ms, mg));
 	}
