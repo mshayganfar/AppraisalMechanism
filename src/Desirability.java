@@ -13,7 +13,7 @@ public class Desirability extends AppraisalProcesses{
 		
 		double deltaUtility = 0.0;
 		
-		List<String> shortestPathList = mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, "B1-1"), mentalStates.getFact(JessEngine, "G1-1"));
+		List<Edge> shortestPathList = mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, "B1-1"), mentalStates.getFact(JessEngine, "G1-1"));
 		
 		if (mentalStates.getBeliefEventType(JessEngine, "B1-1").equals(BELIEF_TYPE.EXTERNAL_EVENT))
 		{
@@ -62,7 +62,7 @@ public class Desirability extends AppraisalProcesses{
 							strBeliefID = targetFact.getSlotValue("id").toString();
 							if (strBeliefID.contains("B" + intEventTurn + "-"))
 								if (mentalStates.getBeliefEventType(JessEngine, strBeliefID).equals("UTTERANCE")) {
-									List<String> pathList = mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, strBeliefID), mentalStates.getFact(JessEngine, "G1-1"));
+									List<Edge> pathList = mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, strBeliefID), mentalStates.getFact(JessEngine, "G1-1"));
 									if (pathList.size() > 0) mentalStateUtilityValue += getPathUtility(pathList);
 								}
 						}
@@ -80,7 +80,7 @@ public class Desirability extends AppraisalProcesses{
 		return 0.0;
 	}
 	
-	private double getPathUtility(List<String> pathList) {
+	private double getPathUtility(List<Edge> pathList) {
 		
 		return 0.0;
 	}

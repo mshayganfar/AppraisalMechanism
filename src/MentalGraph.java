@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Paint;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
 import edu.uci.ics.jung.algorithms.shortestpath.ShortestPath;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.Hypergraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
@@ -26,10 +29,10 @@ import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 
 public class MentalGraph {
 	
-	private static Graph<Fact, String> graph = null;
+	private static Graph<Fact, Edge> graph = null;
 	
 	public MentalGraph() {
-		this.graph = new DirectedSparseGraph<Fact, String>();
+		this.graph = new DirectedSparseGraph<Fact, Edge>();
 	}
 	
 	public void createGraph(Rete JessEngine) {
@@ -50,13 +53,13 @@ public class MentalGraph {
 	    	try {
 	    		factSource = (Fact)factList.next();
 	    		
-	    		graph.addVertex(factTemp);
+	    		//graph.addVertex(factTemp);
 	    		factTarget = findTargetVertex(JessEngine, factSource);
 
 	    		if(factTarget != null) {
 	    			strEdgePart1 = factSource.getSlotValue("id").toString().charAt(1) + "2" + factTarget.getSlotValue("id").toString().charAt(1);
 		    		strEdgePart2 = factSource.getSlotValue("id").toString().substring(factSource.getSlotValue("id").toString().indexOf("-"), factSource.getSlotValue("id").toString().length()-1);
-	    			graph.addEdge(strEdgePart1 + strEdgePart2, factSource, factTarget);
+	    			graph.addEdge(new Edge(factSource, factTarget, strEdgePart1 + strEdgePart2), factSource, factTarget);
 	    		}
 			} catch (JessException e) {
 				e.printStackTrace();
@@ -128,10 +131,10 @@ public class MentalGraph {
 	
 	private void initializeGraph() {
 		
-		Layout<Fact, String> layout = new CircleLayout<>(graph);
+		Layout<Fact, Edge> layout = new CircleLayout<>(graph);
 	    layout.setSize(new Dimension(300,300));
 	    
-	    VisualizationViewer<Fact, String> vv = new VisualizationViewer<Fact, String>(layout);
+	    VisualizationViewer<Fact, Edge> vv = new VisualizationViewer<Fact, Edge>(layout);
 	    vv.setPreferredSize(new Dimension(350, 350));
 	    
 	    Transformer<Fact, Paint> factPaint = new Transformer<Fact, Paint>() {
@@ -151,8 +154,14 @@ public class MentalGraph {
 	    };
 	    
 	    vv.getRenderContext().setVertexFillPaintTransformer(factPaint);
-	    vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<String>());
-	    
+	    vv.getRenderContext().setEdgeLabelTransformer(new Transformer<Edge, String>() {
+			// It was: ToStringLabeller<String>();
+	    	@Override
+			public String transform(Edge edge) {
+				return edge.getEdgeLabel();
+			} 
+	    });
+
 	    vv.setVertexToolTipTransformer(new ToStringLabeller<Fact>());
 	    
 	    DefaultModalGraphMouse gm = new DefaultModalGraphMouse();
@@ -176,8 +185,60 @@ public class MentalGraph {
 		graph.removeVertex(targetFact);
 	}
 	
-	public List<String> getShortestPath(Fact sourceVertex, Fact sinkVertex) {
+	public List<Edge> getShortestPath(Fact sourceVertex, Fact sinkVertex) {
 		
-		return new DijkstraShortestPath<Fact, String>(graph).getPath(sourceVertex, sinkVertex); 
+		return new DijkstraShortestPath<Fact, Edge>(graph).getPath(sourceVertex, sinkVertex); 
 	}
+	
+	public List<Fact> getShortestPathVertices(Fact sourceVertex, Fact sinkVertex) {
+		
+		int i = 0;
+		List<Fact> vertices = new ArrayList<Fact>();
+		
+		List<Edge> edges = new DijkstraShortestPath<Fact, Edge>(graph).getPath(sourceVertex, sinkVertex);
+		
+		if (edges.size() > 0) {
+			for (i = 0 ; i < edges.size() ; i++) {
+				vertices.add(edges.get(i).getEdgeSource());
+			}
+			vertices.add(edges.get(i-1).getEdgeSink());
+		}
+		
+		return vertices;
+	}
+}
+
+class Edge {
+	
+	private Fact sourceFact;
+	private Fact sinkFact;
+	private double weight;
+	private String edgeLabel;
+	
+	public Edge(Fact sourceFact, Fact sinkFact) {
+		
+		this.sourceFact = sourceFact;
+		this.sinkFact   = sinkFact;
+		this.weight     = 1.0;
+	}
+
+	public Edge(Fact sourceFact, Fact sinkFact, String edgeLabel) {
+	
+		this.sourceFact = sourceFact;
+		this.sinkFact   = sinkFact;
+		this.weight     = 1.0;
+		this.edgeLabel  = edgeLabel;
+	}
+	
+	public Edge(Fact sourceFact, Fact sinkFact, double dblWeight, String edgeLabel) {
+		
+		this.sourceFact = sourceFact;
+		this.sinkFact   = sinkFact;
+		this.weight     = dblWeight;
+		this.edgeLabel  = edgeLabel;
+	}
+	
+	public Fact getEdgeSource()  { return this.sourceFact; }
+	public Fact getEdgeSink()    { return this.sinkFact; }
+	public String getEdgeLabel() { return this.edgeLabel; }
 }

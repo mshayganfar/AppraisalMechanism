@@ -56,5 +56,7 @@ public class AppraisalMechanism {
 	    System.out.println(ms.getBeliefType(JessEngine, "B1-1"));
 	    
 	    System.out.println(rap.isEventRelevant(JessEngine, ms, mg));
+	    
+	    mg.getShortestPathVertices(ms.getFact(JessEngine, "B1-1"), ms.getFact(JessEngine, "G1-1"));
 	}
 }
