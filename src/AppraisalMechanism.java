@@ -38,8 +38,8 @@ public class AppraisalMechanism {
 			
 //			JessEngine.executeCommand("(load-facts facts/sensoryData.dat)");
 			
-			ms.assertBelief(JessEngine, "B1-1", "install-panel", "ee-au-01", "UTTERANCE", "ROBOT", "PRIVATE", "OTHER", "astronaut-frustrated");
-			ms.assertBelief(JessEngine, "B1-2", "install-panel", "ee-au-01", "UTTERANCE", "ROBOT", "PRIVATE", "ENVIRONMENT", "disfunctional-measurement-tool");
+			ms.assertBelief(JessEngine, "B1-1", "install-panel", "ee-au-01", "UTTERANCE", "EXTERNAL_EVENT", "ROBOT", "PRIVATE", "UTTERANCE", "astronaut-frustrated");
+			ms.assertBelief(JessEngine, "B1-2", "install-panel", "ee-au-01", "UTTERANCE", "INTERNAL_EVENT", "ROBOT", "PRIVATE", "ENVIRONMENT", "disfunctional-measurement-tool");
 			ms.assertMotive(JessEngine, "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion", "ACTIVE");
 			ms.assertIntention(JessEngine, "I1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
 			ms.assertGoal(JessEngine, "G1-1", "install-panel", "ee-au-01", "ROBOT", "fix-problem");
@@ -58,6 +58,6 @@ public class AppraisalMechanism {
 	    System.out.println(rap.isEventRelevant(JessEngine, ms, mg));
 	    
 	    Desirability d = new Desirability();
-	    System.out.println(d.getPathUtility(JessEngine, ms, mg, "B1-1"));
+	    System.out.println(d.isEventDesirable(JessEngine, ms, mg, 1));
 	}
 }

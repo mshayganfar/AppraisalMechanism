@@ -19,13 +19,14 @@ public class MentalStates {
 	private Fact GoalFact            = null;
 	private Fact EmotionInstanceFact = null;
 	
-	public void assertBelief(Rete JessEngine, String strBeliefID, String strTask, String strEvent, String strEventType, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief) {
+	public void assertBelief(Rete JessEngine, String strBeliefID, String strTask, String strEvent, String strEventType, String strEventOrigin, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief) {
 		try {
 			beliefFact = new Fact("belief", JessEngine);
 			beliefFact.setSlotValue("id", new Value(strBeliefID, RU.STRING));
 		    beliefFact.setSlotValue("task", new Value(strTask, RU.STRING));
 		    beliefFact.setSlotValue("event", new Value(strEvent, RU.STRING));
 		    beliefFact.setSlotValue("event-type", new Value(strEventType, RU.SYMBOL));
+		    beliefFact.setSlotValue("event-origin", new Value(strEventOrigin, RU.SYMBOL));
 		    beliefFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
 		    beliefFact.setSlotValue("belief-type", new Value(strBeliefType, RU.SYMBOL));
 		    beliefFact.setSlotValue("belief-about", new Value(strBeliefAbout, RU.SYMBOL));
@@ -102,7 +103,7 @@ public class MentalStates {
 			try {
 				targetFact = (Fact)factList.next();
 				
-				if (targetFact.getSlotValue("id").toString().substring(1, targetFact.getSlotValue("id").toString().length()-1).equals(strFactID)) {
+				if (targetFact.getSlotValue("id").toString().equals(strFactID)) {
 					return targetFact;
 				}
 			} catch (JessException e) {
@@ -165,6 +166,8 @@ public class MentalStates {
 			if(beliefParameters.containsKey("id")) beliefFact.setSlotValue("id", new Value(beliefParameters.get("id"), RU.STRING));
 			if(beliefParameters.containsKey("task")) beliefFact.setSlotValue("task", new Value(beliefParameters.get("task"), RU.STRING));
 			if(beliefParameters.containsKey("event")) beliefFact.setSlotValue("event", new Value(beliefParameters.get("event"), RU.STRING));
+			if(beliefParameters.containsKey("event-type")) beliefFact.setSlotValue("event-type", new Value(beliefParameters.get("event-type"), RU.SYMBOL));
+			if(beliefParameters.containsKey("event-origin")) beliefFact.setSlotValue("event-origin", new Value(beliefParameters.get("event-origin"), RU.SYMBOL));
 			if(beliefParameters.containsKey("agent")) beliefFact.setSlotValue("agent", new Value(beliefParameters.get("agent"), RU.SYMBOL));
 			if(beliefParameters.containsKey("belief-type")) beliefFact.setSlotValue("belief-type", new Value(beliefParameters.get("belief-type"), RU.SYMBOL));
 			if(beliefParameters.containsKey("belief-about")) beliefFact.setSlotValue("belief-about", new Value(beliefParameters.get("belief-about"), RU.SYMBOL));
@@ -205,6 +208,7 @@ public class MentalStates {
 			if(motiveParameters.containsKey("event")) motiveFact.setSlotValue("event", new Value(motiveParameters.get("event"), RU.STRING));
 			if(motiveParameters.containsKey("agent")) motiveFact.setSlotValue("agent", new Value(motiveParameters.get("agent"), RU.SYMBOL));
 			if(motiveParameters.containsKey("motive")) motiveFact.setSlotValue("motive", new Value(motiveParameters.get("motive"), RU.STRING));
+			if(motiveParameters.containsKey("motive-status")) motiveFact.setSlotValue("motive-status", new Value(motiveParameters.get("motive-status"), RU.SYMBOL));
 		} catch (JessException e) {
 			e.printStackTrace();
 		}
@@ -233,9 +237,9 @@ public class MentalStates {
 				
 				if (targetFact.getName().contains("belief")) {
 					if (targetFact.getSlotValue("id").toString().equals(beliefFactID)) {
-						if (targetFact.getSlotValue("belief-about").equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
+						if (targetFact.getSlotValue("event-origin").equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
 							return BELIEF_TYPE.EXTERNAL_EVENT;
-						else if (targetFact.getSlotValue("belief-about").equals(BELIEF_TYPE.INTERNAL_EVENT.toString()))
+						else if (targetFact.getSlotValue("event-origin").equals(BELIEF_TYPE.INTERNAL_EVENT.toString()))
 							return BELIEF_TYPE.INTERNAL_EVENT;
 					}
 				}
@@ -245,6 +249,28 @@ public class MentalStates {
 	    }
 		
 		return BELIEF_TYPE.NONE;
+	}
+	
+	public String getBeliefEventOrigin(Rete JessEngine, String beliefFactID) {
+		
+		Fact targetFact = null;
+		Iterator<Fact> factList = JessEngine.listFacts();
+		
+		while(factList.hasNext()) {
+			try {
+				targetFact = (Fact)factList.next();
+				
+				if (targetFact.getName().contains("belief")) {
+					if (targetFact.getSlotValue("id").toString().substring(1, targetFact.getSlotValue("id").toString().length()-1).equals(beliefFactID)) {
+						return targetFact.getSlotValue("event-origin").toString();
+					}
+				}
+			} catch (JessException e) {
+				e.printStackTrace();
+			}
+	    }
+		
+		return null;
 	}
 	
 	public String getBeliefEventType(Rete JessEngine, String beliefFactID) {
