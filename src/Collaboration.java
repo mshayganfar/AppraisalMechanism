@@ -1,0 +1,41 @@
+import jess.Fact;
+
+
+enum TASK_STATUS{DONE_SUCCESS, DONE_FAILURE, LIVE, BLOCKED, STARTED, UNKNOWN};
+enum COLLABORATION_GOAL_STATUS{ACHIEVED, BLOCKED, INPROGRESS, UNKNOWN};
+enum TASK_PRECONDITION_STATUS{SATISFIED, UNSATISFIED, UNKNOWN};
+enum TASK_POSTCONDITION_STATUS{SATISFIED, UNSATISFIED, UNKNOWN};
+enum RECIPE_APPLICABILITY{APPLICABLE, INAPPLICABLE, UNKNOWN};
+
+public class Collaboration {
+
+	public TASK_STATUS getTaskStatus() {
+		
+		return TASK_STATUS.DONE_SUCCESS;
+	}
+
+	public COLLABORATION_GOAL_STATUS getCollaborationGoalStatus() {
+		
+		return COLLABORATION_GOAL_STATUS.ACHIEVED;
+	}
+	
+	public TASK_PRECONDITION_STATUS getTaskPreconditionStatus() {
+		
+		return TASK_PRECONDITION_STATUS.SATISFIED;
+	}
+	
+	public TASK_POSTCONDITION_STATUS getTaskPostconditionStatus() {
+		
+		return TASK_POSTCONDITION_STATUS.SATISFIED;
+	}
+	
+	public RECIPE_APPLICABILITY getRecipeApplicability() {
+		
+		return RECIPE_APPLICABILITY.APPLICABLE;
+	}
+	
+	public Boolean doesContibute(Fact intentionFact) {
+		
+		return true;
+	}
+}

@@ -6,6 +6,13 @@ import jess.JessException;
 
 public class AppraisalProcesses {
 
+	protected Collaboration collaboration;
+	
+	public AppraisalProcesses() {
+		
+		collaboration = new Collaboration();
+	}
+	
 	protected double getBeliefUtility(Fact beliefFact) {
 		
 		Map<String, Double> weights =  new HashMap<String, Double>();

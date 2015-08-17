@@ -6,7 +6,7 @@
 (slot focus (type SYMBOL) (allowed-values EVENT ENVIRONMENT TASK SELF OTHER UNKNOWN) (default UNKNOWN)))
 
 (deftemplate COLLABORATION::collaboration-goal
-"Collaborators' goals."
+"Collaborators' goal."
 (slot task (type STRING))
 (slot event (type STRING))
 (slot agent (type SYMBOL) (allowed-values ROBOT HUMAN UNKNOWN) (default UNKNOWN))
@@ -110,3 +110,9 @@
 (slot event (type STRING))
 (slot task-status (type SYMBOL) (allowed-values DONE-SUCCESS DONE-FAILURE LIVE BLOCKED STARTED UNKNOWN) (default UNKNOWN)))
 
+(deftemplate COLLABORATION::contribute
+"An intention contributes to another intention as a hierarchy."
+(slot task (type STRING))
+(slot event (type STRING))
+(slot contributor (type STRING))
+(slot contributed (type STRING)))

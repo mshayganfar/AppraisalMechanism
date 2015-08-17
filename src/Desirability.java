@@ -125,4 +125,22 @@ public class Desirability extends AppraisalProcesses{
 				+ (dblGoalWeight * dblGoalUtilityValue) + (dblEmotionInstanceWeight * dblEmotionInstanceUtilityValue)) 
 				/ (dblBeliefWeight + dblIntentionWeight + dblMotiveWeight + dblGoalWeight + dblEmotionInstanceWeight));
 	}
+	
+	public double getCollaborationUtility() throws JessException {
+		
+		if (collaboration.getTaskStatus().equals(TASK_STATUS.DONE_SUCCESS)) return 1.0;
+		if ((collaboration.getTaskStatus().equals(TASK_STATUS.DONE_FAILURE)) || (collaboration.getTaskStatus().equals(TASK_STATUS.BLOCKED))) return -1.0;
+		if (collaboration.getCollaborationGoalStatus().equals(COLLABORATION_GOAL_STATUS.ACHIEVED)) return 1.0;
+		if (collaboration.getCollaborationGoalStatus().equals(COLLABORATION_GOAL_STATUS.BLOCKED)) return -1.0;
+		if (collaboration.getTaskPostconditionStatus().equals(TASK_POSTCONDITION_STATUS.SATISFIED)) return 1.0;
+		if (collaboration.getTaskPostconditionStatus().equals(TASK_POSTCONDITION_STATUS.UNSATISFIED)) return -1.0;
+		if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.SATISFIED)) return 1.0;
+		if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.UNSATISFIED)) return -1.0;
+		if (collaboration.doesContibute(new Fact("Fake Intention", null)) == true) return 1.0;
+		if (collaboration.doesContibute(new Fact("Fake Intention", null)) == false) return -1.0;
+		if (collaboration.getRecipeApplicability().equals(RECIPE_APPLICABILITY.APPLICABLE)) return 1.0;
+		if (collaboration.getRecipeApplicability().equals(RECIPE_APPLICABILITY.INAPPLICABLE)) return -1.0;
+		
+		return 0.0;
+	}
 }
