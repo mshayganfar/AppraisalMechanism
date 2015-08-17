@@ -148,7 +148,7 @@ public class MentalGraph {
 	    		else if (fact.getName().contains("goal"))
 	    			return Color.BLUE;
 	    		else if (fact.getName().contains("emotion"))
-	    			return Color.MAGENTA;
+	    			return Color.CYAN;
 	    		return Color.BLACK;
 	    	}
 	    };

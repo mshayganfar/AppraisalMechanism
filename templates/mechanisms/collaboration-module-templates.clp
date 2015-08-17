@@ -12,6 +12,13 @@
 (slot agent (type SYMBOL) (allowed-values ROBOT HUMAN UNKNOWN) (default UNKNOWN))
 (slot goal (type STRING)))
 
+(deftemplate COLLABORATION::collaboration-goal-status
+"Collaborators' goal status."
+(slot task (type STRING))
+(slot event (type STRING))
+(slot agent (type SYMBOL) (allowed-values ROBOT HUMAN UNKNOWN) (default UNKNOWN))
+(slot collaboration-goal-status (type SYMBOL) (allowed-values ACHIEVED BLOCKED INPROGRESS UNKNOWN) (default UNKNOWN)))
+
 (deftemplate COLLABORATION::shared-goal
 "Shared goal (abstract) between collaborators."
 (slot task (type STRING))
@@ -19,7 +26,7 @@
 (slot shared-goal (type STRING)))
 
 (deftemplate COLLABORATION::shared-goal-status
-"Shared goal (abstract) between collaborators."
+"Status of shared goal (abstract) between collaborators."
 (slot task (type STRING))
 (slot event (type STRING))
 (slot shared-goal-status (type SYMBOL) (allowed-values ACHIEVED BLOCKED INPROGRESS UNKNOWN) (default UNKNOWN)))
