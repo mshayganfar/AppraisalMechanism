@@ -7,6 +7,7 @@ import jess.Fact;
 import jess.JessException;
 
 import Collaboration.*;
+import MentalStates.*;
 
 public class AppraisalProcesses {
 
@@ -170,11 +171,85 @@ public class AppraisalProcesses {
 	private double getIntentionAffectiveCognitiveConsistencyWeight() { return 1.0; }
 	
 	// Min = 0.0 and Max = 1.0
-	private double getIntentionTemporalStatus(Fact intentionFact)    			 { return 1.0; }
-	private double getIntentionDirectExperience(Fact intentionFact)    		     { return 1.0; }
-	private double getIntentionCertainty(Fact intentionFact)   				     { return 1.0; }
-	private double getIntentionAmbivalence(Fact intentionFact)     			     { return 1.0; }
-	private double getIntentionAffectiveCognitiveConsistency(Fact intentionFact) { return 1.0; }
+	private double getIntentionTemporalStatus(Fact intentionFact) { 
+		
+		String strIntentionTemporalStatus = null;
+		
+		try {
+			strIntentionTemporalStatus = intentionFact.getSlotValue("temporal-status").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strIntentionTemporalStatus.equals("CONSISTENT")) return 1.0;
+		if (strIntentionTemporalStatus.equals("INCONSISTENT")) return -1.0;
+		
+		return 0.0;
+	}
+	
+	private double getIntentionDirectExperience(Fact intentionFact) {
+		
+		String strIntentionDirectExperience = null;
+		
+		try {
+			strIntentionDirectExperience = intentionFact.getSlotValue("direct-experience").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strIntentionDirectExperience.equals("SIMILAR")) return 1.0;
+		if (strIntentionDirectExperience.equals("DISSIMILAR")) return -1.0;
+		
+		return 0.0;
+	}
+	
+	private double getIntentionCertainty(Fact intentionFact) {
+		
+		String strIntentionCertainty = null;
+		
+		try {
+			strIntentionCertainty = intentionFact.getSlotValue("certainty").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strIntentionCertainty.equals("CERTAIN")) return 1.0;
+		if (strIntentionCertainty.equals("UNCERTAIN")) return -1.0;
+		
+		return 0.0;
+	}
+	
+	private double getIntentionAmbivalence(Fact intentionFact) {
+		
+		String strIntentionAmbivalence = null;
+		
+		try {
+			strIntentionAmbivalence = intentionFact.getSlotValue("ambivalence").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strIntentionAmbivalence.equals("AMBIVALENT")) return 1.0;
+		if (strIntentionAmbivalence.equals("UNAMBIVALENT")) return -1.0;
+		
+		return 0.0;
+	}
+	
+	private double getIntentionAffectiveCognitiveConsistency(Fact intentionFact) {
+		
+		String strIntentionAffectiveCognitiveConsistency = null;
+		
+		try {
+			strIntentionAffectiveCognitiveConsistency = intentionFact.getSlotValue("affective-cognitive-consistency").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strIntentionAffectiveCognitiveConsistency.equals("CONSISTENT")) return 1.0;
+		if (strIntentionAffectiveCognitiveConsistency.equals("INCONSISTENT")) return -1.0;
+		
+		return 0.0;
+	}
 	
 	protected double getMotiveUtility(Fact motiveFact) {
 		
