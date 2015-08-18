@@ -102,7 +102,7 @@ public class MentalStates {
 		while(factList.hasNext()) {
 			try {
 				targetFact = (Fact)factList.next();
-				
+
 				if (targetFact.getSlotValue("id").toString().equals(strFactID)) {
 					return targetFact;
 				}

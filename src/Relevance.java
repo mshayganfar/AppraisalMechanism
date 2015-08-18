@@ -9,7 +9,7 @@ public class Relevance extends AppraisalProcesses {
 			return 0;
 		else {
 			// This utility belongs to the belief corresponded to the recent (new) event.
-			double beliefUtility = getBeliefUtility(mentalStates.getFact(JessEngine, "B1-1"));
+			double beliefUtility = getBeliefUtility(mentalStates.getFact(JessEngine, "\"B1-1\""));
 			if(beliefUtility > getHumanEmotionalThreshold())
 				return beliefUtility;
 			else

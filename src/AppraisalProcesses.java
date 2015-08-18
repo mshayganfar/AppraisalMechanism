@@ -38,12 +38,107 @@ public class AppraisalProcesses {
 	private double getBeliefPersistenceWeight() { return 1.0; }
 	
 	// Min = 0.0 and Max = 1.0
-	private double getBeliefStrength(Fact beliefFact)    { return 1.0; }
-	private double getBeliefAccuracy(Fact beliefFact)    { return 1.0; }
-	private double getBeliefFrequency(Fact beliefFact)   { return 1.0; }
-	private double getBeliefRecency(Fact beliefFact)     { return 1.0; }
-	private double getBeliefSaliency(Fact beliefFact)    { return 1.0; }
-	private double getBeliefPersistence(Fact beliefFact) { return 1.0; }
+	private double getBeliefStrength(Fact beliefFact) {
+		
+		String strBeliefStrength = null;
+		
+		try {
+			strBeliefStrength = beliefFact.getSlotValue("strength").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strBeliefStrength.equals("HIGH")) return 1.0;
+		if (strBeliefStrength.equals("MEDIUM")) return 0.5;
+		if (strBeliefStrength.equals("LOW")) return 0.25;
+		
+		return 0.0;
+	}
+	
+	private double getBeliefAccuracy(Fact beliefFact) { 
+		
+		String strBeliefAccuracy = null;
+		
+		try {
+			strBeliefAccuracy = beliefFact.getSlotValue("accuracy").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strBeliefAccuracy.equals("HIGH")) return 1.0;
+		if (strBeliefAccuracy.equals("MEDIUM")) return 0.5;
+		if (strBeliefAccuracy.equals("LOW")) return 0.25;
+		
+		return 0.0;
+	}
+	
+	private double getBeliefFrequency(Fact beliefFact) { 
+		
+		String strBeliefFrequency = null;
+		
+		try {
+			strBeliefFrequency = beliefFact.getSlotValue("frequency").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strBeliefFrequency.equals("HIGH")) return 1.0;
+		if (strBeliefFrequency.equals("MEDIUM")) return 0.5;
+		if (strBeliefFrequency.equals("LOW")) return 0.25;
+		
+		return 0.0;
+	}
+	
+	private double getBeliefRecency(Fact beliefFact) { 
+		
+		String strBeliefRecency = null;
+		
+		try {
+			strBeliefRecency = beliefFact.getSlotValue("recency").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strBeliefRecency.equals("HIGH")) return 1.0;
+		if (strBeliefRecency.equals("MEDIUM")) return 0.5;
+		if (strBeliefRecency.equals("LOW")) return 0.25;
+		
+		return 0.0; 
+	}
+	
+	private double getBeliefSaliency(Fact beliefFact) { 
+		
+		String strBeliefSaliency = null;
+		
+		try {
+			strBeliefSaliency = beliefFact.getSlotValue("saliency").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strBeliefSaliency.equals("HIGH")) return 1.0;
+		if (strBeliefSaliency.equals("MEDIUM")) return 0.5;
+		if (strBeliefSaliency.equals("LOW")) return 0.25;
+		
+		return 0.0;
+	}
+	
+	private double getBeliefPersistence(Fact beliefFact) { 
+		
+		String strBeliefPersistence = null;
+		
+		try {
+			strBeliefPersistence = beliefFact.getSlotValue("persistence").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strBeliefPersistence.equals("HIGH")) return 1.0;
+		if (strBeliefPersistence.equals("MEDIUM")) return 0.5;
+		if (strBeliefPersistence.equals("LOW")) return 0.25;
+		
+		return 0.0;
+	}
 	
 	// The return value can be computed according to the emotional status of the human.
 	protected double getHumanEmotionalThreshold() { return 0.0; }

@@ -19,7 +19,6 @@ public class Desirability extends AppraisalProcesses{
 		
 //		List<Edge> shortestPathList = mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, "B1-1"), mentalStates.getFact(JessEngine, "G1-1"));
 		
-		System.out.println(mentalStates.getBeliefEventOrigin(JessEngine, "B1-1"));
 		if (mentalStates.getBeliefEventOrigin(JessEngine, "B1-1").equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
 		{
 			utteranceUtility = getUtteranceUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.UTTERANCE, intEventTurn);
