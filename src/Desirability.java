@@ -98,7 +98,7 @@ public class Desirability extends AppraisalProcesses{
 	
 	// Returns a weighted average of all five mental states' utilities.
 	public double getPathUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, String strBeliefID) {
-		
+
 		double dblBeliefUtilityValue          = 0.0;
 		double dblIntentionUtilityValue       = 0.0;
 		double dblMotiveUtilityValue          = 0.0;
@@ -127,19 +127,34 @@ public class Desirability extends AppraisalProcesses{
 	}
 	
 	public double getCollaborationUtility() throws JessException {
+
+		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.UNKNOWN)) return 0.0;
 		
-		if (collaboration.getTaskStatus().equals(TASK_STATUS.DONE_SUCCESS)) return 1.0;
-		if ((collaboration.getTaskStatus().equals(TASK_STATUS.DONE_FAILURE)) || (collaboration.getTaskStatus().equals(TASK_STATUS.BLOCKED))) return -1.0;
-		if (collaboration.getCollaborationGoalStatus().equals(COLLABORATION_GOAL_STATUS.ACHIEVED)) return 1.0;
-		if (collaboration.getCollaborationGoalStatus().equals(COLLABORATION_GOAL_STATUS.BLOCKED)) return -1.0;
-		if (collaboration.getTaskPostconditionStatus().equals(TASK_POSTCONDITION_STATUS.SATISFIED)) return 1.0;
-		if (collaboration.getTaskPostconditionStatus().equals(TASK_POSTCONDITION_STATUS.UNSATISFIED)) return -1.0;
-		if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.SATISFIED)) return 1.0;
-		if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.UNSATISFIED)) return -1.0;
-		if (collaboration.doesContibute(new Fact("Fake Intention", null)) == true) return 1.0;
-		if (collaboration.doesContibute(new Fact("Fake Intention", null)) == false) return -1.0;
-		if (collaboration.getRecipeApplicability().equals(RECIPE_APPLICABILITY.APPLICABLE)) return 1.0;
-		if (collaboration.getRecipeApplicability().equals(RECIPE_APPLICABILITY.INAPPLICABLE)) return -1.0;
+		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.ACHIEVED)) return 1.0;
+		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.BLOCKED)) return -1.0;
+		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.INPROGRESS)) {
+			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.ACHIEVED)) return 0.75;
+			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.BLOCKED)) return -0.75;
+			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.INPROGRESS)) {
+				return 0.85;
+			}
+			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.UNKNOWN)) {
+				if (collaboration.getTaskPostconditionStatus().equals(TASK_POSTCONDITION_STATUS.SATISFIED)) return 0.75;
+				if ((collaboration.getTaskPostconditionStatus().equals(TASK_POSTCONDITION_STATUS.UNSATISFIED)) || 
+					(collaboration.getTaskPostconditionStatus().equals(TASK_POSTCONDITION_STATUS.UNKNOWN))) {
+					if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.SATISFIED)) return 0.5;
+					if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.UNSATISFIED)) return -0.75;
+					if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.UNKNOWN)) {
+						if (collaboration.doesContibute(new Fact("Fake Intention", null)) == true) return 0.25;
+						if (collaboration.doesContibute(new Fact("Fake Intention", null)) == false) {
+							if (collaboration.getRecipeApplicability().equals(RECIPE_APPLICABILITY.APPLICABLE)) return 0.0;
+							if (collaboration.getRecipeApplicability().equals(RECIPE_APPLICABILITY.INAPPLICABLE)) return -0.5;
+							if (collaboration.getRecipeApplicability().equals(RECIPE_APPLICABILITY.UNKNOWN)) return -0.25;
+						}
+					}
+				}
+			}
+		}
 		
 		return 0.0;
 	}

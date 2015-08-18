@@ -5,31 +5,31 @@
 (slot agent (type SYMBOL) (allowed-values ROBOT HUMAN BOTH UNKNOWN) (default UNKNOWN))
 (slot focus (type SYMBOL) (allowed-values EVENT ENVIRONMENT TASK SELF OTHER UNKNOWN) (default UNKNOWN)))
 
-(deftemplate COLLABORATION::collaboration-goal
+(deftemplate COLLABORATION::focus
 "Collaborators' goal."
 (slot task (type STRING))
 (slot event (type STRING))
 (slot agent (type SYMBOL) (allowed-values ROBOT HUMAN UNKNOWN) (default UNKNOWN))
-(slot goal (type STRING)))
+(slot focus (type STRING)))
 
-(deftemplate COLLABORATION::collaboration-goal-status
+(deftemplate COLLABORATION::focus-status
 "Collaborators' goal status."
 (slot task (type STRING))
 (slot event (type STRING))
 (slot agent (type SYMBOL) (allowed-values ROBOT HUMAN UNKNOWN) (default UNKNOWN))
-(slot collaboration-goal-status (type SYMBOL) (allowed-values ACHIEVED BLOCKED INPROGRESS UNKNOWN) (default UNKNOWN)))
+(slot focus-status (type SYMBOL) (allowed-values ACHIEVED BLOCKED INPROGRESS UNKNOWN) (default UNKNOWN)))
 
-(deftemplate COLLABORATION::shared-goal
+(deftemplate COLLABORATION::toplevel-task
 "Shared goal (abstract) between collaborators."
 (slot task (type STRING))
 (slot event (type STRING))
-(slot shared-goal (type STRING)))
+(slot toplevel-task (type STRING)))
 
-(deftemplate COLLABORATION::shared-goal-status
+(deftemplate COLLABORATION::toplevel-task-status
 "Status of shared goal (abstract) between collaborators."
 (slot task (type STRING))
 (slot event (type STRING))
-(slot shared-goal-status (type SYMBOL) (allowed-values ACHIEVED BLOCKED INPROGRESS UNKNOWN) (default UNKNOWN)))
+(slot toplevel-task-status (type SYMBOL) (allowed-values ACHIEVED BLOCKED INPROGRESS UNKNOWN) (default UNKNOWN)))
 
 (deftemplate COLLABORATION::temporal-order
 "Temporal order of the tasks."
