@@ -7,7 +7,6 @@ import jess.Fact;
 import jess.JessException;
 
 import Collaboration.*;
-import MentalStates.*;
 
 public class AppraisalProcesses {
 
@@ -274,11 +273,90 @@ public class AppraisalProcesses {
 	private double getMotiveFailureDisruptivenessWeight() { return 1.0; }
 	
 	// Min = 0.0 and Max = 1.0
-	private double getMotiveInsistence(Fact motiveFact)    	       { return 1.0; }
-	private double getMotiveImportance(Fact motiveFact)    		   { return 1.0; }
-	private double getMotiveUrgency(Fact motiveFact)   			   { return 1.0; }
-	private double getMotiveIntensity(Fact motiveFact)     	       { return 1.0; }
-	private double getMotiveFailureDisruptiveness(Fact motiveFact) { return 1.0; }
+	private double getMotiveInsistence(Fact motiveFact) {
+		
+		String strMotiveInsistence = null;
+		
+		try {
+			strMotiveInsistence = motiveFact.getSlotValue("insistence").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strMotiveInsistence.equals("HIGH")) return 1.0;
+		if (strMotiveInsistence.equals("MEDIUM")) return 0.5;
+		if (strMotiveInsistence.equals("LOW")) return 0.25;
+		
+		return 0.0;
+	}
+	
+	private double getMotiveImportance(Fact motiveFact) {
+		
+		String strMotiveImportance = null;
+		
+		try {
+			strMotiveImportance = motiveFact.getSlotValue("importance").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strMotiveImportance.equals("HIGH")) return 1.0;
+		if (strMotiveImportance.equals("MEDIUM")) return 0.5;
+		if (strMotiveImportance.equals("LOW")) return 0.25;
+		
+		return 0.0;
+	}
+	
+	private double getMotiveUrgency(Fact motiveFact) {
+		
+		String strMotiveUrgency = null;
+		
+		try {
+			strMotiveUrgency = motiveFact.getSlotValue("urgency").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strMotiveUrgency.equals("HIGH")) return 1.0;
+		if (strMotiveUrgency.equals("MEDIUM")) return 0.5;
+		if (strMotiveUrgency.equals("LOW")) return 0.25;
+		
+		return 0.0;
+	}
+	
+	private double getMotiveIntensity(Fact motiveFact) {
+		
+		String strMotiveIntensity = null;
+		
+		try {
+			strMotiveIntensity = motiveFact.getSlotValue("intensity").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strMotiveIntensity.equals("HIGH")) return 1.0;
+		if (strMotiveIntensity.equals("MEDIUM")) return 0.5;
+		if (strMotiveIntensity.equals("LOW")) return 0.25;
+		
+		return 0.0;
+	}
+	
+	private double getMotiveFailureDisruptiveness(Fact motiveFact) {
+		
+		String strMotiveFailureDisruptiveness = null;
+		
+		try {
+			strMotiveFailureDisruptiveness = motiveFact.getSlotValue("failure-disruptiveness").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strMotiveFailureDisruptiveness.equals("HIGH")) return -1.0;
+		if (strMotiveFailureDisruptiveness.equals("MEDIUM")) return -0.5;
+		if (strMotiveFailureDisruptiveness.equals("LOW")) return -0.25;
+		
+		return 0.0;
+	}
 	
 	protected double getGoalUtility(Fact goalFact) {
 		
@@ -298,9 +376,53 @@ public class AppraisalProcesses {
 	private double getGoalDifficultyWeight()  { return 1.0; }
 	
 	// Min = 0.0 and Max = 1.0
-	private double getGoalProximity(Fact goalFact)   { return 1.0; }
-	private double getGoalSpecificity(Fact goalFact) { return 1.0; }
-	private double getGoalDifficulty(Fact goalFact)  { return 1.0; }
+	private double getGoalProximity(Fact goalFact) {
+		
+		String strGoalProximity = null;
+		
+		try {
+			strGoalProximity = goalFact.getSlotValue("proximity").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strGoalProximity.equals("PROXIMAL")) return 1.0;
+		if (strGoalProximity.equals("DISTAL")) return -1.0;
+		
+		return 0.0;
+	}
+	
+	private double getGoalSpecificity(Fact goalFact) {
+		
+		String strGoalSpecificity = null;
+		
+		try {
+			strGoalSpecificity = goalFact.getSlotValue("specificity").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strGoalSpecificity.equals("SPECIFIC")) return 1.0;
+		if (strGoalSpecificity.equals("GENERAL")) return -1.0;
+		
+		return 0.0;
+	}
+	
+	private double getGoalDifficulty(Fact goalFact) {
+		
+		String strGoalDifficulty = null;
+		
+		try {
+			strGoalDifficulty = goalFact.getSlotValue("difficulty").toString();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		if (strGoalDifficulty.equals("DIFFICULT")) return -1.0;
+		if (strGoalDifficulty.equals("EASY")) return 1.0;
+		
+		return 0.0;
+	}
 	
 	protected double getEmotionInstanceUtility(Fact emotionInstanceFact) {
 		
