@@ -1,4 +1,9 @@
+package Appraisal;
+
 import jess.Rete;
+
+import MentalStates.*;
+import MentalGraph.*;
 
 public class Relevance extends AppraisalProcesses {
 	

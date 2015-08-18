@@ -1,11 +1,20 @@
+package Appraisal;
+
 import java.util.Iterator;
 import java.util.List;
 
 import jess.Fact;
 import jess.JessException;
 import jess.Rete;
-import jess.Value;
 
+import Collaboration.Collaboration.FOCUS_STATUS;
+import Collaboration.Collaboration.RECIPE_APPLICABILITY;
+import Collaboration.Collaboration.TASK_PRECONDITION_STATUS;
+import Collaboration.Collaboration.TOP_LEVEL_TASK_STATUS;
+import MentalStates.*;
+import MentalStates.MentalStates.BELIEF_TYPE;
+import MentalStates.MentalStates.EVENT_TYPE;
+import MentalGraph.*;
 
 public class Desirability extends AppraisalProcesses{
 	

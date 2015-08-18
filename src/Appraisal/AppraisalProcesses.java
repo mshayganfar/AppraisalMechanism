@@ -1,8 +1,12 @@
+package Appraisal;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import jess.Fact;
 import jess.JessException;
+
+import Collaboration.*;
 
 public class AppraisalProcesses {
 

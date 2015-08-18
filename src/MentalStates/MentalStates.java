@@ -1,3 +1,5 @@
+package MentalStates;
+
 import java.util.Iterator;
 import java.util.Map;
 
@@ -7,10 +9,6 @@ import jess.RU;
 import jess.Rete;
 import jess.Value;
 
-enum FACT_TYPE {BELIEF, INTENTION, MOTIVE, GOAL, EMOTION_INSTANCE};
-enum BELIEF_TYPE {EXTERNAL_EVENT, INTERNAL_EVENT, NONE};
-enum EVENT_TYPE {UTTERANCE, ACTION, EMOTION, NONE};
-
 public class MentalStates {
 
 	private Fact beliefFact          = null;
@@ -18,6 +16,10 @@ public class MentalStates {
 	private Fact IntentionFact       = null;
 	private Fact GoalFact            = null;
 	private Fact EmotionInstanceFact = null;
+	
+	public enum FACT_TYPE {BELIEF, INTENTION, MOTIVE, GOAL, EMOTION_INSTANCE};
+	public enum BELIEF_TYPE {EXTERNAL_EVENT, INTERNAL_EVENT, NONE};
+	public enum EVENT_TYPE {UTTERANCE, ACTION, EMOTION, NONE};
 	
 	public void assertBelief(Rete JessEngine, String strBeliefID, String strTask, String strEvent, String strEventType, String strEventOrigin, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief) {
 		try {

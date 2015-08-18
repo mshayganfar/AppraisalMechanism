@@ -1,9 +1,8 @@
-import java.util.HashMap;
-import java.util.Map;
-
-import edu.uci.ics.jung.graph.*;
-
 import jess.*;
+
+import Appraisal.*;
+import MentalStates.*;
+import MentalGraph.*;
 
 /*
  * Copyright (c) 2015, Mahni Shayganfar
