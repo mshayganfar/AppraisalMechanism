@@ -3,6 +3,7 @@ import jess.*;
 import Appraisal.*;
 import MentalStates.*;
 import MentalGraph.*;
+import Turns.*;
 
 /*
  * Copyright (c) 2015, Mahni Shayganfar
@@ -27,6 +28,7 @@ public class AppraisalMechanism {
 		Relevance rap = new Relevance();
 		MentalStates ms = new MentalStates();
 		MentalGraph mg = new MentalGraph();
+		Turns turn = new Turns();
 		
 	    try {
 	    	JessEngine = new Rete();
@@ -37,12 +39,12 @@ public class AppraisalMechanism {
 			
 //			JessEngine.executeCommand("(load-facts facts/sensoryData.dat)");
 			
-			ms.assertBelief(JessEngine, "B1-1", "install-panel", "ee-au-01", "UTTERANCE", "EXTERNAL_EVENT", "ROBOT", "PRIVATE", "UTTERANCE", "astronaut-frustrated");
-			ms.assertBelief(JessEngine, "B1-2", "install-panel", "ee-au-01", "UTTERANCE", "INTERNAL_EVENT", "ROBOT", "PRIVATE", "ENVIRONMENT", "disfunctional-measurement-tool");
-			ms.assertMotive(JessEngine, "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion", "ACTIVE");
-			ms.assertIntention(JessEngine, "I1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
-			ms.assertGoal(JessEngine, "G1-1", "install-panel", "ee-au-01", "ROBOT", "fix-problem");
-			ms.assertEmotionInstance(JessEngine, "E1-1", "install-panel", "ee-au-01", "HUMAN", "FRUSTRATION");
+			ms.assertBelief(JessEngine, "turn:1", "B1-1", "install-panel", "ee-au-01", "UTTERANCE", "EXTERNAL_EVENT", "ROBOT", "PRIVATE", "UTTERANCE", "astronaut-frustrated");
+			ms.assertBelief(JessEngine, "turn:1", "B1-2", "install-panel", "ee-au-01", "UTTERANCE", "INTERNAL_EVENT", "ROBOT", "PRIVATE", "ENVIRONMENT", "disfunctional-measurement-tool");
+			ms.assertMotive(JessEngine, "turn:1", "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion", "ACTIVE");
+			ms.assertIntention(JessEngine, "turn:1", "I1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
+			ms.assertGoal(JessEngine, "turn:1", "G1-1", "install-panel", "ee-au-01", "ROBOT", "fix-problem");
+			ms.assertEmotionInstance(JessEngine, "turn:1", "E1-1", "install-panel", "ee-au-01", "HUMAN", "FRUSTRATION");
 		    JessEngine.run();
 			
 		    JessEngine.eval("(facts)");
@@ -54,7 +56,10 @@ public class AppraisalMechanism {
 	    
 	    System.out.println(rap.isEventRelevant(JessEngine, ms, mg));
 	    
-	    Desirability d = new Desirability();
-	    System.out.println(d.isEventDesirable(JessEngine, ms, mg, 1));
+	    Desirability desirability = new Desirability();
+	    System.out.println(desirability.isEventDesirable(JessEngine, ms, mg, 1));
+	    
+	    Expectedness expectedness = new Expectedness();
+	    expectedness.isEventExpected(JessEngine, ms, turn);
 	}
 }

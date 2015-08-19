@@ -1,4 +1,3 @@
-
 import java.awt.TextArea;
 
 import jess.JessException;

@@ -1,5 +1,6 @@
 (deftemplate MENTAL-STATE::belief
 "Robot's belief based on SharedPlans theory."
+(slot turn (type STRING))
 (slot id (type STRING))
 (slot task (type STRING))
 (slot event (type STRING))
@@ -18,6 +19,7 @@
 
 (deftemplate MENTAL-STATE::motive
 "Robot's motive."
+(slot turn (type STRING))
 (slot id (type STRING))
 (slot task (type STRING))
 (slot event (type STRING))
@@ -32,6 +34,7 @@
 
 (deftemplate MENTAL-STATE::intention
 "Robot's intention or belief about human's intention."
+(slot turn (type STRING))
 (slot id (type STRING))
 (slot task (type STRING))
 (slot event (type STRING))
@@ -45,6 +48,7 @@
 
 (deftemplate MENTAL-STATE::goal
 "Robot's goal or belief about human's goal."
+(slot turn (type STRING))
 (slot id (type STRING))
 (slot task (type STRING))
 (slot event (type STRING))
@@ -56,6 +60,7 @@
 
 (deftemplate MENTAL-STATE::emotion-instance
 "Robot's emotion instance or or belief about human's emotion instance."
+(slot turn (type STRING))
 (slot id (type STRING))
 (slot task (type STRING))
 (slot event (type STRING))

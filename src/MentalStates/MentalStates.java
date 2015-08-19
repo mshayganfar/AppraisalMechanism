@@ -21,9 +21,10 @@ public class MentalStates {
 	public enum BELIEF_TYPE {EXTERNAL_EVENT, INTERNAL_EVENT, NONE};
 	public enum EVENT_TYPE {UTTERANCE, ACTION, EMOTION, NONE};
 	
-	public void assertBelief(Rete JessEngine, String strBeliefID, String strTask, String strEvent, String strEventType, String strEventOrigin, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief) {
+	public void assertBelief(Rete JessEngine, String strTurn, String strBeliefID, String strTask, String strEvent, String strEventType, String strEventOrigin, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief) {
 		try {
 			beliefFact = new Fact("belief", JessEngine);
+			beliefFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
 			beliefFact.setSlotValue("id", new Value(strBeliefID, RU.STRING));
 		    beliefFact.setSlotValue("task", new Value(strTask, RU.STRING));
 		    beliefFact.setSlotValue("event", new Value(strEvent, RU.STRING));
@@ -39,9 +40,10 @@ public class MentalStates {
 		}
 	}
 	
-	public void assertMotive(Rete JessEngine, String strMotiveID, String strTask, String strEvent, String strAgent, String strMotive, String strMotiveStatus) {
+	public void assertMotive(Rete JessEngine, String strTurn, String strMotiveID, String strTask, String strEvent, String strAgent, String strMotive, String strMotiveStatus) {
 		try {
 			MotiveFact = new Fact("motive", JessEngine);
+			MotiveFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
 			MotiveFact.setSlotValue("id", new Value(strMotiveID, RU.STRING));
 			MotiveFact.setSlotValue("task", new Value(strTask, RU.STRING));
 			MotiveFact.setSlotValue("event", new Value(strEvent, RU.STRING));
@@ -54,9 +56,10 @@ public class MentalStates {
 		}
 	}
 	
-	public void assertIntention(Rete JessEngine, String strIntentionID, String strTask, String strEvent, String strAgent, String strIntention) {
+	public void assertIntention(Rete JessEngine, String strTurn, String strIntentionID, String strTask, String strEvent, String strAgent, String strIntention) {
 		try {
 			IntentionFact = new Fact("intention", JessEngine);
+			IntentionFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
 			IntentionFact.setSlotValue("id", new Value(strIntentionID, RU.STRING));
 			IntentionFact.setSlotValue("task", new Value(strTask, RU.STRING));
 			IntentionFact.setSlotValue("event", new Value(strEvent, RU.STRING));
@@ -68,9 +71,10 @@ public class MentalStates {
 		}
 	}
 	
-	public void assertGoal(Rete JessEngine, String strGoalID, String strTask, String strEvent, String strAgent, String strGoal) {
+	public void assertGoal(Rete JessEngine, String strTurn, String strGoalID, String strTask, String strEvent, String strAgent, String strGoal) {
 		try {
 			GoalFact = new Fact("goal", JessEngine);
+			GoalFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
 			GoalFact.setSlotValue("id", new Value(strGoalID, RU.STRING));
 			GoalFact.setSlotValue("task", new Value(strTask, RU.STRING));
 			GoalFact.setSlotValue("event", new Value(strEvent, RU.STRING));
@@ -82,9 +86,10 @@ public class MentalStates {
 		}
 	}
 	
-	public void assertEmotionInstance(Rete JessEngine, String strEmotionInstanceID, String strTask, String strEvent, String strAgent, String strEmotionInstance) {
+	public void assertEmotionInstance(Rete JessEngine, String strTurn, String strEmotionInstanceID, String strTask, String strEvent, String strAgent, String strEmotionInstance) {
 		try {
 			EmotionInstanceFact = new Fact("emotion-instance", JessEngine);
+			EmotionInstanceFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
 			EmotionInstanceFact.setSlotValue("id", new Value(strEmotionInstanceID, RU.STRING));
 			EmotionInstanceFact.setSlotValue("task", new Value(strTask, RU.STRING));
 			EmotionInstanceFact.setSlotValue("event", new Value(strEvent, RU.STRING));
@@ -287,6 +292,28 @@ public class MentalStates {
 				if (targetFact.getName().contains("belief")) {
 					if (targetFact.getSlotValue("id").toString().equals(beliefFactID)) {
 						return targetFact.getSlotValue("event-type").toString();
+					}
+				}
+			} catch (JessException e) {
+				e.printStackTrace();
+			}
+	    }
+		
+		return null;
+	}
+	
+	public String extractGoal(Rete JessEngine, String strTurn) {
+		
+		Fact targetFact = null;
+		Iterator<Fact> factList = JessEngine.listFacts();
+		
+		while(factList.hasNext()) {
+			try {
+				targetFact = (Fact)factList.next();
+				
+				if (targetFact.getName().contains("MENTAL-STATE::goal")) {
+					if (targetFact.getSlotValue("turn").toString().equals(strTurn)) {
+						return targetFact.getSlotValue("goal").toString();
 					}
 				}
 			} catch (JessException e) {
