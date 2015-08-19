@@ -1,10 +1,6 @@
 package Appraisal;
 
-import java.util.List;
-
-import Collaboration.Collaboration;
 import MentalGraph.*;
-import MentalGraph.MentalGraph.Edge;
 import MentalStates.MentalStates;
 import Turns.Turns;
 import jess.Fact;
@@ -13,18 +9,24 @@ import jess.Rete;
 
 public class Expectedness extends AppraisalProcesses{
 	
-	public boolean isEventExpected(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Fact beliefFact, Turns turn) {
+	public Boolean isEventExpected(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Fact beliefFact, Turns turn) {
 		
 		Fact factLastGoal = mentalStates.extractGoal(JessEngine, turn.getLastTurn());
 		Fact factPreviousGoal = mentalStates.extractGoal(JessEngine, turn.getPreviousTurn());
 		
-		List<Edge> listLastPath     = mentalGraph.getShortestPath(beliefFact, factLastGoal);
-		List<Edge> listPreviousPath = mentalGraph.getShortestPath(beliefFact, factPreviousGoal);
-		
 		try {
-			if(factLastGoal.getSlotValue("goal").toString().equals(factPreviousGoal.getSlotValue("goal").toString())) {
+			if(!factLastGoal.getSlotValue("goal").toString().equals(factPreviousGoal.getSlotValue("goal").toString())) {
 				if(collaboration.isGoalAchieved(factPreviousGoal)) {
-					
+					if(mentalGraph.getShortestPath(beliefFact, factLastGoal).size() == 0)
+						return false;
+					else {
+						double dblLastPathUtility     = getPathUtility(JessEngine, mentalStates, mentalGraph, beliefFact, mentalStates.extractGoal(JessEngine, turn.getLastTurn()));
+						double dblPreviousPathUtility = getPathUtility(JessEngine, mentalStates, mentalGraph, beliefFact, mentalStates.extractGoal(JessEngine, turn.getPreviousTurn()));
+						if((dblLastPathUtility - dblPreviousPathUtility) >= getHumanEmotionalThreshold())
+							return true;
+						else
+							return false;
+					}
 				}
 				else
 					return false;
@@ -35,6 +37,6 @@ public class Expectedness extends AppraisalProcesses{
 			e.printStackTrace();
 		}
 		
-		return true;
+		return null;
 	}
 }

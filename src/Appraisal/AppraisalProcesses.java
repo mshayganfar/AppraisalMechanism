@@ -1,12 +1,16 @@
 package Appraisal;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import jess.Fact;
 import jess.JessException;
+import jess.Rete;
 
 import Collaboration.*;
+import MentalGraph.MentalGraph;
+import MentalStates.MentalStates;
 
 public class AppraisalProcesses {
 
@@ -460,4 +464,34 @@ public class AppraisalProcesses {
 	protected double getMotiveWeight()          { return 1.0; }
 	protected double getGoalWeight()            { return 1.0; }
 	protected double getEmotionInstanceWeight() { return 1.0; }
+	
+	// Returns a weighted average of all five mental states' utilities.
+	public double getPathUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Fact beliefFact, Fact goalFact) {
+
+		double dblBeliefUtilityValue          = 0.0;
+		double dblIntentionUtilityValue       = 0.0;
+		double dblMotiveUtilityValue          = 0.0;
+		double dblGoalUtilityValue            = 0.0;
+		double dblEmotionInstanceUtilityValue = 0.0;
+		
+		List<Fact> pathList = mentalGraph.getShortestPathVertices(beliefFact, goalFact);
+		
+		for (int i = 0 ; i < pathList.size() ; i++) {
+			if (pathList.get(i).getName().toString().contains("MENTAL-STATE::belief")) dblBeliefUtilityValue = getBeliefUtility(pathList.get(i));
+			if (pathList.get(i).getName().toString().contains("MENTAL-STATE::motive")) dblMotiveUtilityValue = getMotiveUtility(pathList.get(i));
+			if (pathList.get(i).getName().toString().contains("MENTAL-STATE::intention")) dblIntentionUtilityValue = getIntentionUtility(pathList.get(i));
+			if (pathList.get(i).getName().toString().contains("MENTAL-STATE::goal")) dblGoalUtilityValue = getGoalUtility(pathList.get(i));
+			if (pathList.get(i).getName().toString().contains("MENTAL-STATE::emotion-instance")) dblEmotionInstanceUtilityValue = getEmotionInstanceUtility(pathList.get(i));
+		}
+		
+		double dblBeliefWeight          = getBeliefWeight();
+		double dblIntentionWeight       = getIntentionWeight();
+		double dblMotiveWeight          = getMotiveWeight();
+		double dblGoalWeight            = getGoalWeight();
+		double dblEmotionInstanceWeight = getEmotionInstanceWeight();
+		
+		return (((dblBeliefWeight * dblBeliefUtilityValue) + (dblIntentionWeight * dblIntentionUtilityValue) + (dblMotiveWeight * dblMotiveUtilityValue)
+				+ (dblGoalWeight * dblGoalUtilityValue) + (dblEmotionInstanceWeight * dblEmotionInstanceUtilityValue)) 
+				/ (dblBeliefWeight + dblIntentionWeight + dblMotiveWeight + dblGoalWeight + dblEmotionInstanceWeight));
+	}
 }
