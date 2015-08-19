@@ -10,6 +10,11 @@ public class Collaboration {
 	public enum TASK_POSTCONDITION_STATUS{SATISFIED, UNSATISFIED, UNKNOWN};
 	public enum RECIPE_APPLICABILITY{APPLICABLE, INAPPLICABLE, UNKNOWN};
 	
+	public boolean isGoalAchieved(Fact factGoal) {
+		
+		return true;
+	}
+	
 	public FOCUS_STATUS getFocusStatus() {
 		
 		return FOCUS_STATUS.ACHIEVED;

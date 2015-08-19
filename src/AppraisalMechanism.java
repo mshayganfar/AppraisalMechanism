@@ -60,6 +60,6 @@ public class AppraisalMechanism {
 	    System.out.println(desirability.isEventDesirable(JessEngine, ms, mg, 1));
 	    
 	    Expectedness expectedness = new Expectedness();
-	    expectedness.isEventExpected(JessEngine, ms, turn);
+	    expectedness.isEventExpected(JessEngine, ms, mg, ms.getFact(JessEngine, "\"B1-1\""), turn);
 	}
 }

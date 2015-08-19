@@ -302,7 +302,7 @@ public class MentalStates {
 		return null;
 	}
 	
-	public String extractGoal(Rete JessEngine, String strTurn) {
+	public Fact extractGoal(Rete JessEngine, String strTurn) {
 		
 		Fact targetFact = null;
 		Iterator<Fact> factList = JessEngine.listFacts();
@@ -313,7 +313,7 @@ public class MentalStates {
 				
 				if (targetFact.getName().contains("MENTAL-STATE::goal")) {
 					if (targetFact.getSlotValue("turn").toString().equals(strTurn)) {
-						return targetFact.getSlotValue("goal").toString();
+						return targetFact;
 					}
 				}
 			} catch (JessException e) {

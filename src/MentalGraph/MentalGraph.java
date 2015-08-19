@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Paint;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,10 +18,8 @@ import org.apache.commons.collections15.Transformer;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
-import edu.uci.ics.jung.algorithms.shortestpath.ShortestPath;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.Hypergraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
@@ -208,39 +205,39 @@ public class MentalGraph {
 		
 		return vertices;
 	}
-}
-
-class Edge {
 	
-	private Fact sourceFact;
-	private Fact sinkFact;
-	private double weight;
-	private String edgeLabel;
-	
-	public Edge(Fact sourceFact, Fact sinkFact) {
+	public class Edge {
 		
-		this.sourceFact = sourceFact;
-		this.sinkFact   = sinkFact;
-		this.weight     = 1.0;
-	}
-
-	public Edge(Fact sourceFact, Fact sinkFact, String edgeLabel) {
-	
-		this.sourceFact = sourceFact;
-		this.sinkFact   = sinkFact;
-		this.weight     = 1.0;
-		this.edgeLabel  = edgeLabel;
-	}
-	
-	public Edge(Fact sourceFact, Fact sinkFact, double dblWeight, String edgeLabel) {
+		private Fact sourceFact;
+		private Fact sinkFact;
+		private double weight;
+		private String edgeLabel;
 		
-		this.sourceFact = sourceFact;
-		this.sinkFact   = sinkFact;
-		this.weight     = dblWeight;
-		this.edgeLabel  = edgeLabel;
+		public Edge(Fact sourceFact, Fact sinkFact) {
+			
+			this.sourceFact = sourceFact;
+			this.sinkFact   = sinkFact;
+			this.weight     = 1.0;
+		}
+
+		public Edge(Fact sourceFact, Fact sinkFact, String edgeLabel) {
+		
+			this.sourceFact = sourceFact;
+			this.sinkFact   = sinkFact;
+			this.weight     = 1.0;
+			this.edgeLabel  = edgeLabel;
+		}
+		
+		public Edge(Fact sourceFact, Fact sinkFact, double dblWeight, String edgeLabel) {
+			
+			this.sourceFact = sourceFact;
+			this.sinkFact   = sinkFact;
+			this.weight     = dblWeight;
+			this.edgeLabel  = edgeLabel;
+		}
+		
+		public Fact getEdgeSource()  { return this.sourceFact; }
+		public Fact getEdgeSink()    { return this.sinkFact; }
+		public String getEdgeLabel() { return this.edgeLabel; }
 	}
-	
-	public Fact getEdgeSource()  { return this.sourceFact; }
-	public Fact getEdgeSink()    { return this.sinkFact; }
-	public String getEdgeLabel() { return this.edgeLabel; }
 }
