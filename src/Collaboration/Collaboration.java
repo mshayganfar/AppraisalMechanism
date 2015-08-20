@@ -1,6 +1,7 @@
 package Collaboration;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import jess.Fact;
 
@@ -59,17 +60,26 @@ public class Collaboration {
 		return true;
 	}
 	
-	public ArrayList<Fact> getTaskContributers(Fact factNonprimitiveGoal) {
+	public List<Fact> getTaskContributers(Fact factNonprimitiveGoal) {
 		
-		ArrayList<Fact> factContributerList = new ArrayList<Fact>();
+		List<Fact> contributerGoalList = new ArrayList<Fact>();
 		
 		// Extract all contributers here.
 		
-		return factContributerList;
+		return contributerGoalList;
 	}
 	
 	public AGENT_TYPE getTaskResponsibleAgent(Fact factGoal) {
 		
 		return AGENT_TYPE.SELF;
+	}
+	
+	public List<Fact> getPredecessors(Fact factGoal) {
+		
+		List<Fact> predecessorGoalList = new ArrayList<Fact>();
+		
+		// Extract all predecessor here.
+		
+		return predecessorGoalList;
 	}
 }

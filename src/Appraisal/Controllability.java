@@ -15,8 +15,9 @@ public class Controllability extends AppraisalProcesses{
 
 	public boolean isEventControllable(MentalGraph mentalGraph,Events event) {
 		
-		double dblAgency   = getAgencyValue(event);
-		double dblAutonomy = getAutonomyValue(mentalGraph, event);
+		double dblAgency       = getAgencyValue(event);
+		double dblAutonomy     = getAutonomyValue(mentalGraph, event);
+		double dblPredecessors = checkSucceededPredecessorsRatio(event);
 		
 		return true;
 	}
@@ -41,7 +42,7 @@ public class Controllability extends AppraisalProcesses{
 				return 0.0;
 		}
 		else if (collaboration.getFocusType().equals(FOCUS_TYPE.NONPRIMITIVE)){
-			ArrayList<Fact> taskContributersList = collaboration.getTaskContributers(event.getEventRelatedGoal());
+			List<Fact> taskContributersList = collaboration.getTaskContributers(event.getEventRelatedGoal());
 			
 			for (int i = 0 ; i < taskContributersList.size() ; i++) {
 				responsibleAgent = collaboration.getTaskResponsibleAgent(taskContributersList.get(i));
@@ -78,6 +79,30 @@ public class Controllability extends AppraisalProcesses{
 				}
 			}
 		}
+		
+		return null;
+	}
+	
+	private Double checkSucceededPredecessorsRatio(Events event) {
+		
+		double intSucceededPredecessorCounter = 0.0;
+		
+		List<Fact> predecessorGoalList = collaboration.getPredecessors(event.getEventRelatedGoal());
+		
+		if(predecessorGoalList.size() > 0)
+			for (int i = 0; i < predecessorGoalList.size() ; i++) {
+				if(collaboration.isGoalAchieved(predecessorGoalList.get(i)))
+					intSucceededPredecessorCounter++;
+			
+			return (double)intSucceededPredecessorCounter/predecessorGoalList.size();
+			}
+		else
+			return intSucceededPredecessorCounter;
+		
+		return null;
+	}
+	
+	private Double checkAvailablePredecessorsRatio(Events event) {
 		
 		return null;
 	}
