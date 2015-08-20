@@ -82,4 +82,13 @@ public class Collaboration {
 		
 		return predecessorGoalList;
 	}
+	
+	public ArrayList getInputs(Fact factGoal) {
+		
+		ArrayList goalInputsList = new ArrayList();
+		
+		// Extract all inputs here.
+		
+		return goalInputsList;
+	}
 }

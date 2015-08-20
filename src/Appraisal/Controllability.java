@@ -18,6 +18,7 @@ public class Controllability extends AppraisalProcesses{
 		double dblAgency       = getAgencyValue(event);
 		double dblAutonomy     = getAutonomyValue(mentalGraph, event);
 		double dblPredecessors = checkSucceededPredecessorsRatio(event);
+		double dblInputs       = checkAvailableInputRatio(event);
 		
 		return true;
 	}
@@ -85,24 +86,38 @@ public class Controllability extends AppraisalProcesses{
 	
 	private Double checkSucceededPredecessorsRatio(Events event) {
 		
-		double intSucceededPredecessorCounter = 0.0;
+		double dblSucceededPredecessorCounter = 0.0;
 		
 		List<Fact> predecessorGoalList = collaboration.getPredecessors(event.getEventRelatedGoal());
 		
 		if(predecessorGoalList.size() > 0)
 			for (int i = 0; i < predecessorGoalList.size() ; i++) {
 				if(collaboration.isGoalAchieved(predecessorGoalList.get(i)))
-					intSucceededPredecessorCounter++;
+					dblSucceededPredecessorCounter++;
 			
-			return (double)intSucceededPredecessorCounter/predecessorGoalList.size();
+			return (double)dblSucceededPredecessorCounter/predecessorGoalList.size();
 			}
 		else
-			return intSucceededPredecessorCounter;
+			return dblSucceededPredecessorCounter;
 		
 		return null;
 	}
 	
-	private Double checkAvailablePredecessorsRatio(Events event) {
+	private Double checkAvailableInputRatio(Events event) {
+		
+		double dblAvailableInputCounter = 0.0;
+		
+		ArrayList goalInputsList = collaboration.getInputs(event.getEventRelatedGoal());
+		
+		if(goalInputsList.size() > 0)
+			for (int i = 0; i < goalInputsList.size() ; i++) {
+				if(!goalInputsList.get(i).equals(null))
+					dblAvailableInputCounter++;
+			
+			return (double)dblAvailableInputCounter/goalInputsList.size();
+			}
+		else
+			return dblAvailableInputCounter;
 		
 		return null;
 	}
