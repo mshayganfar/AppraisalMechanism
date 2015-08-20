@@ -26,6 +26,7 @@
 (slot agent (type SYMBOL) (allowed-values ROBOT HUMAN UNKNOWN) (default UNKNOWN))
 (slot motive (type STRING))
 (slot motive-status (type SYMBOL) (allowed-values ACTIVE PASSIVE UNKNOWN) (default UNKNOWN))
+(slot motive-type (type SYMBOL) (allowed-values INTERNAL EXTERNAL UNKNOWN) (default UNKNOWN))
 (slot insistence (type SYMBOL) (allowed-values HIGH MEDIUM LOW UNKNOWN) (default UNKNOWN))
 (slot importance (type SYMBOL) (allowed-values HIGH MEDIUM LOW UNKNOWN) (default UNKNOWN))
 (slot urgency (type SYMBOL) (allowed-values HIGH MEDIUM LOW UNKNOWN) (default UNKNOWN))

@@ -41,7 +41,7 @@ public class AppraisalMechanism {
 			
 			ms.assertBelief(JessEngine, "turn:1", "B1-1", "install-panel", "ee-au-01", "UTTERANCE", "EXTERNAL_EVENT", "ROBOT", "PRIVATE", "UTTERANCE", "astronaut-frustrated");
 			ms.assertBelief(JessEngine, "turn:1", "B1-2", "install-panel", "ee-au-01", "UTTERANCE", "INTERNAL_EVENT", "ROBOT", "PRIVATE", "ENVIRONMENT", "disfunctional-measurement-tool");
-			ms.assertMotive(JessEngine, "turn:1", "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion", "ACTIVE");
+			ms.assertMotive(JessEngine, "turn:1", "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion", "ACTIVE", "INTERNAL");
 			ms.assertIntention(JessEngine, "turn:1", "I1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
 			ms.assertGoal(JessEngine, "turn:1", "G1-1", "install-panel", "ee-au-01", "ROBOT", "fix-problem");
 			ms.assertEmotionInstance(JessEngine, "turn:1", "E1-1", "install-panel", "ee-au-01", "HUMAN", "FRUSTRATION");

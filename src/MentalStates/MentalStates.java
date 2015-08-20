@@ -39,7 +39,7 @@ public class MentalStates {
 		}
 	}
 	
-	public void assertMotive(Rete JessEngine, String strTurn, String strMotiveID, String strTask, String strEvent, String strAgent, String strMotive, String strMotiveStatus) {
+	public void assertMotive(Rete JessEngine, String strTurn, String strMotiveID, String strTask, String strEvent, String strAgent, String strMotive, String strMotiveStatus, String strMotiveType) {
 		try {
 			MotiveFact = new Fact("motive", JessEngine);
 			MotiveFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
@@ -49,6 +49,7 @@ public class MentalStates {
 			MotiveFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
 			MotiveFact.setSlotValue("motive", new Value(strMotive, RU.STRING));
 			MotiveFact.setSlotValue("motive-status", new Value(strMotiveStatus, RU.SYMBOL));
+			MotiveFact.setSlotValue("motive-type", new Value(strMotiveType, RU.SYMBOL));
 		    JessEngine.assertFact(MotiveFact);
 		} catch (JessException e) {
 			e.printStackTrace();

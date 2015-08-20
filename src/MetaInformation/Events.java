@@ -6,11 +6,13 @@ public class Events {
 
 	public enum EVENT_TYPE{UTTERANCE, ACTION, EMOTION};
 	
+	private Fact belief;
 	private Fact goal;
 	private EVENT_TYPE eventType;
 	
-	public Events(Fact goal, EVENT_TYPE eventType) {
-		this.goal = goal;
+	public Events(Fact belief, Fact goal, EVENT_TYPE eventType) {
+		this.belief    = belief;
+		this.goal      = goal;
 		this.eventType = eventType;
 	}
 	
@@ -22,5 +24,10 @@ public class Events {
 	public Fact getEventRelatedGoal() {
 		
 		return goal;
+	}
+	
+	public Fact getEventRelatedBelief() {
+		
+		return belief;
 	}
 }
