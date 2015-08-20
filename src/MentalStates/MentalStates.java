@@ -19,7 +19,6 @@ public class MentalStates {
 	
 	public enum FACT_TYPE {BELIEF, INTENTION, MOTIVE, GOAL, EMOTION_INSTANCE};
 	public enum BELIEF_TYPE {EXTERNAL_EVENT, INTERNAL_EVENT, NONE};
-	public enum EVENT_TYPE {UTTERANCE, ACTION, EMOTION, NONE};
 	
 	public void assertBelief(Rete JessEngine, String strTurn, String strBeliefID, String strTask, String strEvent, String strEventType, String strEventOrigin, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief) {
 		try {

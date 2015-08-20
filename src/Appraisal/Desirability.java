@@ -12,9 +12,9 @@ import Collaboration.Collaboration.TASK_PRECONDITION_STATUS;
 import Collaboration.Collaboration.TOP_LEVEL_TASK_STATUS;
 import MentalStates.*;
 import MentalStates.MentalStates.BELIEF_TYPE;
-import MentalStates.MentalStates.EVENT_TYPE;
 import MentalGraph.*;
-import Turns.Turns;
+import MetaInformation.Events.EVENT_TYPE;
+import MetaInformation.Turns;
 
 public class Desirability extends AppraisalProcesses{
 	

@@ -3,7 +3,7 @@ import jess.*;
 import Appraisal.*;
 import MentalStates.*;
 import MentalGraph.*;
-import Turns.*;
+import MetaInformation.*;
 
 /*
  * Copyright (c) 2015, Mahni Shayganfar

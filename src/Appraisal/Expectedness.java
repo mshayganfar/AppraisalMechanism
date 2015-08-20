@@ -2,7 +2,7 @@ package Appraisal;
 
 import MentalGraph.*;
 import MentalStates.MentalStates;
-import Turns.Turns;
+import MetaInformation.Turns;
 import jess.Fact;
 import jess.JessException;
 import jess.Rete;
