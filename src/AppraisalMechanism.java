@@ -4,6 +4,7 @@ import Appraisal.*;
 import MentalStates.*;
 import MentalGraph.*;
 import MetaInformation.*;
+import MetaInformation.Events.EVENT_TYPE;
 
 /*
  * Copyright (c) 2015, Mahni Shayganfar
@@ -60,6 +61,10 @@ public class AppraisalMechanism {
 	    System.out.println(desirability.isEventDesirable(JessEngine, ms, mg, turn));
 	    
 	    Expectedness expectedness = new Expectedness();
-	    expectedness.isEventExpected(JessEngine, ms, mg, ms.getFact(JessEngine, "\"B1-1\""), turn);
+	    System.out.println(expectedness.isEventExpected(JessEngine, ms, mg, ms.getFact(JessEngine, "\"B1-1\""), turn));
+	    
+	    Controllability controllability = new Controllability();
+	    Events event = new Events(ms.getFact(JessEngine, "\"B1-1\""), ms.getFact(JessEngine, "\"G1-1\""), EVENT_TYPE.ACTION);
+	    System.out.println(controllability.isEventControllable(mg, event));
 	}
 }

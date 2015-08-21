@@ -20,7 +20,14 @@ public class Controllability extends AppraisalProcesses{
 		double dblPredecessors = checkSucceededPredecessorsRatio(event);
 		double dblInputs       = checkAvailableInputRatio(event);
 		
-		return true;
+		double utilityValue = (double)((dblAgency * getAgencyWeight()) + (dblAutonomy * getAutonomyWeight()) + 
+						(dblPredecessors * getPredecessorRatioWeight()) + (dblInputs * getInputRatioWeight()))
+						/(getAgencyWeight() + getAutonomyWeight() + getPredecessorRatioWeight() + getInputRatioWeight());
+		
+		if(utilityValue >= getHumanEmotionalThreshold())
+			return true;
+		else
+			return false;
 	}
 	
 	// Agency: The capacity, condition, or state of acting or of exerting power.
@@ -121,4 +128,10 @@ public class Controllability extends AppraisalProcesses{
 		
 		return null;
 	}
+	
+	// Min = 0.0 and Max = 1.0
+	private double getAgencyWeight()           { return 1.0; }
+	private double getAutonomyWeight()         { return 1.0; }
+	private double getPredecessorRatioWeight() { return 1.0; }
+	private double getInputRatioWeight()       { return 1.0; }
 }
