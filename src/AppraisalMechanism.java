@@ -54,8 +54,10 @@ public class AppraisalMechanism {
 		}
 
 	    mg.createGraph(JessEngine);
+
+	    Events event = new Events(ms.getFact(JessEngine, "\"B1-1\""), ms.getFact(JessEngine, "\"G1-1\""), EVENT_TYPE.ACTION);
 	    
-	    System.out.println(rap.isEventRelevant(JessEngine, ms, mg));
+	    System.out.println(rap.isEventRelevant(mg, event));
 	    
 	    Desirability desirability = new Desirability();
 	    System.out.println(desirability.isEventDesirable(JessEngine, ms, mg, turn));
@@ -64,7 +66,6 @@ public class AppraisalMechanism {
 	    System.out.println(expectedness.isEventExpected(JessEngine, ms, mg, ms.getFact(JessEngine, "\"B1-1\""), turn));
 	    
 	    Controllability controllability = new Controllability();
-	    Events event = new Events(ms.getFact(JessEngine, "\"B1-1\""), ms.getFact(JessEngine, "\"G1-1\""), EVENT_TYPE.ACTION);
 	    System.out.println(controllability.isEventControllable(mg, event));
 	}
 }
