@@ -143,18 +143,18 @@
 	\end{algorithmic}
 \end{algorithm}
 
+\pagebreak
+
 \begin{algorithm}
 	\caption{(Controllability)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{IsEventControllable}{\textit{MentalStates} $\mathcal{S}_t$,
-		\textit{Event} $\varepsilon_t$}
+		\Function{IsEventControllable}{\textit{Events} $\varepsilon_t$}
 			\Statex
 			\State $\alpha_{self/other}^{^{agency}} \gets
 			\beta_{self/other}^{^{autonomy}} \gets 0$
 			\Statex
-			\State $\kappa_{satisfied/total}^{^{preconditions}} \gets
-			\lambda_{succeeded/failed}^{^{predecessors}} \gets
+			\State $\lambda_{succeeded/failed}^{^{predecessors}} \gets
 			\mu_{available/required}^{^{inputs}} \gets 0$
 			\Statex
 			\State Initialize graph $\mathcal{G}_{t}$ with current mental state
@@ -162,73 +162,25 @@
 			\Statex
 			\State $\vec{\mathit{g}}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$ 
 			\State $\mathcal{P}_{\vec{\mathit{g}}_{t}} \gets
-			\Call{extractPaths}{\mathcal{G}_{t}, \vec{\mathit{g}}_{t}}$
+			\Call{extractPaths}{\varepsilon_t, \vec{\mathit{g}}_{t}}$
 			\Statex
-			\State $\mathcal{P}_{\vec{\mathit{g}}_{t}}^A \gets
-			\Call{ExtractActionPaths} {\mathcal{P}_{\vec{\mathit{g}}_{t}}}$
-			\State $\varphi_{\vec{\mathit{g}}_{t}}^A \gets
-			\Call{GetRecipeApplicability}{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}$
-			\Statex
-			\State $\mathcal{P}_{\vec{\mathit{g}}_{t}}^\mathcal{E} \gets
-			\Call{ExtractEmotionPaths} {\mathcal{P}_{\vec{\mathit{g}}_{t}}}$
-			\Statex
-			\State $\mathcal{E}_t^{other} \gets
-			\Call{ExtractOthersEmotion}{\mathcal{P}_{\vec{\mathit{g}}_{t}}^\mathcal{E}}$
-			\Statex
-			\State $\mathcal{I}_{other}^{^{emotion}} \gets
-			\Call{GetEmotionIntensity}{\mathcal{E}_t^{other}}$
-			\Statex
-			\State $\Upsilon_t \gets \Call{GetSomaticMarkers}{\mathcal{E}_t^{other}}$ 
-			\State $\mathcal{V}_{t}^{\mathcal{E}} \gets
-			\Call{GetEmotionValue}{\Upsilon_t, \varepsilon_t}$
-			\Statex
-			\State $Agency_{\vec{g}_t} \gets
-			\Call{GetAgencyValue}{\mathcal{P}_{\mathit{g}_{t}}}$ 
 			\State $\alpha_{self/other}^{^{agency}} \gets
-			\rfrac{Agency_{\vec{g}_t}^{^{self}}}
-			{Agency_{\vec{g}_t}^{^{other}}}$
+			\Call{GetAgencyValue}{\mathcal{P}_{\vec{\mathit{g}}_{t}}}$ 
 			\Statex
 			\State $\beta_{self/other}^{^{autonomy}} \gets
-			\rfrac{\Call{GetAutonomyValue}{\mathcal{P}_{\mathit{g}_{t}^{^{self}}}}}
-			{\Call{GetAutonomyValue}{\mathcal{P}_{\mathit{g}_{t}^{^{other}}}}}$
+			\Call{GetAutonomyValue}{\mathcal{P}_{\vec{\mathit{g}}_{t}}}$
 			\Statex
-			\State $Precond_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A} \gets
-			\Call{CheckPreconditions}{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}$
-			\State $\kappa_{satisfied/total}^{^{preconditions}} \gets
-			\rfrac{Precond_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}^{satisfied}}
-			{Precond_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}^{total}}$
-			\Statex
-			\State $Predecessors_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A} \gets
-			\Call{CheckPredecessors}{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}$
 			\State $\lambda_{succeeded/total}^{^{predecessors}} \gets
-			\rfrac{Predecessors_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}^{succeeded}}
-			{Predecessors_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}^{total}}$
+			\Call{GetSucceededPredecessorsRatio}{\mathcal{P}_{\vec{\mathit{g}}_{t}}}$
 			\Statex
-			\State $Inputs_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A} \gets
-			\Call{CheckInputs}{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}$
 			\State $\mu_{available/required}^{^{inputs}} \gets
-			\rfrac{Inputs_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}^{available}}
-			{Inputs_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}^{required}}$
-			\algstore{controllability_alg}
-		\end{algorithmic}
-	\end{algorithm}
-	\begin{algorithm}
-		\begin{algorithmic}[1]
-			\algrestore{controllability_alg}
+			\Call{GetAvailableInputRatio}{\mathcal{P}_{\vec{\mathit{g}}_{t}}}$
 			\State $\mathcal{U}_{t} \gets
 			\frac{\omega_{0}\cdot \alpha_{self/other}^{^{agency}} +
-			\omega_{1}\cdot \beta_{self/other}^{^{autonomy}}}{\omega_{0}\cdot +
-			\omega_{1}\cdot}$
-			\Statex
-			\State \indent $+\frac{\omega_{2}\cdot
-			\kappa_{satisfied/total}^{^{preconditions}} + \omega_{3}\cdot
-			\lambda_{succeeded/total}^{^{predecessors}} + \omega_{4}\cdot
-			\mu_{available/required}^{^{inputs}}}{\omega_{2} + \omega_{3} + \omega_{4}}$
-			\Statex
-			\State \indent $+\frac{\omega_{5}\cdot \mathcal{I}_{other}^{^{emotion}} +
-			\omega_{6}\cdot \varphi_{\vec{\mathit{g}}_{t}}^A +
-			\omega_{7}\cdot \mathcal{V}_{t}^{\mathcal{E}}}{\omega_{5} + \omega_{6} +
-			\omega_{7}}$
+			\omega_{1}\cdot \beta_{self/other}^{^{autonomy}} + \omega_{2}\cdot
+			\lambda_{succeeded/total}^{^{predecessors}} + \omega_{3}\cdot
+			\mu_{available/required}^{^{inputs}}}{\omega_{0} + \omega_{1} + \omega_{2} +
+			\omega_{3}}$
 			\Statex
 			\If {($\mathcal{U}_{t} \geq \tau_e$)}
 				\State \Return {TRUE}
@@ -237,14 +189,16 @@
 			\EndIf
 		\EndFunction
 		\State \textbf{end function}
-	\end{algorithmic}
-\end{algorithm}
-
+		\end{algorithmic}
+	\end{algorithm}
+	
+\pagebreak
+	
 \begin{algorithm}
 	\caption{(Check Predecessors)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{CheckPredecessors}{\textit{Paths}
+		\Function{GetSucceededPredecessorsRatio}{\textit{Paths}
 		$\mathcal{P}_{\vec{\mathit{g}}}^A$}
 			\Statex
 			\State $count_{predecessor}^{^{succeeded}} \gets
@@ -271,7 +225,7 @@
 	\caption{(Check Inputs)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{CheckInputs}{\textit{Paths}
+		\Function{GetAvailableInputRatio}{\textit{Paths}
 		$\mathcal{P}_{\vec{\mathit{g}}}^A$}
 			\Statex
 			\State $count_{input}^{^{available}} \gets count_{input}^{^{required}} \gets
