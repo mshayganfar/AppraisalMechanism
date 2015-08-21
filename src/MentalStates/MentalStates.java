@@ -132,24 +132,24 @@ public class MentalStates {
 			try {
 				targetFact = (Fact)factList.next();
 				
-				if(targetFact.getName().contains("belief") && factType.equals(FACT_TYPE.BELIEF)) {
-					if (targetFact.getSlotValue("belief").toString().substring(1, targetFact.getSlotValue("belief").toString().length()-1).equals(strFact))
+				if(targetFact.getName().contains("MENTAL-STATE::belief") && factType.equals(FACT_TYPE.BELIEF)) {
+					if (targetFact.getSlotValue("belief").toString().equals(strFact))
 						return targetFact.getSlotValue("id").toString();
 				}
-				else if(targetFact.getName().contains("intention") && factType.equals(FACT_TYPE.INTENTION)) {
+				else if(targetFact.getName().contains("MENTAL-STATE::intention") && factType.equals(FACT_TYPE.INTENTION)) {
 					if (targetFact.getSlotValue("intention").toString().substring(1, targetFact.getSlotValue("intention").toString().length()-1).equals(strFact))
 						return targetFact.getSlotValue("id").toString();
 				}
-				else if(targetFact.getName().contains("motive") && factType.equals(FACT_TYPE.MOTIVE)) {
+				else if(targetFact.getName().contains("MENTAL-STATE::motive") && factType.equals(FACT_TYPE.MOTIVE)) {
 					if (targetFact.getSlotValue("motive").toString().substring(1, targetFact.getSlotValue("motive").toString().length()-1).equals(strFact))
 						return targetFact.getSlotValue("id").toString();
 				}
-				else if(targetFact.getName().contains("goal") && factType.equals(FACT_TYPE.GOAL)) {
+				else if(targetFact.getName().contains("MENTAL-STATE::goal") && factType.equals(FACT_TYPE.GOAL)) {
 					if (targetFact.getSlotValue("goal").toString().substring(1, targetFact.getSlotValue("goal").toString().length()-1).equals(strFact))
 						return targetFact.getSlotValue("id").toString();
 				}
-				else if(targetFact.getName().contains("emotion-instance") && factType.equals(FACT_TYPE.EMOTION_INSTANCE)) {
-					if (targetFact.getSlotValue("emotion-instance").toString().substring(1, targetFact.getSlotValue("emotion-instance").toString().length()-1).equals(strFact))
+				else if(targetFact.getName().contains("MENTAL-STATE::emotion-instance") && factType.equals(FACT_TYPE.EMOTION_INSTANCE)) {
+					if (targetFact.getSlotValue("emotion-instance").toString().equals(strFact))
 						return targetFact.getSlotValue("id").toString();
 				}
 			} catch (JessException e) {
@@ -268,7 +268,7 @@ public class MentalStates {
 				targetFact = (Fact)factList.next();
 				
 				if (targetFact.getName().contains("belief")) {
-					if (targetFact.getSlotValue("id").toString().substring(1, targetFact.getSlotValue("id").toString().length()-1).equals(beliefFactID)) {
+					if (targetFact.getSlotValue("id").toString().equals(beliefFactID)) {
 						return targetFact.getSlotValue("event-origin").toString();
 					}
 				}

@@ -12,45 +12,38 @@ import Collaboration.Collaboration.TASK_PRECONDITION_STATUS;
 import Collaboration.Collaboration.TOP_LEVEL_TASK_STATUS;
 import MentalStates.*;
 import MentalStates.MentalStates.BELIEF_TYPE;
+import MentalStates.MentalStates.FACT_TYPE;
 import MentalGraph.*;
+import MetaInformation.Events;
 import MetaInformation.Events.EVENT_TYPE;
 import MetaInformation.Turns;
 
 public class Desirability extends AppraisalProcesses{
 	
 	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., 2 in B2-3.
-	public boolean isEventDesirable(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Turns turn) {
+	public boolean isEventDesirable(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Turns turn, Events event) {
 		
-		double deltaUtility     = 0.0;
-		double utteranceUtility = 0.0;
-		double actionUtility    = 0.0;
-		double emotionUtility   = 0.0;
+		double dblUtility = 0.0;
 		
-//		List<Edge> shortestPathList = mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, "B1-1"), mentalStates.getFact(JessEngine, "G1-1"));
+		double dblMentalStatesUtility  = getMentalStatesUtility(JessEngine, mentalStates, mentalGraph, turn, event);
+		double dblCollaborationUtility = 0.0;
+		try {
+			dblCollaborationUtility = getCollaborationUtility();
+		} catch (JessException e) {
+			e.printStackTrace();
+		}		
 		
-		if (mentalStates.getBeliefEventOrigin(JessEngine, "B1-1").equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
-		{
-			utteranceUtility = getUtteranceUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.UTTERANCE, turn);
-			actionUtility    = getActionUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.ACTION, turn);
-			emotionUtility   = getEmotionUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.EMOTION, turn);
-			
-			double dblUtteranceUtilityWeight = getUtteranceUtilityWeight();
-			double dblActioUtilityWeight     = getActionUtilityWeight();
-			double dblEmotionUtilityWeight   = getEmotionUtilityWeight();
-			
-			deltaUtility = (((utteranceUtility * dblUtteranceUtilityWeight) + (actionUtility * dblActioUtilityWeight) + (emotionUtility * dblEmotionUtilityWeight)) 
-							/ (dblUtteranceUtilityWeight + dblActioUtilityWeight + dblEmotionUtilityWeight));
-		}
-		else if (mentalStates.getBeliefEventOrigin(JessEngine, "B1-1").equals(BELIEF_TYPE.INTERNAL_EVENT)){
-			
-			/** To Do: Think whether desirability is important for internal events, e.g., belief formation.*/
-		}
+		dblUtility = ((dblMentalStatesUtility * getMentalStatesUtilityWeight()) + (dblCollaborationUtility * getCollaborationUtilityWeight()))
+					/(getMentalStatesUtilityWeight() + getCollaborationUtilityWeight());
 		
-		if (deltaUtility > getHumanEmotionalThreshold())
+		if (dblUtility > getHumanEmotionalThreshold())
 			return true;
 		else
 			return false;
 	}
+	
+	private double getMentalStatesUtilityWeight()  { return 1.0; }
+	private double getCollaborationUtilityWeight() { return 1.0; }
 	
 	private double getUtteranceUtilityWeight() { return 1.0; }
 	private double getActionUtilityWeight()    { return 1.0; }
@@ -102,7 +95,41 @@ public class Desirability extends AppraisalProcesses{
 			return 0.0;
 	}
 	
-	public double getCollaborationUtility() throws JessException {
+	private double getMentalStatesUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Turns turn, Events event) {
+		
+		double deltaUtility     = 0.0;
+		double utteranceUtility = 0.0;
+		double actionUtility    = 0.0;
+		double emotionUtility   = 0.0;
+		
+//		List<Edge> shortestPathList = mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, "B1-1"), mentalStates.getFact(JessEngine, "G1-1"));
+		
+		try {
+			if (mentalStates.getBeliefEventOrigin(JessEngine, mentalStates.getFactID(JessEngine, FACT_TYPE.BELIEF, event.getEventRelatedBelief().getSlotValue("belief").toString())).equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
+			{
+				utteranceUtility = getUtteranceUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.UTTERANCE, turn);
+				actionUtility    = getActionUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.ACTION, turn);
+				emotionUtility   = getEmotionUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.EMOTION, turn);
+				
+				double dblUtteranceUtilityWeight = getUtteranceUtilityWeight();
+				double dblActioUtilityWeight     = getActionUtilityWeight();
+				double dblEmotionUtilityWeight   = getEmotionUtilityWeight();
+				
+				deltaUtility = (((utteranceUtility * dblUtteranceUtilityWeight) + (actionUtility * dblActioUtilityWeight) + (emotionUtility * dblEmotionUtilityWeight)) 
+								/ (dblUtteranceUtilityWeight + dblActioUtilityWeight + dblEmotionUtilityWeight));
+			}
+			else if (mentalStates.getBeliefEventOrigin(JessEngine, mentalStates.getFactID(JessEngine, FACT_TYPE.BELIEF, event.getEventRelatedBelief().getSlotValue("belief").toString())).equals(BELIEF_TYPE.INTERNAL_EVENT)){
+				
+				/** To Do: Think whether desirability is important for internal events, e.g., belief formation.*/
+			}
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		
+		return deltaUtility;
+	}
+	
+	private double getCollaborationUtility() throws JessException {
 
 		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.ACHIEVED)) return 1.0;
 		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.BLOCKED)) return -1.0;
