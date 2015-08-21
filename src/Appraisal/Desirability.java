@@ -23,9 +23,9 @@ public class Desirability extends AppraisalProcesses{
 	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., 2 in B2-3.
 	public boolean isEventDesirable(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Turns turn, Events event) {
 		
-		double dblUtility = 0.0;
+//		double dblUtility = 0.0;
 		
-		double dblMentalStatesUtility  = getMentalStatesUtility(JessEngine, mentalStates, mentalGraph, turn, event);
+//		double dblMentalStatesUtility  = getMentalStatesUtility(JessEngine, mentalStates, mentalGraph, turn, event);
 		double dblCollaborationUtility = 0.0;
 		try {
 			dblCollaborationUtility = getCollaborationUtility();
@@ -33,10 +33,10 @@ public class Desirability extends AppraisalProcesses{
 			e.printStackTrace();
 		}		
 		
-		dblUtility = ((dblMentalStatesUtility * getMentalStatesUtilityWeight()) + (dblCollaborationUtility * getCollaborationUtilityWeight()))
-					/(getMentalStatesUtilityWeight() + getCollaborationUtilityWeight());
+//		dblUtility = ((dblMentalStatesUtility * getMentalStatesUtilityWeight()) + (dblCollaborationUtility * getCollaborationUtilityWeight()))
+//					/(getMentalStatesUtilityWeight() + getCollaborationUtilityWeight());
 		
-		if (dblUtility > getHumanEmotionalThreshold())
+		if (dblCollaborationUtility > getHumanEmotionalThreshold())
 			return true;
 		else
 			return false;

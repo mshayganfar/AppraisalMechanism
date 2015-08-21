@@ -29,16 +29,16 @@
 			\State Initialize graph $\mathcal{G}_{t}$ with current mental state
 			$\mathcal{S}_{t}$.
 			\Statex
-			\State $\vec{\mathit{g}} \gets \Call{extractGoal}{\mathcal{G}_{t}}$
+			\State $\vec{\mathit{g}}_{t} \gets \Call{extractGoal}{\mathcal{G}_{t}}$
 			\Statex
 			\State $\mathcal{P}_{t} \gets \Call{extractPaths}{\varepsilon_t,
-			\vec{\mathit{g}}}$
+			\vec{\mathit{g}}_{t}}$
 			\Statex
 			\If {($\mathcal{P}_{t} = \emptyset$)}
 				\State \Return {0}
 			\Else
 				\State $\mathcal{U}_{t} \gets \Call{getEventUtility}{\varepsilon_t,
-				\vec{\mathit{g}}}$ 
+				\vec{\mathit{g}}_{t}}$ 
 				\If {($ \mathcal{U}_{t} \geq \tau_{e} $)}
 				\State \Return {($\mathcal{U}_{t}$)}
 				\Else
@@ -54,47 +54,45 @@
 	\caption{(Desirability)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{IsEventDesirable}{\textit{MentalState} $\mathcal{S}_t$,
-		\textit{Event} $\varepsilon_t$} 
+		\Function{IsEventDesirable}{\textit{Events} $\varepsilon_t$} 
 			\Statex
-			\State Initialize graph $\mathcal{G}_{t-1}$ with previous mental state
-			$\mathcal{S}_{t-1}$.
 			\State Initialize graph $\mathcal{G}_{t}$ with current mental state
 			$\mathcal{S}_{t}$.
 			\Statex
-			\State $\vec{\mathit{g}}_{t-1} \gets \Call{extractGoals}{\mathcal{G}_{t-1}}$ 
-			\State $\mathcal{P}_{\vec{\mathit{g}}_{t-1}} \gets
-			\Call{extractPaths}{\mathcal{G}_{t-1}, \vec{\mathit{g}}_{t-1}}$
-			\Statex
 			\State $\vec{\mathit{g}}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$ 
-			\State $\mathcal{P}_{\vec{\mathit{g}}_{t}} \gets \Call{extractPaths}{\mathcal{G}_{t},
-			\vec{\mathit{g}}_{t}}$
 			\Statex
-			\If {($\varepsilon_t.type =$ EXTERNAL)}
-				\State $\chi \gets
-				\Call{GetUtteranceUtility}{\mathcal{P}_{\vec{\mathit{g}}_{t}},
-				\mathcal{P}_{\vec{\mathit{g}}_{t-1}}}$ 
-				\State $\Lambda \gets
-				\Call{GetActionUtility}{\mathcal{P}_{\vec{\mathit{g}}_{t}},
-				\mathcal{P}_{\vec{\mathit{g}}_{t-1}}}$ 
-				\State $\mathcal{E} \gets
-				\Call{GetEmotionUtility}{\mathcal{P}_{\vec{\mathit{g}}_{t}},
-				\mathcal{P}_{\vec{\mathit{g}}_{t-1}}}$
-				\Statex
-				\State $\vec{\omega} \gets \Call{GetUtilityWeights}$
-				\Statex
-				\State $\Delta U \gets \frac{\omega_{0}\cdot\chi + \omega_{1}\cdot\Lambda +
-				\omega_{2}\cdot\mathcal{E}}{(\omega_{0}+\omega_{1}+\omega_{2})}$
-				\Statex
-			\ElsIf {($\varepsilon_t.type =$ INTERNAL)}
-				\State $\Delta U \gets
-				\Call{GetMentalStateUtility}{\mathcal{P}_{\vec{\mathit{g}}_{t}}}$
-			\EndIf
-			\Statex
-			\If {($\Delta U \geq \tau$)}
-				\State \Return {TRUE}
-			\Else
-				\State \Return {FALSE}
+			\If {($topLevelTaskStatus() =$ \small{ACHIEVED})}
+				\State \Return 1.0
+			\ElsIf {($topLevelTaskStatus() =$ \small{BLOCKED})}
+				\State \Return -1.0
+			\ElsIf {($topLevelTaskStatus() =$ \small{INPROGRESS})}
+				\If {($currentTaskStatus() =$ ACHIEVED)}
+					\State \Return 0.75
+				\ElsIf {($currentTaskStatus() =$ BLOCKED)}
+					\State \Return -0.75
+				\ElsIf {($currentTaskStatus() =$ INPROGRESS)}
+					\State \Return 0.25
+				\ElsIf {($currentTaskStatus() =$ UNKNOWN)}
+					\If {($taskPreconditionStatus() =$ SATISFIED)}
+						\State \Return 0.5
+					\ElsIf {($taskPreconditionStatus() =$ UNSATISFIED)}
+						\State \Return -0.75
+					\ElsIf {($taskPreconditionStatus() =$ UNKNOWN)}
+						\If {($doesContribute(\varepsilon_t, \vec{\mathit{g}}_{t}) =$ TRUE)}
+							\State \Return -0.5
+						\ElsIf {($doesContribute(\varepsilon_t, \vec{\mathit{g}}_{t}) =$ FALSE)}
+							\If {($recipeApplicability(\varepsilon_t, \vec{\mathit{g}}_{t}) =$
+							\small{APPLICABLE})} \State \Return -0.5
+							\ElsIf {($recipeApplicability(\varepsilon_t, \vec{\mathit{g}}_{t}) =$
+							\small{INAPPLICABLE})}
+								\State \Return -0.75
+							\ElsIf {($recipeApplicability(\varepsilon_t, \vec{\mathit{g}}_{t}) =$
+							UNKNOWN)}
+								\State \Return -0.25
+							\EndIf
+						\EndIf
+					\EndIf
+				\EndIf
 			\EndIf
 		\EndFunction
 		\State \textbf{end function}
