@@ -102,231 +102,10 @@
 \pagebreak
 
 \begin{algorithm}
-	\caption{(Get Utterance Utility)}
-	\label{array-sum}
-	\begin{algorithmic}[1]
-		\Function{GetUtteranceUtility}{\textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}_{t}}$, \textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}_{t-1}}$}
-			\Statex
-			\State $\mathcal{U}_{\vec{\mathit{g}}_{t}} \gets
-			\sum\nolimits_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^{U_i} \in
-			\mathcal{P}_{\vec{\mathit{g}}_{t}}^{U}}
-			\Call{GetMentalStateUtility}{\mathcal{P}_{\vec{\mathit{g}}_{t}}^{U_i}}$
-			
-			\State $\hat{\mathcal{U}}_{\vec{\mathit{g}}_{t}} \gets
-			\frac{\mathcal{U}_{\vec{\mathit{g}}_{t}}}
-			{\left|\mathcal{P}_{\vec{\mathit{g}}_{t}}^{U}\right|}$
-			
-			\State $\mathcal{U}_{\vec{\mathit{g}}_{t-1}} \gets
-			\sum\nolimits_{\mathcal{P}_{\vec{\mathit{g}}_{t-1}}^{U_i} \in
-			\mathcal{P}_{\vec{\mathit{g}}_{t-1}}^{U}}
-			\Call{GetMentalStateUtility}{\mathcal{P}_{\vec{\mathit{g}}_{t-1}}^{U_i}}$
-			
-			\State $\hat{\mathcal{U}}_{\vec{\mathit{g}}_{t-1}} \gets
-			\frac{\mathcal{U}_{\vec{\mathit{g}}_{t-1}}}
-			{\left|\mathcal{P}_{\vec{\mathit{g}}_{t-1}}^{U}\right|}$
-			\Statex
-			\State \Return {($\hat{\mathcal{U}}_{\vec{\mathit{g}}_{t}}$ -
-			$\hat{\mathcal{U}}_{\vec{\mathit{g}}_{t-1}}$)}
-		\EndFunction
-	\State \textbf{end function}
-	\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}
-	\caption{(Get Action Utility)}
-	\label{array-sum}
-	\begin{algorithmic}[1]
-		\Function{GetActionUtility}{\textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}_{t}}$, \textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}_{t-1}}$}
-			\Statex
-			\State $\theta \gets
-			\Call{GetPreconditionUtility}{\mathcal{P}_{\vec{\mathit{g}}_{t}},
-			\mathcal{P}_{\vec{\mathit{g}}_{t-1}}}$
-			\State $\psi \gets
-			\Call{GetPostconditionUtility}{\mathcal{P}_{\vec{\mathit{g}}_{t}},
-			\mathcal{P}_{\vec{\mathit{g}}_{t-1}}}$
-			\Statex
-			\State $\vec{\omega} \gets \Call{GetUtilityWeights}$
-			\Statex
-			\State $\Delta U \gets
-			\frac{\omega_{0}\cdot \theta + \omega_{1}\cdot \psi}{\omega_{0} +
-			\omega_{1}}$
-			\Statex
-			\State \Return {$\Delta U$} 
-		\EndFunction 
-	\State \textbf{end function}
-	\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}
-	\caption{(Get Emotion Utility)}
-	\label{array-sum}
-	\begin{algorithmic}[1]
-		\Function{GetEmotionUtility}{\textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}_{t}}$, \textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}_{t-1}}$}
-			\Statex
-			\State $\mathcal{P}_{\vec{\mathit{g}}_{t-1}}^{\mathcal{E}} \gets
-			\Call{ExtractEmotionPaths} {\mathcal{P}_{\vec{\mathit{g}}_{t-1}}}$
-			\State $\mathcal{P}_{\vec{\mathit{g}}_{t}}^\mathcal{E} \gets
-			\Call{ExtractEmotionPaths} {\mathcal{P}_{\vec{\mathit{g}}_{t}}}$
-			\Statex
-			\State $\mathcal{E}_{t-1}^{other} \gets
-			\Call{ExtractOthersEmotion}{\mathcal{P}_{\vec{\mathit{g}}_{t-1}}^\mathcal{E}}$
-			\State $\mathcal{E}_t^{other} \gets
-			\Call{ExtractOthersEmotion}{\mathcal{P}_{\vec{\mathit{g}}_{t}}^\mathcal{E}}$
-			\Statex
-			\State $\Upsilon_{t-1} \gets
-			\Call{GetSomaticMarkers}{\mathcal{E}_{t-1}^{other}}$ 
-			\State $\Upsilon_t \gets \Call{GetSomaticMarkers}{\mathcal{E}_t^{other}}$
-			\Statex
-			\State $\Delta U \gets
-			\frac{\Bigg(\bigg(\Big(\big((\Upsilon_{t}^A - \Upsilon_{t-1}^A)\times15\big)
-			+ (\Upsilon_{t}^V - \Upsilon_{t-1}^V)\Big)\times15\bigg) + (\Upsilon_{t}^S -
-			\Upsilon_{t-1}^S)\Bigg)\times15 + (\Upsilon_{t}^I - \Upsilon_{t-1}^I)}{15^4}$
-			\Statex
-			\State \Return {$\Delta U$} 
-		\EndFunction 
-	\State \textbf{end function}
-	\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}
-	\caption{(Get Precondition Utility)}
-	\label{array-sum}
-	\begin{algorithmic}[1]
-		\Function{GetPreconditionUtility}{\textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}_{t}}$, \textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}_{t-1}}$}
-			\Statex
-			\State $ratio_{{\vec{\mathit{g}}_{t}}/\vec{\mathit{g}}_{t-1}}^{^{sat}} \gets
-			ratio_{\vec{\mathit{g}}_{t}}^{^{sat/total}} \gets 0$
-			\Statex
-			\State $\mathcal{P}_{\vec{\mathit{g}}_{t}}^A \gets \Call{ExtractActionPaths}
-			{\mathcal{P}_{\vec{\mathit{g}}_{t}}}$
-			\Statex
-			\If {$(\vec{\mathit{g}}_{t} = \vec{\mathit{g}}_{t-1})$}
-				\If {$(\mathcal{P}_{t-1}^A \neq \emptyset) \Or (\mathcal{P}_{t}^A \neq
-				\emptyset)$}
-					\Statex
-					\State $\mathcal{P}_{\vec{\mathit{g}}_{t-1}}^A \gets
-					\Call{ExtractActionPaths} {\mathcal{P}_{\vec{\mathit{g}}_{t-1}}}$
-					\Statex
-					\State $Precond_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}^{sat} \gets
-					\Call{CheckPreconditions}{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}$
-					\State $Precond_{\mathcal{P}_{\vec{\mathit{g}}_{t-1}}^A}^{sat} \gets
-					\Call{CheckPreconditions}{\mathcal{P}_{\vec{\mathit{g}}_{t-1}}^A}$
-					\Statex
-					\State $ratio_{{\vec{\mathit{g}}_{t}}/\vec{\mathit{g}}_{t-1}}^{^{sat}} \gets
-					\omega_{0}\cdot\frac{Precond_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}^{sat}}
-					{Precond_{\mathcal{P}_{\vec{\mathit{g}}_{t-1}}^A}^{sat}|_{\neq 0}} +
-					\omega_{1}\cdot\frac{Precond_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}^{sat}}
-					{Precond_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}^{total}|_{\neq 0}}$
-					
-					\State \Return {$ratio_{{\vec{\mathit{g}}_{t}}/\vec{\mathit{g}}_{t-1}}^{^{sat}}$}
-				\Else
-					\State \Return {$0$}
-				\EndIf
-			\Else
-				\If {$(\mathcal{P}_{t}^A \neq \emptyset)$}
-					\State $Precond_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A} \gets
-					\Call{CheckPreconditions}{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}$
-					\Statex
-					\State $ratio_{\vec{\mathit{g}}_{t}}^{^{sat/total}} \gets
-					\frac{Precond_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}^{sat}}
-					{Precond_{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}^{total}|_{\neq 0}}$
-					
-					\State \Return {$ratio_{\vec{\mathit{g}}_{t}}^{^{sat/total}}$}
-				\Else
-					\State \Return {$0$}
-				\EndIf
-			\EndIf
-		\EndFunction 
-	\State \textbf{end function}
-	\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}
-	\caption{(Check Preconditions)}
-	\label{array-sum}
-	\begin{algorithmic}[1]
-		\Function{CheckPreconditions}{\textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}}^A$}
-			\Statex
-			\State $count_{precond}^{^{sat}} \gets count_{precond}^{^{total}} \gets 0$
-			\Statex
-			\State $\Theta_{\vec{\mathit{g}}} \gets
-			\Call{ExtractPreconditions}{\mathcal{P}_{\vec{\mathit{g}}}^{A}}$
-			\Statex
-			\ForAll {$\theta_{\vec{\mathit{g}}}^i \in \Theta_{\vec{\mathit{g}}}$}
-				\If {($\Call{IsSatisfied}{\theta_{\vec{\mathit{g}}}^i}$)}
-					\State $count_{precond}^{^{sat}} \gets count_{precond}^{^{sat}} + 1$
-				\EndIf
-				\State $count_{precond}^{^{total}} \gets count_{precond}^{^{total}} + 1$
-			\EndFor
-			\Statex
-			\State \Return {$\langle count_{precond}^{^{sat}},
-			count_{precond}^{^{total}}\rangle$}
-		\EndFunction 
-	\State \textbf{end function}
-	\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}
-	\caption{(Get Postcondition Utility)}
-	\label{array-sum}
-	\begin{algorithmic}[1]
-		\Function{GetPostconditionUtility}{\textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}_{t}}$, \textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}_{t-1}}$}
-			\Statex
-			\State $\mathcal{P}_{\vec{\mathit{g}}_{t}}^A \gets \Call{ExtractActionPaths}
-			{\mathcal{P}_{\vec{\mathit{g}}_{t}}}$
-			\Statex
-			\If {$(\vec{\mathit{g}}_{t} = \vec{\mathit{g}}_{t-1})$}
-				\If {$(\mathcal{P}_{t-1}^A \neq \emptyset) \Or (\mathcal{P}_{t}^A \neq
-				\emptyset)$}
-					\Statex 
-					\State $\mathcal{P}_{\vec{\mathit{g}}_{t-1}}^A \gets \Call{ExtractActionPaths}
-					{\mathcal{P}_{\vec{\mathit{g}}_{t-1}}}$
-					\Statex
-					\State $\Psi_{\vec{\mathit{g}}_t} \gets \Call{ExtractPostconditions}
-					{\mathcal{P}_{\vec{\mathit{g}}_{t}}^A}$
-					\State $\Psi_{\vec{\mathit{g}}_{t-1}} \gets \Call{ExtractPostconditions}
-					{\mathcal{P}_{\vec{\mathit{g}}_{t-1}}^A}$
-					\Statex
-					\If {($\Call{IsSatisfied}{\Psi_{\vec{\mathit{g}}_t}}$)}
-						\If {($\Call{IsSatisfied}{\Psi_{\vec{\mathit{g}}_{t-1}}}$)}
-							\State \Return {$\gamma^t$} \Comment {Discount rate: $0 \leq \gamma
-							\leq 1$}
-						\Else
-							\State \Return {$1$}
-						\EndIf
-					\Else
-						\If {$\Call{IsSatisfied}{\Psi_{\vec{\mathit{g}}_{t-1}}}$)}
-							\State \Return {$-1$}
-						\Else
-							\State \Return {$0$}
-						\EndIf
-					\EndIf
-				\EndIf
-			\EndIf
-		\EndFunction 
-	\State \textbf{end function}
-	\end{algorithmic}
-\end{algorithm}
-
-\pagebreak
-
-\begin{algorithm}
 	\caption{(Expectedness)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{IsEventExpected}{\textit{MentalStates} $\mathcal{S}_t$,
-		\textit{Event} $\varepsilon_t$} 
+		\Function{IsEventExpected}{\textit{Events} $\varepsilon_t$} 
 			\Statex
 			\State Initialize graph $\mathcal{G}_{t-1}$ with previous mental state
 			$\mathcal{S}_{t-1}$.
@@ -336,71 +115,28 @@
 			\State $\vec{\mathit{g}}_{t-1} \gets \Call{extractGoals}{\mathcal{G}_{t-1}}$
 			\State $\vec{\mathit{g}}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$
 			\Statex
-			\State $\mathcal{P}_{t-1} \gets
-			\Call{extractPaths}{\mathcal{G}_{t-1}, \vec{\mathit{g}}_{t-1}}$
-			\State $\mathcal{P}_{t} \gets \Call{extractPaths}{\mathcal{G}_{t},
-			\vec{\mathit{g}}_{t}}$
-			\Statex
 			\If {$(\vec{\mathit{g}}_{t} \neq \vec{\mathit{g}}_{t-1})$}
-				\If {$(\Call{IsAchieved}{\mathit{g}_{t-1}^{^c}})$}
-					\If {$(\neg\Call{IsAchieved}{\mathit{g}_{t-1}^{^p}})$}
-						\State $\mathcal{P'}_{t-1} \gets \Call{extractPaths}{\mathcal{G}_{t-1},
-						\vec{\mathit{g}}_{t}}$
-						\If {($\mathcal{P'}_{t-1} = \emptyset$)}
-							\State \Return FALSE
+				\If {$(\Call{IsAchieved}{\vec{\mathit{g}}_{t-1}})$}
+					\State $\mathcal{P}_{t} \gets \Call{extractPaths}{\varepsilon_t,
+					\vec{\mathit{g}}_{t}}$
+					\If {($\mathcal{P}_{t} = \emptyset$)}
+						\State \Return FALSE
+					\Else
+						\State $\mathcal{U}_{t} \gets
+						\Call{getPathUtility}{\mathcal{G}_{t}, \vec{\mathit{g}}_{t}}$
+						\State $\mathcal{U}_{t-1} \gets \Call{getPathUtility}{\mathcal{G}_{t},
+						\vec{\mathit{g}}_{t-1}}$
+						\If {$(\mathcal{U}_{t} - \mathcal{U}_{t-1}) \geq \tau_{e}$}
+							\State \Return TRUE
 						\Else
-							\State $\mathcal{U'}_{t-1} \gets \Call{getUtilities}{\mathcal{G}_{t-1},
-							\vec{\mathit{g}}_{t}}$
-							\State $\mathcal{U}_{t-1} \gets \Call{getUtilities}{\mathcal{G}_{t-1},
-							\vec{\mathit{g}}_{t-1}}$
-							\If {$(\mathcal{U'}_{t-1} - \mathcal{U}_{t-1}) \geq	\tau_{e}$}
-								\State \Return TRUE
-							\Else
-								\State \Return FALSE
-							\EndIf
+							\State \Return FALSE
 						\EndIf
-					\Else \Comment {Collaborative and personal goals have achieved.}
-						\State \Return TRUE
 					\EndIf
-				\Else \Comment {Collaborative goal has not achieved.}
-				\State \Return FALSE
+				\Else \Comment {Collaboration goal has achieved.}
+					\State \Return TRUE
 				\EndIf
 			\Else \Comment {Goals have not changed.}
 				\State \Return TRUE
-			\EndIf
-		\EndFunction
-		\State \textbf{end function}
-	\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}
-	\caption{(Likelihood)}
-	\label{array-sum}
-	\begin{algorithmic}[1]
-		\Function{GetEventsLikelihood}{\textit{MentalStates} $\mathcal{S}_t$,
-		\textit{Event} $\varepsilon_t$} 
-			\Statex
-			\State $\mathcal{G}_{t} \gets \Call{updateGraph}{\mathcal{S}_{t},
-			\varepsilon_t}$
-			\State $\vec{\mathit{g}}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$
-			\State $\mathcal{P}_{t} \gets \Call{extractPaths}{\mathcal{G}_{t},
-			\vec{\mathit{g}}_{t}}$
-			\Statex
-			\If {($\mathcal{P}_{t} = \emptyset$)}
-				\State \Return {0}
-			\Else
-				\ForAll {$\mathcal{P}_{t}^{i} \in \mathcal{P}_{t}$}
-					\ForAll {$\varepsilon_{t+1}^{j} \in \varepsilon_{t+1}$}
-						\State
-						$\vec{P}\left(\varepsilon_{t+1}^{j}\middle|\mathcal{F}(\mathcal{P}_{t}^{i})\right)
-						=\frac{\vec{P}\left(\mathcal{F}(\mathcal{P}_{t}^{i})\middle|\varepsilon_{t+1}^{j}\right) 
-						\vec{P}(\varepsilon_{t+1}^{j})}
-						{\sum\nolimits_{\mathlowercal{e}_{t+1}^{k} \in \mathcal{\varepsilon}_{t+1}^{j}}
-						\vec{P}\left(\mathcal{F}(\mathcal{P}_{t}^{i})\middle|\mathlowercal{e}_{t+1}^{k}\right)}$
-						\State
-					\EndFor
-				\EndFor
-				\Return{$\vec{P}\left(\varepsilon_{t+1}\middle|\mathcal{F}(\mathcal{P}_{t}^{i})\right)$}
 			\EndIf
 		\EndFunction
 		\State \textbf{end function}
