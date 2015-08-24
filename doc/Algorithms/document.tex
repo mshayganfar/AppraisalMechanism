@@ -35,14 +35,14 @@
 			\mathit{g}_{t}}$
 			\Statex
 			\If {($\mathcal{P}_{t} = \emptyset$)}
-				\State \Return {0}
+				\State \Return {FALSE}
 			\Else
 				\State $\mathcal{U}_{t} \gets \Call{getEventUtility}{\varepsilon_t,
 				\mathit{g}_{t}}$ 
 				\If {($ \mathcal{U}_{t} \geq \tau_{e} $)}
-				\State \Return {($\mathcal{U}_{t}$)}
+				\State \Return {TRUE}
 				\Else
-					\State \Return {0}
+					\State \Return {FALSE}
 				\EndIf
 			\EndIf
 		\EndFunction
@@ -59,41 +59,43 @@
 			\State Initialize graph $\mathcal{G}_{t}$ with current mental state
 			$\mathcal{S}_{t}$.
 			\Statex
-			\State $\vec{\mathit{g}}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$ 
-			\Statex
 			\If {($topLevelTaskStatus() =$ \small{ACHIEVED})}
-				\State \Return 1.0
+				\State \Return {TRUE}
 			\ElsIf {($topLevelTaskStatus() =$ \small{BLOCKED})}
-				\State \Return -1.0
+				\State \Return {FALSE}
 			\ElsIf {($topLevelTaskStatus() =$ \small{INPROGRESS})}
+				\Statex
 				\If {($currentTaskStatus() =$ ACHIEVED)}
-					\State \Return 0.75
+					\State \Return {TRUE}
 				\ElsIf {($currentTaskStatus() =$ BLOCKED)}
-					\State \Return -0.75
+					\State \Return {FALSE}
 				\ElsIf {($currentTaskStatus() =$ INPROGRESS)}
-					\State \Return 0.25
+					\State \Return {TRUE}
 				\ElsIf {($currentTaskStatus() =$ UNKNOWN)}
+					\Statex
 					\If {($taskPreconditionStatus() =$ SATISFIED)}
-						\State \Return 0.5
+						\State \Return {TRUE}
 					\ElsIf {($taskPreconditionStatus() =$ UNSATISFIED)}
-						\State \Return -0.75
+						\State \Return {FALSE}
 					\ElsIf {($taskPreconditionStatus() =$ UNKNOWN)}
+						\Statex
 						\If {($doesContribute(\varepsilon_t, \vec{\mathit{g}}_{t}) =$ TRUE)}
-							\State \Return 0.0
+							\State \Return {TRUE}
 						\ElsIf {($doesContribute(\varepsilon_t, \vec{\mathit{g}}_{t}) =$ FALSE)}
-							\If {($recipeApplicability(\varepsilon_t, \vec{\mathit{g}}_{t}) =$
-							\small{APPLICABLE})} \State \Return -0.5
-							\ElsIf {($recipeApplicability(\varepsilon_t, \vec{\mathit{g}}_{t}) =$
-							\small{INAPPLICABLE})}
-								\State \Return -0.75
-							\ElsIf {($recipeApplicability(\varepsilon_t, \vec{\mathit{g}}_{t}) =$
-							UNKNOWN)}
-								\State \Return -0.25
-							\EndIf
-						\EndIf
-					\EndIf
-				\EndIf
-			\EndIf
+							\Statex
+							\State $\mathit{g}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$ 
+							\State $\mathcal{U}_{t} \gets \Call{getEventUtility}{\varepsilon_t,
+							\mathit{g}_{t}}$ 
+							\If {($ \mathcal{U}_{t} \geq \tau_{e} $)}
+							\State \Return {TRUE}
+							\Else
+								\State \Return {FALSE}
+							\EndIf \State \textbf{end if}
+							\Statex
+						\EndIf \State \textbf{end if}
+					\EndIf \State \textbf{end if}
+				\EndIf \State \textbf{end if}
+			\EndIf \State \textbf{end if}
 		\EndFunction
 		\State \textbf{end function}
 	\end{algorithmic}
@@ -157,30 +159,25 @@
 	\begin{algorithmic}[1]
 		\Function{IsEventControllable}{\textit{Event} $\varepsilon_t$}
 			\Statex
-			\State $\alpha_{self/other}^{^{agency}} \gets
-			\beta_{self/other}^{^{autonomy}} \gets 0$
-			\Statex
-			\State $\lambda_{succeeded/failed}^{^{predecessors}} \gets
-			\mu_{available/required}^{^{inputs}} \gets 0$
-			\Statex
 			\State Initialize graph $\mathcal{G}_{t}$ with current mental state
 			$\mathcal{S}_{t}$.
 			\Statex
-			\State $\vec{\mathit{g}}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$ 
-			\State $\mathcal{P}_{\vec{\mathit{g}}_{t}} \gets
-			\Call{extractPaths}{\varepsilon_t, \vec{\mathit{g}}_{t}}$
+			\State $\mathit{g}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$ 
+			\State $\mathcal{P}_{\mathit{g}_{t}} \gets \Call{extractPaths}{\varepsilon_t,
+			\mathit{g}_{t}}$
 			\Statex
 			\State $\alpha_{self/other}^{^{agency}} \gets
-			\Call{GetAgencyValue}{\mathcal{P}_{\vec{\mathit{g}}_{t}}}$ 
+			\Call{GetAgencyValue}{\mathcal{P}_{\mathit{g}_{t}}}$ 
 			\Statex
 			\State $\beta_{self/other}^{^{autonomy}} \gets
-			\Call{GetAutonomyValue}{\mathcal{P}_{\vec{\mathit{g}}_{t}}}$
+			\Call{GetAutonomyValue}{\mathcal{P}_{\mathit{g}_{t}}}$
 			\Statex
 			\State $\lambda_{succeeded/total}^{^{predecessors}} \gets
-			\Call{GetSucceededPredecessorsRatio}{\mathcal{P}_{\vec{\mathit{g}}_{t}}}$
+			\Call{GetSucceededPredecessorsRatio}{\mathcal{P}_{\mathit{g}_{t}}}$
 			\Statex
 			\State $\mu_{available/required}^{^{inputs}} \gets
-			\Call{GetAvailableInputRatio}{\mathcal{P}_{\vec{\mathit{g}}_{t}}}$
+			\Call{GetAvailableInputRatio}{\mathcal{P}_{\mathit{g}_{t}}}$
+			\Statex
 			\State $\mathcal{U}_{t} \gets
 			\frac{\omega_{0}\cdot \alpha_{self/other}^{^{agency}} +
 			\omega_{1}\cdot \beta_{self/other}^{^{autonomy}} + \omega_{2}\cdot
