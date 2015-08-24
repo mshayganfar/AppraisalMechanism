@@ -79,7 +79,7 @@
 						\State \Return -0.75
 					\ElsIf {($taskPreconditionStatus() =$ UNKNOWN)}
 						\If {($doesContribute(\varepsilon_t, \vec{\mathit{g}}_{t}) =$ TRUE)}
-							\State \Return -0.5
+							\State \Return 0.0
 						\ElsIf {($doesContribute(\varepsilon_t, \vec{\mathit{g}}_{t}) =$ FALSE)}
 							\If {($recipeApplicability(\varepsilon_t, \vec{\mathit{g}}_{t}) =$
 							\small{APPLICABLE})} \State \Return -0.5
@@ -112,20 +112,20 @@
 			\State Initialize graph $\mathcal{G}_{t}$ with current mental state
 			$\mathcal{S}_{t}$.
 			\Statex
-			\State $\vec{\mathit{g}}_{t-1} \gets \Call{extractGoals}{\mathcal{G}_{t-1}}$
-			\State $\vec{\mathit{g}}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$
+			\State $\mathit{g}_{t-1} \gets \Call{extractGoals}{\mathcal{G}_{t-1}}$
+			\State $\mathit{g}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$
 			\Statex
-			\If {$(\vec{\mathit{g}}_{t} \neq \vec{\mathit{g}}_{t-1})$}
-				\If {$(\Call{IsAchieved}{\vec{\mathit{g}}_{t-1}})$}
+			\If {$(\mathit{g}_{t} \neq \mathit{g}_{t-1})$}
+				\If {$(\Call{IsAchieved}{\mathit{g}_{t-1}})$}
 					\State $\mathcal{P}_{t} \gets \Call{extractPaths}{\varepsilon_t,
-					\vec{\mathit{g}}_{t}}$
+					\mathit{g}_{t}}$
 					\If {($\mathcal{P}_{t} = \emptyset$)}
 						\State \Return FALSE
 					\Else
 						\State $\mathcal{U}_{t} \gets
-						\Call{getPathUtility}{\mathcal{G}_{t}, \vec{\mathit{g}}_{t}}$
+						\Call{getPathUtility}{\mathcal{G}_{t}, \mathit{g}_{t}}$
 						\State $\mathcal{U}_{t-1} \gets \Call{getPathUtility}{\mathcal{G}_{t},
-						\vec{\mathit{g}}_{t-1}}$
+						\mathit{g}_{t-1}}$
 						\If {$(\mathcal{U}_{t} - \mathcal{U}_{t-1}) \geq \tau_{e}$}
 							\State \Return TRUE
 						\Else
