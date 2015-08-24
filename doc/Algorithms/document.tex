@@ -24,21 +24,21 @@
 	\caption{(Relevance)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{IsEventRelevant}{\textit{Events} $\varepsilon_t$} 
+		\Function{IsEventRelevant}{\textit{Event} $\varepsilon_t$} 
 			\Statex
 			\State Initialize graph $\mathcal{G}_{t}$ with current mental state
 			$\mathcal{S}_{t}$.
 			\Statex
-			\State $\vec{\mathit{g}}_{t} \gets \Call{extractGoal}{\mathcal{G}_{t}}$
+			\State $\mathit{g}_{t} \gets \Call{extractGoal}{\mathcal{G}_{t}}$
 			\Statex
 			\State $\mathcal{P}_{t} \gets \Call{extractPaths}{\varepsilon_t,
-			\vec{\mathit{g}}_{t}}$
+			\mathit{g}_{t}}$
 			\Statex
 			\If {($\mathcal{P}_{t} = \emptyset$)}
 				\State \Return {0}
 			\Else
 				\State $\mathcal{U}_{t} \gets \Call{getEventUtility}{\varepsilon_t,
-				\vec{\mathit{g}}_{t}}$ 
+				\mathit{g}_{t}}$ 
 				\If {($ \mathcal{U}_{t} \geq \tau_{e} $)}
 				\State \Return {($\mathcal{U}_{t}$)}
 				\Else
@@ -54,7 +54,7 @@
 	\caption{(Desirability)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{IsEventDesirable}{\textit{Events} $\varepsilon_t$} 
+		\Function{IsEventDesirable}{\textit{Event} $\varepsilon_t$} 
 			\Statex
 			\State Initialize graph $\mathcal{G}_{t}$ with current mental state
 			$\mathcal{S}_{t}$.
@@ -105,7 +105,7 @@
 	\caption{(Expectedness)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{IsEventExpected}{\textit{Events} $\varepsilon_t$} 
+		\Function{IsEventExpected}{\textit{Event} $\varepsilon_t$} 
 			\Statex
 			\State Initialize graph $\mathcal{G}_{t-1}$ with previous mental state
 			$\mathcal{S}_{t-1}$.
@@ -116,7 +116,9 @@
 			\State $\mathit{g}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$
 			\Statex
 			\If {$(\mathit{g}_{t} \neq \mathit{g}_{t-1})$}
-				\If {$(\Call{IsAchieved}{\mathit{g}_{t-1}})$}
+				\If {$(\Call{IsAchieved}{\mathit{g}_{t-1}}$ = FALSE)}
+					\State \Return FALSE
+				\Else
 					\State $\mathcal{P}_{t} \gets \Call{extractPaths}{\varepsilon_t,
 					\mathit{g}_{t}}$
 					\If {($\mathcal{P}_{t} = \emptyset$)}
@@ -124,19 +126,23 @@
 					\Else
 						\State $\mathcal{U}_{t} \gets
 						\Call{getPathUtility}{\mathcal{G}_{t}, \mathit{g}_{t}}$
-						\State $\mathcal{U}_{t-1} \gets \Call{getPathUtility}{\mathcal{G}_{t},
-						\mathit{g}_{t-1}}$
-						\If {$(\mathcal{U}_{t} - \mathcal{U}_{t-1}) \geq \tau_{e}$}
+						\If {$(\mathcal{U}_{t} \geq \tau_{e})$}
 							\State \Return TRUE
 						\Else
 							\State \Return FALSE
 						\EndIf
 					\EndIf
-				\Else \Comment {Collaboration goal has achieved.}
-					\State \Return TRUE
 				\EndIf
-			\Else \Comment {Goals have not changed.}
-				\State \Return TRUE
+			\Else
+				\State $\mathcal{U}_{t} \gets
+						\Call{getPathUtility}{\mathcal{G}_{t}, \mathit{g}_{t}}$
+				\State $\mathcal{U}_{t-1} \gets \Call{getPathUtility}{\mathcal{G}_{t},
+						\mathit{g}_{t-1}}$
+				\If {$((\mathcal{U}_{t} - \mathcal{U}_{t-1}) \geq \tau_{e})$}
+					\State \Return TRUE
+				\Else
+					\State \Return FALSE
+				\EndIf
 			\EndIf
 		\EndFunction
 		\State \textbf{end function}
@@ -149,7 +155,7 @@
 	\caption{(Controllability)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{IsEventControllable}{\textit{Events} $\varepsilon_t$}
+		\Function{IsEventControllable}{\textit{Event} $\varepsilon_t$}
 			\Statex
 			\State $\alpha_{self/other}^{^{agency}} \gets
 			\beta_{self/other}^{^{autonomy}} \gets 0$
