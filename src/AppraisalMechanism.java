@@ -1,3 +1,6 @@
+import edu.wpi.disco.Agent;
+import edu.wpi.disco.Interaction;
+import edu.wpi.disco.User;
 import jess.*;
 
 import Appraisal.*;
@@ -70,5 +73,11 @@ public class AppraisalMechanism {
 	    
 	    Controllability controllability = new Controllability();
 	    System.out.println(controllability.isEventControllable(mg, event));
+	    
+	    new Interaction(
+	            new Agent("agent"), 
+	            new User("user"),
+	            args.length > 0 && args[0].length() > 0 ? args[0] : null)
+	         .start(true);
 	}
 }
