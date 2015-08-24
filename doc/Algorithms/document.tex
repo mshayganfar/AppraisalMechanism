@@ -31,7 +31,7 @@
 			\Statex
 			\State $\mathit{g}_{t} \gets \Call{extractGoal}{\mathcal{G}_{t}}$
 			\Statex
-			\State $\mathcal{P}_{t} \gets \Call{extractPaths}{\varepsilon_t,
+			\State $\mathcal{P}_{t} \gets \Call{extractPath}{\varepsilon_t,
 			\mathit{g}_{t}}$
 			\Statex
 			\If {($\mathcal{P}_{t} = \emptyset$)}
@@ -83,7 +83,7 @@
 							\State \Return {TRUE}
 						\ElsIf {($doesContribute(\varepsilon_t, \vec{\mathit{g}}_{t}) =$ FALSE)}
 							\Statex
-							\State $\mathit{g}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$ 
+							\State $\mathit{g}_{t} \gets \Call{extractGoal}{\mathcal{G}_{t}}$ 
 							\State $\mathcal{U}_{t} \gets \Call{getEventUtility}{\varepsilon_t,
 							\mathit{g}_{t}}$ 
 							\If {($ \mathcal{U}_{t} \geq \tau_{e} $)}
@@ -114,14 +114,14 @@
 			\State Initialize graph $\mathcal{G}_{t}$ with current mental state
 			$\mathcal{S}_{t}$.
 			\Statex
-			\State $\mathit{g}_{t-1} \gets \Call{extractGoals}{\mathcal{G}_{t-1}}$
-			\State $\mathit{g}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$
+			\State $\mathit{g}_{t-1} \gets \Call{extractGoal}{\mathcal{G}_{t-1}}$
+			\State $\mathit{g}_{t} \gets \Call{extractGoal}{\mathcal{G}_{t}}$
 			\Statex
 			\If {$(\mathit{g}_{t} \neq \mathit{g}_{t-1})$}
 				\If {$(\Call{IsAchieved}{\mathit{g}_{t-1}}$ = FALSE)}
 					\State \Return FALSE
 				\Else
-					\State $\mathcal{P}_{t} \gets \Call{extractPaths}{\varepsilon_t,
+					\State $\mathcal{P}_{t} \gets \Call{extractPath}{\varepsilon_t,
 					\mathit{g}_{t}}$
 					\If {($\mathcal{P}_{t} = \emptyset$)}
 						\State \Return FALSE
@@ -162,8 +162,8 @@
 			\State Initialize graph $\mathcal{G}_{t}$ with current mental state
 			$\mathcal{S}_{t}$.
 			\Statex
-			\State $\mathit{g}_{t} \gets \Call{extractGoals}{\mathcal{G}_{t}}$ 
-			\State $\mathcal{P}_{\mathit{g}_{t}} \gets \Call{extractPaths}{\varepsilon_t,
+			\State $\mathit{g}_{t} \gets \Call{extractGoal}{\mathcal{G}_{t}}$ 
+			\State $\mathcal{P}_{\mathit{g}_{t}} \gets \Call{extractPath}{\varepsilon_t,
 			\mathit{g}_{t}}$
 			\Statex
 			\State $\alpha_{self/other}^{^{agency}} \gets
@@ -211,8 +211,9 @@
 					\State $count_{predecessor}^{^{achieved}} \gets
 					count_{predecessor}^{^{achieved}} + 1$
 				\EndIf
+				\Statex
 				\State $count_{predecessor}^{^{total}} \gets count_{predecessor}^{^{total}} + 1$
-			\EndFor
+			\EndFor \State \textbf{end for}
 			\Statex
 			\State \Return
 			$\frac{count_{predecessor}^{^{achieved}}}{count_{predecessor}^{^{total}}}$
@@ -225,18 +226,18 @@
 	\caption{(Get Available Input Ratio)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{GetAvailableInputRatio}{\textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}}^A$}
+		\Function{GetAvailableInputRatio}{\textit{Goal} $\mathit{g}_t$}
 			\Statex
 			\State $\mathcal{X}_{\mathit{g}} \gets
-			\Call{extractInputs}{\mathcal{P}_{\mathit{g}}^{A}}$
+			\Call{extractInputs}{\mathit{g}_t}$
 			\Statex
 			\ForAll {$\chi_{\mathit{g}}^i \in \mathcal{X}_{\mathit{g}}$}
 				\If {($\Call{IsAvailable}{\chi_{\mathit{g}}^i}$)}
 					\State $count_{input}^{^{available}} \gets count_{input}^{^{available}} + 1$
 				\EndIf
+				\Statex
 				\State $count_{input}^{^{required}} \gets count_{input}^{^{required}} + 1$
-			\EndFor
+			\EndFor \State \textbf{end for}
 			\Statex
 			\State \Return
 			$\frac{count_{input}^{^{available}}}{count_{input}^{^{required}}}$
@@ -246,51 +247,50 @@
 \end{algorithm}
 
 \begin{algorithm}
-	\caption{(Get Agency Ratio)}
+	\caption{(Get Agency Value)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{GetAgencyRatio}{\textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}}^{A}$}
+		\Function{GetAgencyValue}{\textit{Goal} $\mathit{g}_t$}
 			\Statex
-			\State $count_{responsibility}^{^{self}} \gets
-			count_{responsibility}^{^{other}} \gets 0$
-			\Statex
-			\State $\Theta_{\vec{\mathit{g}}} \gets
-			\Call{ExtractPreconditions}{\mathcal{P}_{\vec{\mathit{g}}}^{A}}$
+			\State $\Theta_{\mathit{g}} \gets
+			\Call{ExtractContributingTasks}{\mathit{g}_t}$
 			\Statex
 			\ForAll {$\theta_{\vec{\mathit{g}}}^i \in \Theta_{\vec{\mathit{g}}}$}
-				\If {($\Call{GetResponsible}{\theta_{\vec{\mathit{g}}}^i} =$ SELF)}
+				\If {($\Call{GetResponsible}{\theta_{\mathit{g}}^i} =$ SELF)}
 					\State $count_{responsibility}^{^{self}} \gets count_{responsibility}^{^{self}} + 1$
-				\Else
-					\State $count_{responsibility}^{^{other}} \gets
-				count_{responsibility}^{^{other}} + 1$
+				\Statex
+				\ElsIf {($\Call{GetResponsible}{\theta_{\mathit{g}}^i} =$ BOTH)}
+					\State $count_{responsibility}^{^{self}} \gets
+				count_{responsibility}^{^{self}} + 0.5$
 				\EndIf
-			\EndFor
+			\EndFor \State \textbf{end for}
 			\Statex
-			\State \Return {$\langle count_{responsibility}^{^{self}},
-			count_{responsibility}^{^{other}}\rangle$}
+			\State \Return 
+			$\frac{count_{responsibility}^{^{self}}}{{\Theta_{\mathit{g}}}.size()}$
 		\EndFunction 
 	\State \textbf{end function}
 	\end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}
-	\caption{(Get Autonomy Ratio)}
+	\caption{(Get Autonomy Value)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{GetAutonomyRatio}{\textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}}^{A}$}
+		\Function{GetAutonomyValue}{\textit{Goal} $\mathit{g}_t$}
 			\Statex
-			\State $\mathcal{A} \gets
-			\Call{ExtractAction}{\mathcal{P}_{\vec{\mathit{g}}}^{A}}$ 
-			\State $\mathcal{R}_{\mathcal{A}} \gets \Call{GetResponsible}{\mathcal{A}}$
-			\State $\mathcal{M}_{\mathcal{R}_{\mathcal{A}}} \gets
-			\Call{GetMotive}{\mathcal{R}_{\mathcal{A}}}$
+			\State $\mathcal{P}_{\mathit{g}_{t}} \gets \Call{extractPath}{\varepsilon_t,
+			\mathit{g}_{t}}$
+			\State $\mathcal{M}_{\mathit{g}_{t}} \gets
+			\Call{extractMotive}{\mathcal{P}_{\mathit{g}_{t}}}$
 			\Statex
-			\If {($\mathcal{M}_{\mathcal{R}_{\mathcal{A}}} \neq \emptyset$)}
-				\State \Return {MAX}
+			\If {($\mathcal{M}_{\mathit{g}_{t}} \neq \emptyset$)}
+				\If {($\Call{getMotiveType}{\mathcal{M}_{\mathit{g}_{t}}} = $ {INTERNAL})}
+					\State \Return {1.0}
+				\ElsIf {($\Call{getMotiveType}{\mathcal{M}_{\mathit{g}_{t}}} = $
+				{EXTERNAL})} \State \Return {0.5}
+				\EndIf
 			\Else
-				\State \Return {MIN}
+				\State \Return {0.0}
 			\EndIf
 		\EndFunction 
 	\State \textbf{end function}
