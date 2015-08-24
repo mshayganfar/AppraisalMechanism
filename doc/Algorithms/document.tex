@@ -167,16 +167,16 @@
 			\mathit{g}_{t}}$
 			\Statex
 			\State $\alpha_{self/other}^{^{agency}} \gets
-			\Call{GetAgencyValue}{\mathcal{P}_{\mathit{g}_{t}}}$ 
+			\Call{GetAgencyRatio}{\mathit{g}_{t}}$ 
 			\Statex
 			\State $\beta_{self/other}^{^{autonomy}} \gets
-			\Call{GetAutonomyValue}{\mathcal{P}_{\mathit{g}_{t}}}$
+			\Call{GetAutonomyRatio}{\mathit{g}_{t}}$
 			\Statex
 			\State $\lambda_{succeeded/total}^{^{predecessors}} \gets
-			\Call{GetSucceededPredecessorsRatio}{\mathcal{P}_{\mathit{g}_{t}}}$
+			\Call{GetSucceededPredecessorsRatio}{\mathit{g}_{t}}$
 			\Statex
 			\State $\mu_{available/required}^{^{inputs}} \gets
-			\Call{GetAvailableInputRatio}{\mathcal{P}_{\mathit{g}_{t}}}$
+			\Call{GetAvailableInputRatio}{\mathit{g}_{t}}$
 			\Statex
 			\State $\mathcal{U}_{t} \gets
 			\frac{\omega_{0}\cdot \alpha_{self/other}^{^{agency}} +
@@ -198,64 +198,58 @@
 \pagebreak
 	
 \begin{algorithm}
-	\caption{(Check Predecessors)}
+	\caption{(Get Succeeded Predecessors Ratio)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{GetSucceededPredecessorsRatio}{\textit{Paths}
-		$\mathcal{P}_{\vec{\mathit{g}}}^A$}
+		\Function{GetSucceededPredecessorsRatio}{\textit{Goal} $\mathit{g}_t$}
 			\Statex
-			\State $count_{predecessor}^{^{succeeded}} \gets
-			count_{predecessor}^{^{total}} \gets 0$
+			\State $\Phi_{\mathit{g}} \gets
+			\Call{extractPredecessors}{\mathit{g}_t}$
 			\Statex
-			\State $\Phi_{\vec{\mathit{g}}} \gets
-			\Call{extractPredecessors}{\mathcal{P}_{\vec{\mathit{g}}}^{A}}$
-			\Statex
-			\ForAll {$\phi_{\vec{\mathit{g}}}^i \in \Phi_{\vec{\mathit{g}}}$}
-				\If {($\Call{IsSucceeded}{\phi_{\vec{\mathit{g}}}^i}$)}
-					\State $count_{predecessor}^{^{succeeded}} \gets count_{predecessor}^{^{succeeded}} + 1$
+			\ForAll {$\phi_{\mathit{g}}^i \in \Phi_{\mathit{g}}$}
+				\If {($\Call{IsAchieved}{\phi_{\mathit{g}}^i}$)}
+					\State $count_{predecessor}^{^{achieved}} \gets
+					count_{predecessor}^{^{achieved}} + 1$
 				\EndIf
 				\State $count_{predecessor}^{^{total}} \gets count_{predecessor}^{^{total}} + 1$
 			\EndFor
 			\Statex
-			\State \Return {$\langle count_{predecessor}^{^{succeeded}},
-			count_{predecessor}^{^{total}}\rangle$}
+			\State \Return
+			$\frac{count_{predecessor}^{^{achieved}}}{count_{predecessor}^{^{total}}}$
 		\EndFunction 
 	\State \textbf{end function}
 	\end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}
-	\caption{(Check Inputs)}
+	\caption{(Get Available Input Ratio)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
 		\Function{GetAvailableInputRatio}{\textit{Paths}
 		$\mathcal{P}_{\vec{\mathit{g}}}^A$}
 			\Statex
-			\State $count_{input}^{^{available}} \gets count_{input}^{^{required}} \gets
-			0$
+			\State $\mathcal{X}_{\mathit{g}} \gets
+			\Call{extractInputs}{\mathcal{P}_{\mathit{g}}^{A}}$
 			\Statex
-			\State $\mathcal{X}_{\vec{\mathit{g}}} \gets
-			\Call{extractInputs}{\mathcal{P}_{\vec{\mathit{g}}}^{A}}$
-			\Statex
-			\ForAll {$\chi_{\vec{\mathit{g}}}^i \in \mathcal{X}_{\vec{\mathit{g}}}$}
-				\If {($\Call{IsSucceeded}{\chi_{\vec{\mathit{g}}}^i}$)}
+			\ForAll {$\chi_{\mathit{g}}^i \in \mathcal{X}_{\mathit{g}}$}
+				\If {($\Call{IsAvailable}{\chi_{\mathit{g}}^i}$)}
 					\State $count_{input}^{^{available}} \gets count_{input}^{^{available}} + 1$
 				\EndIf
 				\State $count_{input}^{^{required}} \gets count_{input}^{^{required}} + 1$
 			\EndFor
 			\Statex
-			\State \Return {$\langle count_{input}^{^{available}},
-			count_{input}^{^{required}}\rangle$}
+			\State \Return
+			$\frac{count_{input}^{^{available}}}{count_{input}^{^{required}}}$
 		\EndFunction 
 	\State \textbf{end function}
 	\end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}
-	\caption{(Get Agency Value)}
+	\caption{(Get Agency Ratio)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{GetAgencyValue}{\textit{Paths}
+		\Function{GetAgencyRatio}{\textit{Paths}
 		$\mathcal{P}_{\vec{\mathit{g}}}^{A}$}
 			\Statex
 			\State $count_{responsibility}^{^{self}} \gets
@@ -281,10 +275,10 @@
 \end{algorithm}
 
 \begin{algorithm}
-	\caption{(Get Autonomy Value)}
+	\caption{(Get Autonomy Ratio)}
 	\label{array-sum}
 	\begin{algorithmic}[1]
-		\Function{GetAutonomyValue}{\textit{Paths}
+		\Function{GetAutonomyRatio}{\textit{Paths}
 		$\mathcal{P}_{\vec{\mathit{g}}}^{A}$}
 			\Statex
 			\State $\mathcal{A} \gets
