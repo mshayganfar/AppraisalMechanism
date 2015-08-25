@@ -137,10 +137,8 @@
 				\EndIf
 			\Else
 				\State $\mathcal{U}_{t} \gets
-						\Call{getPathUtility}{\mathcal{G}_{t}, \mathit{g}_{t}}$
-				\State $\mathcal{U}_{t-1} \gets \Call{getPathUtility}{\mathcal{G}_{t},
-						\mathit{g}_{t-1}}$
-				\If {$((\mathcal{U}_{t} - \mathcal{U}_{t-1}) \geq \tau_{e})$}
+						\Call{getEventUtility}{\mathcal{G}_{t}, \mathit{g}_{t}}$
+				\If {$(\mathcal{U}_{t} \geq \tau_{e})$}
 					\State \Return TRUE
 				\Else
 					\State \Return FALSE
