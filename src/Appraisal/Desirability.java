@@ -20,30 +20,41 @@ import MetaInformation.Turns;
 
 public class Desirability extends AppraisalProcesses{
 	
-	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., 2 in B2-3.
-	public boolean isEventDesirable(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Turns turn, Events event) {
-		
-//		double dblUtility = 0.0;
-		
-//		double dblMentalStatesUtility  = getMentalStatesUtility(JessEngine, mentalStates, mentalGraph, turn, event);
-		double dblCollaborationUtility = 0.0;
-		try {
-			dblCollaborationUtility = getCollaborationUtility();
-		} catch (JessException e) {
-			e.printStackTrace();
-		}		
-		
-//		dblUtility = ((dblMentalStatesUtility * getMentalStatesUtilityWeight()) + (dblCollaborationUtility * getCollaborationUtilityWeight()))
-//					/(getMentalStatesUtilityWeight() + getCollaborationUtilityWeight());
-		
-		if (dblCollaborationUtility > getHumanEmotionalThreshold())
-			return true;
-		else
-			return false;
-	}
+	public enum DESIRABILITY {HIGHEST_DESIRABLE, HIGH_DESIRABLE, MEDIUM_DESIRABLE, LOW_DESIRABLE, NEUTRAL, HIGHEST_UNDESIRABLE, HIGH_UNDESIRABLE, MEDIUM_UNDESIRABLE, LOW_UNDESIRABLE};
 	
-	private double getMentalStatesUtilityWeight()  { return 1.0; }
-	private double getCollaborationUtilityWeight() { return 1.0; }
+	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., 2 in B2-3.
+	public DESIRABILITY isEventDesirable(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Turns turn, Events event) {
+		
+		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.ACHIEVED)) return DESIRABILITY.HIGHEST_DESIRABLE;
+		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.BLOCKED)) return DESIRABILITY.HIGHEST_UNDESIRABLE;
+		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.INPROGRESS)) {
+			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.ACHIEVED)) return DESIRABILITY.HIGH_DESIRABLE;
+			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.BLOCKED)) return DESIRABILITY.HIGH_UNDESIRABLE;
+			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.INPROGRESS)) return DESIRABILITY.MEDIUM_DESIRABLE;
+			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.UNKNOWN)) {
+				
+				Fact eventGoalFact = collaboration.recognizeGoal(event);
+				
+				if(eventGoalFact == null)
+					return DESIRABILITY.HIGH_UNDESIRABLE;
+					
+				if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.SATISFIED)) return DESIRABILITY.LOW_DESIRABLE;
+				if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.UNSATISFIED)) return DESIRABILITY.LOW_UNDESIRABLE;
+				if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.UNKNOWN)) {
+					
+					//Fact graphGoal = mentalGraph.getGraphGoal();
+					try {
+						if (collaboration.doesContibute(new Fact("Fake Intention", null)) == true) return DESIRABILITY.NEUTRAL;
+						if (collaboration.doesContibute(new Fact("Fake Intention", null)) == false) return DESIRABILITY.MEDIUM_UNDESIRABLE;
+					} catch (JessException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		
+		return DESIRABILITY.NEUTRAL;
+	}
 	
 	private double getUtteranceUtilityWeight() { return 1.0; }
 	private double getActionUtilityWeight()    { return 1.0; }
@@ -127,30 +138,5 @@ public class Desirability extends AppraisalProcesses{
 		}
 		
 		return deltaUtility;
-	}
-	
-	private double getCollaborationUtility() throws JessException {
-
-		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.ACHIEVED)) return 1.0;
-		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.BLOCKED)) return -1.0;
-		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.INPROGRESS)) {
-			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.ACHIEVED)) return 0.75;
-			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.BLOCKED)) return -0.75;
-			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.INPROGRESS)) return 0.25;
-			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.UNKNOWN)) {
-				if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.SATISFIED)) return 0.5;
-				if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.UNSATISFIED)) return -0.75;
-				if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.UNKNOWN)) {
-					if (collaboration.doesContibute(new Fact("Fake Intention", null)) == true) return -0.5;
-					if (collaboration.doesContibute(new Fact("Fake Intention", null)) == false) {
-						if (collaboration.getRecipeApplicability().equals(RECIPE_APPLICABILITY.APPLICABLE)) return -0.5;
-						if (collaboration.getRecipeApplicability().equals(RECIPE_APPLICABILITY.INAPPLICABLE)) return -0.75;
-						if (collaboration.getRecipeApplicability().equals(RECIPE_APPLICABILITY.UNKNOWN)) return -0.25;
-					}
-				}
-			}
-		}
-		
-		return 0.0;
 	}
 }

@@ -3,7 +3,10 @@ package Collaboration;
 import java.util.ArrayList;
 import java.util.List;
 
+import MetaInformation.Events;
+
 import jess.Fact;
+import jess.JessException;
 
 public class Collaboration {
 
@@ -90,5 +93,14 @@ public class Collaboration {
 		// Extract all inputs here.
 		
 		return goalInputsList;
+	}
+	
+	public Fact recognizeGoal(Events event) {
+		try {
+			return new Fact("Fake Goal", null);
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
