@@ -206,6 +206,15 @@ public class MentalGraph {
 		return vertices;
 	}
 	
+	public Fact getPathMotive(List<Fact> pathVertices) {
+		
+		for (int i = 0 ; i < pathVertices.size() ; i++) {
+			if (pathVertices.get(i).getName().contains("motive"))
+				return pathVertices.get(i); 
+		}
+		return null;
+	}
+	
 	public class Edge {
 		
 		private Fact sourceFact;

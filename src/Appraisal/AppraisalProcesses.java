@@ -20,6 +20,24 @@ public class AppraisalProcesses {
 		
 		collaboration = new Collaboration();
 	}
+
+	protected double getEventUtility(Fact beliefFact, Fact motiveFact) {
+		
+		// Add motive attributes.
+		
+		Map<String, Double> weights =  new HashMap<String, Double>();
+		
+		weights.put("strength", getBeliefStrengthWeight());
+		weights.put("accuracy", getBeliefAccuracyWeight());
+		weights.put("frequency", getBeliefFrequencyWeight());
+		weights.put("recency", getBeliefRecencyWeight());
+		weights.put("saliency", getBeliefSaliencyWeight());
+		weights.put("persistence", getBeliefPersistenceWeight());
+		
+		return (((weights.get("strength") * getBeliefStrength(beliefFact)) + (weights.get("accuracy") * getBeliefAccuracy(beliefFact)) 
+				+ (weights.get("frequency") * getBeliefFrequency(beliefFact)) + (weights.get("recency") * getBeliefRecency(beliefFact)) 
+				+ (weights.get("saliency")*getBeliefSaliency(beliefFact)) + (weights.get("persistence")*getBeliefPersistence(beliefFact))) / 6.0);
+	}
 	
 	protected double getBeliefUtility(Fact beliefFact) {
 		

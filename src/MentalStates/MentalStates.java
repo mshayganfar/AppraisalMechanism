@@ -20,7 +20,7 @@ public class MentalStates {
 	public enum FACT_TYPE {BELIEF, INTENTION, MOTIVE, GOAL, EMOTION_INSTANCE};
 	public enum BELIEF_TYPE {EXTERNAL_EVENT, INTERNAL_EVENT, NONE};
 	
-	public void assertBelief(Rete JessEngine, String strTurn, String strBeliefID, String strTask, String strEvent, String strEventType, String strEventOrigin, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief) {
+	public void assertBelief(Rete JessEngine, String strTurn, String strBeliefID, String strTask, String strEvent, String strEventType, String strEventOrigin, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief, String strStrength, String strAccuracy, String strFrequency, String strRecency, String strSaliency, String strPersistence) {
 		try {
 			beliefFact = new Fact("belief", JessEngine);
 			beliefFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
@@ -33,6 +33,12 @@ public class MentalStates {
 		    beliefFact.setSlotValue("belief-type", new Value(strBeliefType, RU.SYMBOL));
 		    beliefFact.setSlotValue("belief-about", new Value(strBeliefAbout, RU.SYMBOL));
 		    beliefFact.setSlotValue("belief", new Value(strBelief, RU.STRING));
+		    beliefFact.setSlotValue("strength", new Value(strStrength, RU.SYMBOL));
+		    beliefFact.setSlotValue("accuracy", new Value(strAccuracy, RU.SYMBOL));
+		    beliefFact.setSlotValue("frequency", new Value(strFrequency, RU.SYMBOL));
+		    beliefFact.setSlotValue("recency", new Value(strRecency, RU.SYMBOL));
+		    beliefFact.setSlotValue("saliency", new Value(strSaliency, RU.SYMBOL));
+		    beliefFact.setSlotValue("persistence", new Value(strPersistence, RU.SYMBOL));
 		    JessEngine.assertFact(beliefFact);
 		} catch (JessException e) {
 			e.printStackTrace();
