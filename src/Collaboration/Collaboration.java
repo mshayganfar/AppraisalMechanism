@@ -58,7 +58,7 @@ public class Collaboration {
 		return RECIPE_APPLICABILITY.APPLICABLE;
 	}
 	
-	public Boolean doesContibute(Fact intentionFact) {
+	public Boolean doesContibute(Fact eventGoal, Fact graphGoal) {
 		
 		return true;
 	}

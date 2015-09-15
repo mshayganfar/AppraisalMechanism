@@ -33,22 +33,19 @@ public class Desirability extends AppraisalProcesses{
 			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.INPROGRESS)) return DESIRABILITY.MEDIUM_DESIRABLE;
 			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.UNKNOWN)) {
 				
-				Fact eventGoalFact = collaboration.recognizeGoal(event);
+				Fact eventGoal = collaboration.recognizeGoal(event);
 				
-				if(eventGoalFact == null)
+				if(eventGoal == null)
 					return DESIRABILITY.HIGH_UNDESIRABLE;
-					
+
 				if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.SATISFIED)) return DESIRABILITY.LOW_DESIRABLE;
 				if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.UNSATISFIED)) return DESIRABILITY.LOW_UNDESIRABLE;
 				if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.UNKNOWN)) {
 					
-					//Fact graphGoal = mentalGraph.getGraphGoal();
-					try {
-						if (collaboration.doesContibute(new Fact("Fake Intention", null)) == true) return DESIRABILITY.NEUTRAL;
-						if (collaboration.doesContibute(new Fact("Fake Intention", null)) == false) return DESIRABILITY.MEDIUM_UNDESIRABLE;
-					} catch (JessException e) {
-						e.printStackTrace();
-					}
+					Fact graphGoal = mentalGraph.getGraphGoal();
+					
+					if (collaboration.doesContibute(eventGoal, graphGoal) == true) return DESIRABILITY.NEUTRAL;
+					if (collaboration.doesContibute(eventGoal, graphGoal) == false) return DESIRABILITY.MEDIUM_UNDESIRABLE;
 				}
 			}
 		}

@@ -34,6 +34,15 @@ public class MentalGraph {
 		this.graph = new DirectedSparseGraph<Fact, Edge>();
 	}
 	
+	public Fact getGraphGoal() {
+		
+		for(Fact node : graph.getVertices()) {
+			if(node.getName().contains("goal"))
+				return node;
+		}
+		return null;
+	}
+	
 	public void createGraph(Rete JessEngine) {
 		
 		Fact factTemp = null, factSource = null, factTarget = null;
