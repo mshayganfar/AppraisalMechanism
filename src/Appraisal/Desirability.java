@@ -25,13 +25,16 @@ public class Desirability extends AppraisalProcesses{
 	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., 2 in B2-3.
 	public DESIRABILITY isEventDesirable(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Turns turn, Events event) {
 		
-		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.ACHIEVED)) return DESIRABILITY.HIGHEST_DESIRABLE;
-		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.BLOCKED)) return DESIRABILITY.HIGHEST_UNDESIRABLE;
-		if (collaboration.getTopLevelTaskStatus().equals(TOP_LEVEL_TASK_STATUS.INPROGRESS)) {
-			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.ACHIEVED)) return DESIRABILITY.HIGH_DESIRABLE;
-			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.BLOCKED)) return DESIRABILITY.HIGH_UNDESIRABLE;
-			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.INPROGRESS)) return DESIRABILITY.MEDIUM_DESIRABLE;
-			if (collaboration.getFocusStatus().equals(FOCUS_STATUS.UNKNOWN)) {
+		Fact graphGoal    = mentalGraph.getGraphGoal();
+		Fact topLevelGoal = collaboration.getTopLevelGoal();
+		
+		if (collaboration.getGoalStatus(topLevelGoal).equals(TOP_LEVEL_TASK_STATUS.ACHIEVED)) return DESIRABILITY.HIGHEST_DESIRABLE;
+		if (collaboration.getGoalStatus(topLevelGoal).equals(TOP_LEVEL_TASK_STATUS.BLOCKED)) return DESIRABILITY.HIGHEST_UNDESIRABLE;
+		if (collaboration.getGoalStatus(topLevelGoal).equals(TOP_LEVEL_TASK_STATUS.INPROGRESS)) {
+			if (collaboration.getGoalStatus(graphGoal).equals(FOCUS_STATUS.ACHIEVED)) return DESIRABILITY.HIGH_DESIRABLE;
+			if (collaboration.getGoalStatus(graphGoal).equals(FOCUS_STATUS.BLOCKED)) return DESIRABILITY.HIGH_UNDESIRABLE;
+			if (collaboration.getGoalStatus(graphGoal).equals(FOCUS_STATUS.INPROGRESS)) return DESIRABILITY.MEDIUM_DESIRABLE;
+			if (collaboration.getGoalStatus(graphGoal).equals(FOCUS_STATUS.UNKNOWN)) {
 				
 				Fact eventGoal = collaboration.recognizeGoal(event);
 				
@@ -42,10 +45,8 @@ public class Desirability extends AppraisalProcesses{
 				if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.UNSATISFIED)) return DESIRABILITY.LOW_UNDESIRABLE;
 				if (collaboration.getTaskPreconditionStatus().equals(TASK_PRECONDITION_STATUS.UNKNOWN)) {
 					
-					Fact graphGoal = mentalGraph.getGraphGoal();
-					
-					if (collaboration.doesContibute(eventGoal, graphGoal) == true) return DESIRABILITY.NEUTRAL;
-					if (collaboration.doesContibute(eventGoal, graphGoal) == false) return DESIRABILITY.MEDIUM_UNDESIRABLE;
+					if (collaboration.doesContibute(eventGoal, graphGoal)) return DESIRABILITY.NEUTRAL;
+					if (!collaboration.doesContibute(eventGoal, graphGoal)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
 				}
 			}
 		}

@@ -28,14 +28,19 @@ public class Collaboration {
 		return true;
 	}
 	
-	public FOCUS_STATUS getFocusStatus() {
+	public FOCUS_STATUS getGoalStatus(Fact graphGoal) {
 		
 		return FOCUS_STATUS.ACHIEVED;
 	}
 	
-	public TOP_LEVEL_TASK_STATUS getTopLevelTaskStatus() {
+	public Fact getTopLevelGoal() {
 		
-		return TOP_LEVEL_TASK_STATUS.ACHIEVED;
+		try {
+			return new Fact("Fake Goal", null);
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public TASK_PRECONDITION_STATUS getTaskPreconditionStatus() {
