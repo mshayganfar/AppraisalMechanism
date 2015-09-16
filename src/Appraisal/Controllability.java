@@ -6,9 +6,6 @@ import java.util.List;
 import jess.Fact;
 import jess.JessException;
 
-import Appraisal.Expectedness.EXPECTEDNESS;
-import Collaboration.Collaboration.AGENT_TYPE;
-import Collaboration.Collaboration.FOCUS_TYPE;
 import MentalGraph.MentalGraph;
 import MetaInformation.Events;
 
