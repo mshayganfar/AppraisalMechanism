@@ -68,7 +68,7 @@ public class Controllability extends AppraisalProcesses{
 	// Autonomy: The quality or state of being self-governing. Self-directing freedom or self-governing state.
 	private Double getAutonomyValue(MentalGraph mentalGraph, Events event) {
 		
-		int selfCounter = 0;
+		double dblSelfCounter = 0;
 		
 		Fact eventGoal = event.getEventRelatedGoal();
 		
@@ -79,47 +79,51 @@ public class Controllability extends AppraisalProcesses{
 		
 		for (int i = 0; i < taskContributersList.size() ; i++)
 			if(collaboration.getResponsibleAgent(taskContributersList.get(i)).equals("SELF"))
-				selfCounter += 1;
+				dblSelfCounter++;
 		
-		return ((double)selfCounter/taskContributersList.size());
+		return ((double)dblSelfCounter/taskContributersList.size());
 	}
 	
 	private Double checkSucceededPredecessorsRatio(Events event) {
 		
 		double dblSucceededPredecessorCounter = 0.0;
 		
-		List<Fact> predecessorGoalList = collaboration.getPredecessors(event.getEventRelatedGoal());
+		Fact eventGoal = event.getEventRelatedGoal();
 		
-		if(predecessorGoalList.size() > 0)
+		if(eventGoal == null)
+			return 0.0;
+		
+		List<Fact> predecessorGoalList = collaboration.getPredecessors(eventGoal);
+		
+		if(predecessorGoalList.size() > 0) {
 			for (int i = 0; i < predecessorGoalList.size() ; i++) {
 				if(collaboration.isGoalAchieved(predecessorGoalList.get(i)))
 					dblSucceededPredecessorCounter++;
+			}
 			
 			return (double)dblSucceededPredecessorCounter/predecessorGoalList.size();
-			}
+		}
 		else
 			return dblSucceededPredecessorCounter;
-		
-		return null;
 	}
 	
 	private Double checkAvailableInputRatio(Events event) {
 		
 		double dblAvailableInputCounter = 0.0;
 		
-		ArrayList goalInputsList = collaboration.getInputs(event.getEventRelatedGoal());
+		ArrayList<String> goalInputsList = collaboration.getInputs(event.getEventRelatedGoal());
 		
-		if(goalInputsList.size() > 0)
+		if(goalInputsList.size() > 0) {
 			for (int i = 0; i < goalInputsList.size() ; i++) {
-				if(!goalInputsList.get(i).equals(null))
-					dblAvailableInputCounter++;
-			
-			return (double)dblAvailableInputCounter/goalInputsList.size();
+				if (!goalInputsList.get(i).equals(null))
+					if(collaboration.isInputAvailable(goalInputsList.get(i).toString()))
+						dblAvailableInputCounter++;
 			}
+			return ((double)dblAvailableInputCounter/goalInputsList.size());
+		}
 		else
 			return dblAvailableInputCounter;
 		
-		return null;
 	}
 	
 	// Min = 0.0 and Max = 1.0

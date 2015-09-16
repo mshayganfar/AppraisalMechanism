@@ -33,6 +33,11 @@ public class Collaboration {
 		return true;
 	}
 	
+	public boolean isInputAvailable(String strInput) {
+		
+		return true;
+	}
+	
 	public FOCUS_STATUS getGoalStatus(Fact graphGoal) {
 		
 		return FOCUS_STATUS.ACHIEVED;
@@ -96,9 +101,9 @@ public class Collaboration {
 		return predecessorGoalList;
 	}
 	
-	public ArrayList getInputs(Fact factGoal) {
+	public ArrayList<String> getInputs(Fact factGoal) {
 		
-		ArrayList goalInputsList = new ArrayList();
+		ArrayList<String> goalInputsList = new ArrayList<String>();
 		
 		// Extract all inputs here.
 		
