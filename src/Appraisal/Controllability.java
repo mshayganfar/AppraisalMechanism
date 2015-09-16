@@ -6,6 +6,7 @@ import java.util.List;
 import jess.Fact;
 import jess.JessException;
 
+import Appraisal.Expectedness.EXPECTEDNESS;
 import Collaboration.Collaboration.AGENT_TYPE;
 import Collaboration.Collaboration.FOCUS_TYPE;
 import MentalGraph.MentalGraph;
@@ -13,9 +14,9 @@ import MetaInformation.Events;
 
 public class Controllability extends AppraisalProcesses{
 
-	public boolean isEventControllable(MentalGraph mentalGraph,Events event) {
+	public boolean isEventControllable(MentalGraph mentalGraph, Events event) {
 		
-		double dblAgency       = getAgencyValue(event);
+		double dblAgency       = getAgencyValue(mentalGraph, event);
 		double dblAutonomy     = getAutonomyValue(mentalGraph, event);
 		double dblPredecessors = checkSucceededPredecessorsRatio(event);
 		double dblInputs       = checkAvailableInputRatio(event);
@@ -31,64 +32,56 @@ public class Controllability extends AppraisalProcesses{
 	}
 	
 	// Agency: The capacity, condition, or state of acting or of exerting power.
-	private Double getAgencyValue(Events event) {
+	private Double getAgencyValue(MentalGraph mentalGraph, Events event) {
 		
-		int intSelfResponsibilityCounter = 0;
-		int intOtherResponsibilityCounter = 0;
-		int intBothResponsibilityCounter = 0;
-		int intNoneResponsibilityCounter = 0;
+		Fact pathMotive = null;
 		
-		AGENT_TYPE responsibleAgent;
+		Fact eventBelief = event.getEventRelatedBelief();
+		Fact eventGoal   = event.getEventRelatedGoal();
 		
-		if (collaboration.getFocusType().equals(FOCUS_TYPE.PRIMITIVE)) {
-			responsibleAgent = collaboration.getTaskResponsibleAgent(event.getEventRelatedGoal());
-			if (responsibleAgent.equals(AGENT_TYPE.SELF))
-				return 1.0;
-			else if (responsibleAgent.equals(AGENT_TYPE.BOTH))
-				return 0.5;
-			else if ((responsibleAgent.equals(AGENT_TYPE.OTHER)) || (responsibleAgent.equals(AGENT_TYPE.NONE)))
-				return 0.0;
-		}
-		else if (collaboration.getFocusType().equals(FOCUS_TYPE.NONPRIMITIVE)){
-			List<Fact> taskContributersList = collaboration.getTaskContributers(event.getEventRelatedGoal());
+		if(eventGoal == null)
+			return 0.0;
+		
+		if(mentalGraph.getShortestPath(eventBelief, eventGoal).size() != 0)
+		{
+			pathMotive = mentalGraph.getPathMotive(mentalGraph.getShortestPathVertices(eventBelief, eventGoal));
 			
-			for (int i = 0 ; i < taskContributersList.size() ; i++) {
-				responsibleAgent = collaboration.getTaskResponsibleAgent(taskContributersList.get(i));
-				if (responsibleAgent.equals(AGENT_TYPE.SELF))
-					intSelfResponsibilityCounter++;
-				else if (responsibleAgent.equals(AGENT_TYPE.OTHER))
-					intOtherResponsibilityCounter++;
-				else if (responsibleAgent.equals(AGENT_TYPE.BOTH))
-					intBothResponsibilityCounter++;
-				else if (responsibleAgent.equals(AGENT_TYPE.NONE))
-					intNoneResponsibilityCounter++;
-			}
-			return (double)(intSelfResponsibilityCounter + (double)(intBothResponsibilityCounter/2))/
-						   (intOtherResponsibilityCounter + (double)(intBothResponsibilityCounter/2) + intNoneResponsibilityCounter);
-		}
-		
-		return null;
-	}
-	
-	// Autonomy: The quality or state of being self-governing. Self-directing freedom or self-governing state.
-	private Double getAutonomyValue(MentalGraph mentalGraph, Events event) {
-		
-		List<Fact> verticesList = mentalGraph.getShortestPathVertices(event.getEventRelatedBelief(), event.getEventRelatedGoal());
-		
-		for (int i = 0; i < verticesList.size() ; i++) {
-			if(verticesList.get(i).toString().contains("MENTAL-STATE::motive")) {
+			if (pathMotive != null) {
 				try {
-					if(verticesList.get(i).getSlotValue("motive-type").toString().equals("INTERNAL"))
+					if (pathMotive.getSlotValue("motive-type").equals("INTERNAL"))
 						return 1.0;
-					else if(verticesList.get(i).getSlotValue("motive-type").toString().equals("EXTERNAL"))
+					else
 						return 0.0;
 				} catch (JessException e) {
 					e.printStackTrace();
 				}
 			}
+			else 
+				return 0.0;
 		}
+		else
+			return 0.0;
 		
-		return null;
+		return 0.0;
+	}
+	
+	// Autonomy: The quality or state of being self-governing. Self-directing freedom or self-governing state.
+	private Double getAutonomyValue(MentalGraph mentalGraph, Events event) {
+		
+		int selfCounter = 0;
+		
+		Fact eventGoal = event.getEventRelatedGoal();
+		
+		if(eventGoal == null)
+			return 0.0;
+		
+		List<Fact> taskContributersList = collaboration.getContributingGoals(eventGoal);
+		
+		for (int i = 0; i < taskContributersList.size() ; i++)
+			if(collaboration.getResponsibleAgent(taskContributersList.get(i)).equals("SELF"))
+				selfCounter += 1;
+		
+		return ((double)selfCounter/taskContributersList.size());
 	}
 	
 	private Double checkSucceededPredecessorsRatio(Events event) {

@@ -73,7 +73,7 @@ public class Collaboration {
 		return true;
 	}
 	
-	public List<Fact> getTaskContributers(Fact factNonprimitiveGoal) {
+	public List<Fact> getContributingGoals(Fact factNonprimitiveGoal) {
 		
 		List<Fact> contributerGoalList = new ArrayList<Fact>();
 		
@@ -82,7 +82,7 @@ public class Collaboration {
 		return contributerGoalList;
 	}
 	
-	public AGENT_TYPE getTaskResponsibleAgent(Fact factGoal) {
+	public AGENT_TYPE getResponsibleAgent(Fact factGoal) {
 		
 		return AGENT_TYPE.SELF;
 	}
