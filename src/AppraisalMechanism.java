@@ -65,10 +65,10 @@ public class AppraisalMechanism {
 	    System.out.println(rap.isEventRelevant(mg, event));
 	    
 	    Desirability desirability = new Desirability();
-	    System.out.println(desirability.isEventDesirable(JessEngine, ms, mg, turn, event));
+	    System.out.println(desirability.isEventDesirable(mg, event));
 	    
 	    Expectedness expectedness = new Expectedness();
-	    System.out.println(expectedness.isEventExpected(JessEngine, ms, mg, ms.getFact(JessEngine, "\"B1-1\""), turn, event));
+	    System.out.println(expectedness.isEventExpected(mg, event));
 	    
 	    Controllability controllability = new Controllability();
 	    System.out.println(controllability.isEventControllable(mg, event));

@@ -7,7 +7,6 @@ import jess.JessException;
 import jess.Rete;
 
 import Collaboration.Collaboration.FOCUS_STATUS;
-import Collaboration.Collaboration.RECIPE_APPLICABILITY;
 import Collaboration.Collaboration.TASK_PRECONDITION_STATUS;
 import Collaboration.Collaboration.TOP_LEVEL_TASK_STATUS;
 import MentalStates.*;
@@ -23,7 +22,7 @@ public class Desirability extends AppraisalProcesses{
 	public enum DESIRABILITY {HIGHEST_DESIRABLE, HIGH_DESIRABLE, MEDIUM_DESIRABLE, LOW_DESIRABLE, NEUTRAL, HIGHEST_UNDESIRABLE, HIGH_UNDESIRABLE, MEDIUM_UNDESIRABLE, LOW_UNDESIRABLE};
 	
 	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., 2 in B2-3.
-	public DESIRABILITY isEventDesirable(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Turns turn, Events event) {
+	public DESIRABILITY isEventDesirable(MentalGraph mentalGraph, Events event) {
 		
 		Fact graphGoal    = mentalGraph.getGraphGoal();
 		Fact topLevelGoal = collaboration.getTopLevelGoal();

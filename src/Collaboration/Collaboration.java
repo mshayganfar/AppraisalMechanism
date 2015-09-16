@@ -28,6 +28,11 @@ public class Collaboration {
 		return true;
 	}
 	
+	public boolean isGoalFocused(Fact factGoal) {
+		
+		return true;
+	}
+	
 	public FOCUS_STATUS getGoalStatus(Fact graphGoal) {
 		
 		return FOCUS_STATUS.ACHIEVED;
