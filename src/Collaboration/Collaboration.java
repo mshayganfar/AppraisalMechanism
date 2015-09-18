@@ -18,7 +18,7 @@ public class Collaboration {
 	public enum RECIPE_APPLICABILITY{APPLICABLE, INAPPLICABLE, UNKNOWN};
 	public enum AGENT_TYPE{SELF, OTHER, BOTH, NONE};
 	
-	public FOCUS_TYPE getFocusType() {
+	public FOCUS_TYPE getGoalType() {
 		
 		return FOCUS_TYPE.PRIMITIVE;
 	}
@@ -53,17 +53,17 @@ public class Collaboration {
 		return null;
 	}
 	
-	public TASK_PRECONDITION_STATUS getTaskPreconditionStatus() {
+	public TASK_PRECONDITION_STATUS getGoalPreconditionStatus(Fact factGoal) {
 		
 		return TASK_PRECONDITION_STATUS.SATISFIED;
 	}
 	
-	public TASK_POSTCONDITION_STATUS getTaskPostconditionStatus() {
+	public TASK_POSTCONDITION_STATUS getGoalPostconditionStatus(Fact factGoal) {
 		
 		return TASK_POSTCONDITION_STATUS.SATISFIED;
 	}
 	
-	public String getTaskPreconditions(Fact factGoal) {
+	public String getGoalPreconditions(Fact factGoal) {
 		
 		return "Fake_Preconditions";
 	}
