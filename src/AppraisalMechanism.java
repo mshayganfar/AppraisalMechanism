@@ -3,7 +3,7 @@ import edu.wpi.disco.Interaction;
 import edu.wpi.disco.User;
 import jess.*;
 
-import Appraisal.*;
+import Mechanisms.Appraisal.*;
 import MentalStates.*;
 import MentalGraph.*;
 import MetaInformation.*;
