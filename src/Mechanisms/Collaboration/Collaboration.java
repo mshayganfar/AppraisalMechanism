@@ -77,14 +77,24 @@ public class Collaboration extends Mechanisms {
 		return goal;
 	}
 	
-	public TASK_PRECONDITION_STATUS getGoalPreconditionStatus(Goal factGoal) {
+	public TASK_PRECONDITION_STATUS getGoalPreconditionStatus(Goal goal) {
 		
-		return TASK_PRECONDITION_STATUS.SATISFIED;
+		if (goal.getGoal().isApplicable() == null)
+			return TASK_PRECONDITION_STATUS.UNKNOWN;
+		else if (goal.getGoal().isApplicable())
+			return TASK_PRECONDITION_STATUS.SATISFIED;
+		else
+			return TASK_PRECONDITION_STATUS.UNSATISFIED;
 	}
 	
-	public TASK_POSTCONDITION_STATUS getGoalPostconditionStatus(Fact factGoal) {
+	public TASK_POSTCONDITION_STATUS getGoalPostconditionStatus(Goal goal) {
 		
-		return TASK_POSTCONDITION_STATUS.SATISFIED;
+		if (goal.getGoal().isApplicable() == null)
+			return TASK_POSTCONDITION_STATUS.UNKNOWN;
+		else if (goal.getGoal().isApplicable())
+			return TASK_POSTCONDITION_STATUS.SATISFIED;
+		else
+			return TASK_POSTCONDITION_STATUS.UNSATISFIED;
 	}
 	
 	public String getGoalPreconditions(Fact factGoal) {
