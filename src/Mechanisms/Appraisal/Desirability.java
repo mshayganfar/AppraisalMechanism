@@ -25,8 +25,8 @@ public class Desirability extends AppraisalProcesses{
 	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., 2 in B2-3.
 	public DESIRABILITY isEventDesirable(MentalGraph mentalGraph, Events event) {
 		
-		Fact graphGoal    = mentalGraph.getGraphGoal();
-		Fact topLevelGoal = collaboration.getTopLevelGoal();
+		Goal graphGoal    = mentalGraph.getGraphGoal();
+		Goal topLevelGoal = collaboration.getTopLevelGoal(event);
 		
 		if (collaboration.getGoalStatus(topLevelGoal).equals(TOP_LEVEL_TASK_STATUS.ACHIEVED)) return DESIRABILITY.HIGHEST_DESIRABLE;
 		if (collaboration.getGoalStatus(topLevelGoal).equals(TOP_LEVEL_TASK_STATUS.BLOCKED)) return DESIRABILITY.HIGHEST_UNDESIRABLE;
@@ -36,7 +36,7 @@ public class Desirability extends AppraisalProcesses{
 			if (collaboration.getGoalStatus(graphGoal).equals(FOCUS_STATUS.INPROGRESS)) return DESIRABILITY.MEDIUM_DESIRABLE;
 			if (collaboration.getGoalStatus(graphGoal).equals(FOCUS_STATUS.UNKNOWN)) {
 				
-				Fact eventGoal = collaboration.recognizeGoal(event);
+				Goal eventGoal = collaboration.recognizeGoal(event);
 				
 				if(eventGoal == null)
 					return DESIRABILITY.HIGH_UNDESIRABLE;

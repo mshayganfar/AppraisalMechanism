@@ -1,6 +1,7 @@
 package Mechanisms.Appraisal;
 
 import MentalGraph.*;
+import MentalStates.Goal;
 import MetaInformation.Events;
 import jess.Fact;
 
@@ -10,8 +11,8 @@ public class Expectedness extends AppraisalProcesses{
 	
 	public EXPECTEDNESS isEventExpected(MentalGraph mentalGraph, Events event) {
 		
-		Fact eventGoal = collaboration.recognizeGoal(event);
-		Fact graphGoal = mentalGraph.getGraphGoal();
+		Goal eventGoal = collaboration.recognizeGoal(event);
+		Goal graphGoal = mentalGraph.getGraphGoal();
 		
 		if(eventGoal == null)
 			return EXPECTEDNESS.UNEXPECTED;
@@ -22,7 +23,7 @@ public class Expectedness extends AppraisalProcesses{
 			if (!collaboration.isGoalAchieved(graphGoal))
 				return EXPECTEDNESS.UNEXPECTED;
 			else {
-				Fact topLevelGoal = collaboration.getTopLevelGoal();
+				Goal topLevelGoal = collaboration.getTopLevelGoal(event);
 				
 				if (!collaboration.isGoalAchieved(topLevelGoal)) {
 					if (collaboration.doesContibute(eventGoal, topLevelGoal))

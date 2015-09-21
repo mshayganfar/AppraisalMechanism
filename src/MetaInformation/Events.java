@@ -1,5 +1,6 @@
 package MetaInformation;
 
+import MentalStates.Goal;
 import jess.Fact;
 
 public class Events {
@@ -7,12 +8,12 @@ public class Events {
 	public enum EVENT_TYPE{UTTERANCE, ACTION, EMOTION};
 	
 	private Fact belief;
-	private Fact goal;
+	private Fact goalFact;
 	private EVENT_TYPE eventType;
 	
-	public Events(Fact belief, Fact goal, EVENT_TYPE eventType) {
+	public Events(Fact belief, Fact goalFact, EVENT_TYPE eventType) {
 		this.belief    = belief;
-		this.goal      = goal;
+		this.goalFact  = goalFact;
 		this.eventType = eventType;
 	}
 	
@@ -21,9 +22,14 @@ public class Events {
 		return eventType;
 	}
 	
-	public Fact getEventRelatedGoal() {
+	public Goal getEventRelatedGoal() {
 		
-		return goal;
+		return new Goal(null, null, 0, null, null, null); // To be translated from goal fact.
+	}
+	
+	public Fact getEventRelatedGoalFact() {
+		
+		return goalFact;
 	}
 	
 	public Fact getEventRelatedBelief() {

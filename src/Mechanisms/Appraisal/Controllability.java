@@ -6,7 +6,9 @@ import java.util.List;
 import jess.Fact;
 import jess.JessException;
 
+import Mechanisms.Mechanisms.AGENT;
 import MentalGraph.MentalGraph;
+import MentalStates.Goal;
 import MetaInformation.Events;
 
 public class Controllability extends AppraisalProcesses{
@@ -34,7 +36,7 @@ public class Controllability extends AppraisalProcesses{
 		Fact pathMotive = null;
 		
 		Fact eventBelief = event.getEventRelatedBelief();
-		Fact eventGoal   = event.getEventRelatedGoal();
+		Fact eventGoal   = event.getEventRelatedGoalFact();
 		
 		if(eventGoal == null)
 			return 0.0;
@@ -67,15 +69,15 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblSelfCounter = 0;
 		
-		Fact eventGoal = event.getEventRelatedGoal();
+		Goal eventGoal = event.getEventRelatedGoal();
 		
 		if(eventGoal == null)
 			return 0.0;
 		
-		List<Fact> taskContributersList = collaboration.getContributingGoals(eventGoal);
+		List<Goal> taskContributersList = collaboration.getContributingGoals(event, eventGoal.getGoal());
 		
 		for (int i = 0; i < taskContributersList.size() ; i++)
-			if(collaboration.getResponsibleAgent(taskContributersList.get(i)).equals("SELF"))
+			if(collaboration.getResponsibleAgent(taskContributersList.get(i)).equals(AGENT.SELF))
 				dblSelfCounter++;
 		
 		return ((double)dblSelfCounter/taskContributersList.size());
@@ -85,12 +87,12 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblSucceededPredecessorCounter = 0.0;
 		
-		Fact eventGoal = event.getEventRelatedGoal();
+		Goal eventGoal = event.getEventRelatedGoal();
 		
 		if(eventGoal == null)
 			return 0.0;
 		
-		List<Fact> predecessorGoalList = collaboration.getPredecessors(eventGoal);
+		List<Goal> predecessorGoalList = collaboration.getPredecessors(eventGoal);
 		
 		if(predecessorGoalList.size() > 0) {
 			for (int i = 0; i < predecessorGoalList.size() ; i++) {

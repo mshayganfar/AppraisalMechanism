@@ -15,6 +15,8 @@ import jess.Rete;
 
 import org.apache.commons.collections15.Transformer;
 
+import MentalStates.Goal;
+
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
@@ -30,15 +32,19 @@ public class MentalGraph {
 	
 	private static Graph<Fact, Edge> graph = null;
 	
+	private Goal extractGoal(Fact goalFact) {
+		return null; //This needs to be implemented...................................
+	}
+	
 	public MentalGraph() {
 		this.graph = new DirectedSparseGraph<Fact, Edge>();
 	}
 	
-	public Fact getGraphGoal() {
+	public Goal getGraphGoal() {
 		
 		for(Fact node : graph.getVertices()) {
 			if(node.getName().contains("goal"))
-				return node;
+				return extractGoal(node);
 		}
 		return null;
 	}

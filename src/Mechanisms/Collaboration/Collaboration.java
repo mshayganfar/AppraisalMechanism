@@ -3,6 +3,7 @@ package Mechanisms.Collaboration;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.Task;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
@@ -31,22 +32,22 @@ public class Collaboration extends Mechanisms {
 		disco = new Interaction(new Agent(strAgent),new User(strUser),null).getDisco();
 	}
 	
-	public boolean isGoalAchieved(Fact factGoal) {
+	public Boolean isGoalAchieved(Goal goal) {
+		
+		return goal.getGoal().isAchieved();
+	}
+	
+	public Boolean isGoalFocused(Goal goal) {
 		
 		return true;
 	}
 	
-	public boolean isGoalFocused(Fact factGoal) {
+	public Boolean isInputAvailable(String strInput) {
 		
 		return true;
 	}
 	
-	public boolean isInputAvailable(String strInput) {
-		
-		return true;
-	}
-	
-	public FOCUS_STATUS getGoalStatus(Fact graphGoal) {
+	public FOCUS_STATUS getGoalStatus(Goal graphGoal) {
 		
 		return FOCUS_STATUS.ACHIEVED;
 	}
@@ -57,25 +58,26 @@ public class Collaboration extends Mechanisms {
 	}
 	
 	private Goal getFocusedGoal(Events event) {
-		Task task = disco.getFocus().getGoal();
-		String taskID = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
+		Task task       = disco.getFocus().getGoal();
+		Task parentTask = disco.getFocus().getParent().getGoal();
+		String taskID   = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
 		
-		Goal goal = new Goal(task, turn.value(), taskID, event, AGENT.SELF); // Change the agent type by reading the value from Disco.
+		Goal goal = new Goal(task, parentTask, turn.value(), taskID, event, AGENT.SELF); // Change the agent type by reading the value from Disco.
 		
 		return goal;
 	}
 	
-	public Fact getTopLevelGoal() {
+	public Goal getTopLevelGoal(Events event) {
 		
-		try {
-			return new Fact("Fake Goal", null);
-		} catch (JessException e) {
-			e.printStackTrace();
-		}
-		return null;
+		Task task = disco.getTop(disco.getFocus()).getGoal();
+		String taskID = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
+		
+		Goal goal = new Goal(task, null, turn.value(), taskID, event, AGENT.SELF); // Change the agent type by reading the value from Disco.
+		// Also change the place where needs to hold the goal. To be globally accessible.
+		return goal;
 	}
 	
-	public TASK_PRECONDITION_STATUS getGoalPreconditionStatus(Fact factGoal) {
+	public TASK_PRECONDITION_STATUS getGoalPreconditionStatus(Goal factGoal) {
 		
 		return TASK_PRECONDITION_STATUS.SATISFIED;
 	}
@@ -95,35 +97,43 @@ public class Collaboration extends Mechanisms {
 		return RECIPE_APPLICABILITY.APPLICABLE;
 	}
 	
-	public Boolean doesContibute(Fact eventGoal, Fact graphGoal) {
+	public Boolean doesContibute(Goal eventGoal, Goal graphGoal) {
 		
 		return true;
 	}
 	
-	public List<Fact> getContributingGoals(Fact factNonprimitiveGoal) {
+	public List<Goal> getContributingGoals(Events event, Task parentTask) {
 		
-		List<Fact> contributerGoalList = new ArrayList<Fact>();
+		Task task;
+		String taskID;
 		
-		// Extract all contributers here.
+		List<Goal> contributerGoalList = new ArrayList<Goal>();
+		List<Plan> contributerPlanList = disco.getPlan(parentTask.getType()).getChildren();
+		
+		for (int i=0 ; i < contributerPlanList.size() ; i++) {
+			task   = contributerPlanList.get(i).getGoal();
+			taskID = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
+			contributerGoalList.add(new Goal(task, parentTask, turn.value(), taskID, event, AGENT.SELF)); // Change the agent type by reading the value from Disco.
+		}
 		
 		return contributerGoalList;
 	}
 	
-	public AGENT getResponsibleAgent(Fact factGoal) {
+	public AGENT getResponsibleAgent(Goal goal) {
 		
 		return AGENT.SELF;
 	}
 	
-	public List<Fact> getPredecessors(Fact factGoal) {
+	public List<Goal> getPredecessors(Goal goal) {
 		
-		List<Fact> predecessorGoalList = new ArrayList<Fact>();
+		List<Goal> predecessorGoalList = new ArrayList<Goal>();
 		
 		// Extract all predecessor here.
 		
 		return predecessorGoalList;
 	}
 	
-	public ArrayList<String> getInputs(Fact factGoal) {
+	public ArrayList<String> getInputs(Goal factGoal) {
 		
 		ArrayList<String> goalInputsList = new ArrayList<String>();
 		
@@ -132,12 +142,7 @@ public class Collaboration extends Mechanisms {
 		return goalInputsList;
 	}
 	
-	public Fact recognizeGoal(Events event) {
-		try {
-			return new Fact("Fake Goal", null);
-		} catch (JessException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public Goal recognizeGoal(Events event) {
+		return null; // This needs to be implemented.............................................
 	}
 }
