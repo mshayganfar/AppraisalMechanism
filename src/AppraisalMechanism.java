@@ -1,9 +1,11 @@
+import mechanisms.Collaboration;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.User;
 import jess.*;
 
 import Mechanisms.Appraisal.*;
+import Mechanisms.Mechanisms.AGENT;
 import MentalStates.*;
 import MentalGraph.*;
 import MetaInformation.*;
@@ -25,14 +27,22 @@ public class AppraisalMechanism {
 	
 	protected static final String strMentalStatesTemplates = "templates/mental-states/mental-states-templates.clp";
 	
-	private static Rete JessEngine = null;
+	protected static Rete JessEngine = null;
 	
 	public static void main(String[] args) {
 		
-		Relevance rap = new Relevance();
 		MentalStates ms = new MentalStates();
 		MentalGraph mg = new MentalGraph();
 		Turns turn = new Turns();
+		
+		Interaction interaciton = new Interaction(new Agent("agent"), new User("user"),
+												  args.length > 0 && args[0].length() > 0 ? args[0] : null);
+		interaciton.start(true);
+		
+		System.out.println(interaciton.getDisco());
+		
+		Relevance rap = new Relevance(ms, interaciton.getDisco());
+		rap.initializeMentalStates();
 		
 	    try {
 	    	JessEngine = new Rete();
@@ -47,7 +57,9 @@ public class AppraisalMechanism {
 			ms.assertBelief(JessEngine, "turn:1", "B1-2", "install-panel", "ee-au-01", "UTTERANCE", "INTERNAL_EVENT", "ROBOT", "PRIVATE", "ENVIRONMENT", "disfunctional-measurement-tool", "LOW", "LOW", "MEDIUM", "HIGH", "MEDIUM", "HIGH");
 			ms.assertMotive(JessEngine, "turn:1", "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion", "ACTIVE", "INTERNAL");
 			ms.assertIntention(JessEngine, "turn:1", "I1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
-			ms.assertGoal(JessEngine, "turn:1", "G1-1", "install-panel", "ee-au-01", "ROBOT", "fix-problem");
+
+			rap.test(JessEngine, ms);
+			
 			ms.assertEmotionInstance(JessEngine, "turn:1", "E1-1", "install-panel", "ee-au-01", "HUMAN", "FRUSTRATION");
 		    JessEngine.run();
 			
@@ -72,11 +84,5 @@ public class AppraisalMechanism {
 	    
 	    Controllability controllability = new Controllability();
 	    //System.out.println(controllability.isEventControllable(mg, event));
-	    
-	    new Interaction(
-	            new Agent("agent"), 
-	            new User("user"),
-	            args.length > 0 && args[0].length() > 0 ? args[0] : null)
-	         .start(true);
 	}
 }

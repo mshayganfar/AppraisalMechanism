@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.wpi.disco.Disco;
+
 import Mechanisms.*;
 import Mechanisms.Collaboration.*;
 
@@ -18,9 +20,11 @@ public class AppraisalProcesses extends Mechanisms{
 
 	protected Collaboration collaboration;
 	
-	public AppraisalProcesses() {
-		
-		collaboration = new Collaboration("robot", "astronaut");
+	public AppraisalProcesses() {}
+	
+	public AppraisalProcesses(MentalStates ms, Disco disco) {
+		super(ms, disco);
+		collaboration = new Collaboration(ms, disco);
 	}
 
 	protected double getEventUtility(Fact beliefFact, Fact motiveFact) {

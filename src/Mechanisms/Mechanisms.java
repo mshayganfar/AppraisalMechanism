@@ -1,5 +1,7 @@
 package Mechanisms;
 
+import edu.wpi.disco.Disco;
+import MentalStates.MentalStates;
 import MetaInformation.Turns;
 
 import jess.JessException;
@@ -10,13 +12,20 @@ public class Mechanisms {
 	public enum AGENT{SELF, OTHER, BOTH, NONE};
 	
 	protected static Rete JessEngine = new Rete();
+	public MentalStates ms = null;
 	
 	protected static final String strAppraisalModuleTemplates = "templates/mental-states/mental-states-templates.clp";
 	
 	protected Turns turn;
 	
-	public Mechanisms() {
+	protected Disco disco = null;
+	
+	public Mechanisms() {}
+	
+	public Mechanisms(MentalStates ms, Disco disco) {
 		turn = new Turns();
+		this.ms = ms;
+		this.disco = disco;
 	}
 	
 	public static void initializeMentalStates() {

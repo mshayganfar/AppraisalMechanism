@@ -49,12 +49,12 @@
 
 (deftemplate MENTAL-STATE::goal
 "Robot's goal or belief about human's goal."
-(slot turn (type STRING))
+(slot turn (type INTEGER))
 (slot id (type STRING))
-(slot task (type STRING))
-(slot event (type STRING))
+(slot event (type OBJECT))
 (slot agent (type SYMBOL) (allowed-values ROBOT HUMAN UNKNOWN) (default UNKNOWN))
-(slot goal (type STRING))
+(slot goal (type OBJECT))
+(slot parent (type OBJECT))
 (slot proximity (type SYMBOL) (allowed-values PROXIMAL DISTAL UNKNOWN) (default UNKNOWN))
 (slot specificity (type SYMBOL) (allowed-values SPECIFIC GENERAL UNKNOWN) (default UNKNOWN))
 (slot difficulty (type SYMBOL) (allowed-values DIFFICULT EASY UNKNOWN) (default UNKNOWN)))

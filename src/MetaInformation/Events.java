@@ -1,7 +1,9 @@
 package MetaInformation;
 
 import MentalStates.Goal;
+import MentalStates.MentalStates;
 import jess.Fact;
+import jess.Rete;
 
 public class Events {
 
@@ -22,9 +24,9 @@ public class Events {
 		return eventType;
 	}
 	
-	public Goal getEventRelatedGoal() {
+	public Goal getEventRelatedGoal(Rete JessEngine, MentalStates ms) {
 		
-		return new Goal(null, null, 0, null, null, null); // To be translated from goal fact.
+		return ms.getEventRelatedGoal(JessEngine, goalFact);
 	}
 	
 	public Fact getEventRelatedGoalFact() {

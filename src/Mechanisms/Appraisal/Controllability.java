@@ -69,7 +69,7 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblSelfCounter = 0;
 		
-		Goal eventGoal = event.getEventRelatedGoal();
+		Goal eventGoal = event.getEventRelatedGoal(JessEngine, ms);
 		
 		if(eventGoal == null)
 			return 0.0;
@@ -87,7 +87,7 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblSucceededPredecessorCounter = 0.0;
 		
-		Goal eventGoal = event.getEventRelatedGoal();
+		Goal eventGoal = event.getEventRelatedGoal(JessEngine, ms);
 		
 		if(eventGoal == null)
 			return 0.0;
@@ -110,7 +110,7 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblAvailableInputCounter = 0.0;
 		
-		ArrayList<String> goalInputsList = collaboration.getInputs(event.getEventRelatedGoal());
+		ArrayList<String> goalInputsList = collaboration.getInputs(event.getEventRelatedGoal(JessEngine, ms));
 		
 		if(goalInputsList.size() > 0) {
 			for (int i = 0; i < goalInputsList.size() ; i++) {

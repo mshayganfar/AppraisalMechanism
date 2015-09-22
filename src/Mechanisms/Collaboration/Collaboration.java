@@ -12,6 +12,7 @@ import edu.wpi.disco.User;
 
 import Mechanisms.Mechanisms;
 import MentalStates.Goal;
+import MentalStates.MentalStates;
 import MetaInformation.Events;
 
 import jess.Fact;
@@ -28,8 +29,16 @@ public class Collaboration extends Mechanisms {
 	
 	private Disco disco;
 	
+	public Disco getDisco() { return disco; }
+	
+	public Collaboration(MentalStates ms, Disco disco) {
+		super(ms, disco);
+		this.disco = disco;
+	}
+	
 	public Collaboration(String strAgent, String strUser) {
 		disco = new Interaction(new Agent(strAgent),new User(strUser),null).getDisco();
+		System.out.println("Collaboration started! Disco = " + disco);
 	}
 	
 	public Boolean isGoalAchieved(Goal goal) {

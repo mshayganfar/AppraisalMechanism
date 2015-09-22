@@ -3,6 +3,12 @@ package MentalStates;
 import java.util.Iterator;
 import java.util.Map;
 
+import Mechanisms.Mechanisms.AGENT;
+import MetaInformation.Events;
+
+import edu.wpi.cetask.Task;
+
+import jess.Context;
 import jess.Fact;
 import jess.JessException;
 import jess.RU;
@@ -77,15 +83,15 @@ public class MentalStates {
 		}
 	}
 	
-	public void assertGoal(Rete JessEngine, String strTurn, String strGoalID, String strTask, String strEvent, String strAgent, String strGoal) {
+	public void assertGoal(Rete JessEngine, Integer intTurn, String strGoalID, Events event, AGENT agent, Goal goal, Goal parent) {
 		try {
 			GoalFact = new Fact("goal", JessEngine);
-			GoalFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
+			GoalFact.setSlotValue("turn", new Value(intTurn, RU.INTEGER));
 			GoalFact.setSlotValue("id", new Value(strGoalID, RU.STRING));
-			GoalFact.setSlotValue("task", new Value(strTask, RU.STRING));
-			GoalFact.setSlotValue("event", new Value(strEvent, RU.STRING));
-			GoalFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
-			GoalFact.setSlotValue("goal", new Value(strGoal, RU.STRING));
+			GoalFact.setSlotValue("event", new Value(event));
+			GoalFact.setSlotValue("agent", new Value(agent));
+			GoalFact.setSlotValue("goal", new Value(goal));
+			GoalFact.setSlotValue("parent", new Value(parent));
 		    JessEngine.assertFact(GoalFact);
 		} catch (JessException e) {
 			e.printStackTrace();
@@ -327,6 +333,32 @@ public class MentalStates {
 			}
 	    }
 		
+		return null;
+	}
+	
+	public Goal getEventRelatedGoal(Rete JessEngine, Fact inputGoal) {
+		
+		try {
+			Context context = JessEngine.getGlobalContext();
+			
+			Value turnFact   = inputGoal.getSlotValue("turn").resolveValue(context);
+			Value idFact     = inputGoal.getSlotValue("id").resolveValue(context);
+			Value eventFact  = inputGoal.getSlotValue("event").resolveValue(context);
+			Value agentFact  = inputGoal.getSlotValue("agent").resolveValue(context);
+			Value goalFact   = inputGoal.getSlotValue("goal").resolveValue(context);
+			Value parentFact = inputGoal.getSlotValue("parent").resolveValue(context);
+
+			int turn     = turnFact.intValue(context);
+			String id    = idFact.stringValue(context);
+			Events event = (Events)eventFact.javaObjectValue(context);
+			AGENT agent  = (AGENT)agentFact.javaObjectValue(context);
+			Task goal    = (Task)goalFact.javaObjectValue(context);
+			Task parent  = (Task)parentFact.javaObjectValue(context);
+			
+			return new Goal(goal, parent, turn, id, event, agent);
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 }
