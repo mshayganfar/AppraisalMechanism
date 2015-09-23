@@ -22,9 +22,9 @@ public class AppraisalProcesses extends Mechanisms{
 	
 	public AppraisalProcesses() {}
 	
-	public AppraisalProcesses(MentalStates ms, Disco disco) {
-		super(ms, disco);
-		collaboration = new Collaboration(ms, disco);
+	public AppraisalProcesses(MentalStates mentalStates, Disco disco) {
+		super(mentalStates, disco);
+		collaboration = new Collaboration(mentalStates, disco);
 	}
 
 	protected double getEventUtility(Fact beliefFact, Fact motiveFact) {
@@ -173,7 +173,7 @@ public class AppraisalProcesses extends Mechanisms{
 	}
 	
 	// The return value can be computed according to the emotional status of the human.
-	protected double getHumanEmotionalThreshold() { return 0.0; }
+	protected double getHumanEmotionalThreshold(Fact emotionFact) { return 0.0; }
 	
 	protected double getIntentionUtility(Fact intentionFact) {
 		

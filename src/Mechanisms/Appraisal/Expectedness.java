@@ -3,7 +3,6 @@ package Mechanisms.Appraisal;
 import MentalGraph.*;
 import MentalStates.Goal;
 import MetaInformation.Events;
-import jess.Fact;
 
 public class Expectedness extends AppraisalProcesses{
 	

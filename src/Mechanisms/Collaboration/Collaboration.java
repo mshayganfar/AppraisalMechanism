@@ -15,9 +15,6 @@ import MentalStates.Goal;
 import MentalStates.MentalStates;
 import MetaInformation.Events;
 
-import jess.Fact;
-import jess.JessException;
-
 public class Collaboration extends Mechanisms {
 
 	public enum FOCUS_STATUS{ACHIEVED, BLOCKED, INPROGRESS, UNKNOWN};
@@ -29,10 +26,8 @@ public class Collaboration extends Mechanisms {
 	
 	private Disco disco;
 	
-	public Disco getDisco() { return disco; }
-	
-	public Collaboration(MentalStates ms, Disco disco) {
-		super(ms, disco);
+	public Collaboration(MentalStates mentalStates, Disco disco) {
+		super(mentalStates, disco);
 		this.disco = disco;
 	}
 	
@@ -56,17 +51,19 @@ public class Collaboration extends Mechanisms {
 		return true;
 	}
 	
-	public FOCUS_STATUS getGoalStatus(Goal graphGoal) {
+	public Disco getDisco() { return disco; }
+	
+	public FOCUS_STATUS getGoalStatus(Goal goal) {
 		
 		return FOCUS_STATUS.ACHIEVED;
 	}
 	
-	public FOCUS_TYPE getGoalType() {
+	public FOCUS_TYPE getGoalType(Goal goal) {
 		
 		return FOCUS_TYPE.PRIMITIVE;
 	}
 	
-	private Goal getFocusedGoal(Events event) {
+	public Goal getFocusedGoal(Events event) {
 		Task task       = disco.getFocus().getGoal();
 		Task parentTask = disco.getFocus().getParent().getGoal();
 		String taskID   = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
@@ -106,33 +103,28 @@ public class Collaboration extends Mechanisms {
 			return TASK_POSTCONDITION_STATUS.UNSATISFIED;
 	}
 	
-	public String getGoalPreconditions(Fact factGoal) {
-		
-		return "Fake_Preconditions";
-	}
-
-	public RECIPE_APPLICABILITY getRecipeApplicability() {
+	public RECIPE_APPLICABILITY getRecipeApplicability(Goal goal) {
 		
 		return RECIPE_APPLICABILITY.APPLICABLE;
 	}
 	
-	public Boolean doesContibute(Goal eventGoal, Goal graphGoal) {
+	public Boolean doesContibute(Goal contributingGoal, Goal contributedGoal) {
 		
 		return true;
 	}
 	
-	public List<Goal> getContributingGoals(Events event, Task parentTask) {
+	public List<Goal> getContributingGoals(Events event, Task parentGoal) {
 		
 		Task task;
 		String taskID;
 		
 		List<Goal> contributerGoalList = new ArrayList<Goal>();
-		List<Plan> contributerPlanList = disco.getPlan(parentTask.getType()).getChildren();
+		List<Plan> contributerPlanList = disco.getPlan(parentGoal.getType()).getChildren();
 		
 		for (int i=0 ; i < contributerPlanList.size() ; i++) {
 			task   = contributerPlanList.get(i).getGoal();
 			taskID = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
-			contributerGoalList.add(new Goal(task, parentTask, turn.value(), taskID, event, AGENT.SELF)); // Change the agent type by reading the value from Disco.
+			contributerGoalList.add(new Goal(task, parentGoal, turn.value(), taskID, event, AGENT.SELF)); // Change the agent type by reading the value from Disco.
 		}
 		
 		return contributerGoalList;
@@ -152,9 +144,9 @@ public class Collaboration extends Mechanisms {
 		return predecessorGoalList;
 	}
 	
-	public ArrayList<String> getInputs(Goal factGoal) {
+	public List<String> getInputs(Goal goal) {
 		
-		ArrayList<String> goalInputsList = new ArrayList<String>();
+		List<String> goalInputsList = new ArrayList<String>();
 		
 		// Extract all inputs here.
 		

@@ -1,11 +1,9 @@
-import mechanisms.Collaboration;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.User;
 import jess.*;
 
 import Mechanisms.Appraisal.*;
-import Mechanisms.Mechanisms.AGENT;
 import MentalStates.*;
 import MentalGraph.*;
 import MetaInformation.*;
@@ -70,7 +68,7 @@ public class AppraisalMechanism {
 
 	    mg.createGraph(JessEngine);
 
-	    Events event = new Events(ms.getFact(JessEngine, "\"B1-1\""), ms.getFact(JessEngine, "\"G1-1\""), EVENT_TYPE.ACTION);
+	    Events event = new Events(ms.getFact(JessEngine, "\"B1-1\""), ms.getFact(JessEngine, "\"G1-1\""), ms.getFact(JessEngine, "\"E1-1\""), EVENT_TYPE.ACTION);
 	    
 	    System.out.println(event.getEventRelatedBelief());
 	    

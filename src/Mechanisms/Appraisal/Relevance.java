@@ -1,22 +1,18 @@
 package Mechanisms.Appraisal;
 
 import edu.wpi.disco.Disco;
-import jess.Fact;
-import jess.JessException;
 import jess.Rete;
-import Mechanisms.Mechanisms.AGENT;
 import MentalGraph.*;
 import MentalStates.Goal;
 import MentalStates.MentalStates;
 import MetaInformation.Events;
-import MetaInformation.Events.EVENT_TYPE;
 
 public class Relevance extends AppraisalProcesses {
 	
 	public enum RELEVANCE {RELEVANT, IRRELEVANT};
 	
-	public Relevance(MentalStates ms, Disco disco) {
-		super(ms, disco);
+	public Relevance(MentalStates mentalStates, Disco disco) {
+		super(mentalStates, disco);
 	}
 	
 	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., B1-1.
@@ -27,7 +23,7 @@ public class Relevance extends AppraisalProcesses {
 		else {
 			// This utility belongs to the belief and motive corresponded to the recent (new) event.
 			double eventUtility = getEventUtility(event.getEventRelatedBelief(), mentalGraph.getPathMotive(mentalGraph.getShortestPathVertices(event.getEventRelatedBelief(), event.getEventRelatedGoalFact())));
-			if(eventUtility > getHumanEmotionalThreshold())
+			if(eventUtility > getHumanEmotionalThreshold(event.getEventRelatedEmotion()))
 				return RELEVANCE.RELEVANT;
 			else
 				return RELEVANCE.IRRELEVANT;

@@ -27,17 +27,16 @@ import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 
-
 public class MentalGraph {
 	
 	private static Graph<Fact, Edge> graph = null;
 	
-	private Goal extractGoal(Fact goalFact) {
-		return null; //This needs to be implemented...................................
-	}
-	
 	public MentalGraph() {
 		this.graph = new DirectedSparseGraph<Fact, Edge>();
+	}
+	
+	private Goal extractGoal(Fact goalFact) {
+		return null; //This needs to be implemented...................................
 	}
 	
 	public Goal getGraphGoal() {

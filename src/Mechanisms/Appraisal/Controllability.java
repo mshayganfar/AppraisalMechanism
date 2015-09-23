@@ -1,12 +1,10 @@
 package Mechanisms.Appraisal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jess.Fact;
 import jess.JessException;
 
-import Mechanisms.Mechanisms.AGENT;
 import MentalGraph.MentalGraph;
 import MentalStates.Goal;
 import MetaInformation.Events;
@@ -24,7 +22,7 @@ public class Controllability extends AppraisalProcesses{
 						(dblPredecessors * getPredecessorRatioWeight()) + (dblInputs * getInputRatioWeight()))
 						/(getAgencyWeight() + getAutonomyWeight() + getPredecessorRatioWeight() + getInputRatioWeight());
 		
-		if(utilityValue >= getHumanEmotionalThreshold())
+		if(utilityValue >= getHumanEmotionalThreshold(event.getEventRelatedEmotion()))
 			return true;
 		else
 			return false;
@@ -69,7 +67,7 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblSelfCounter = 0;
 		
-		Goal eventGoal = event.getEventRelatedGoal(JessEngine, ms);
+		Goal eventGoal = event.getEventRelatedGoal(JessEngine, mentalStates);
 		
 		if(eventGoal == null)
 			return 0.0;
@@ -87,7 +85,7 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblSucceededPredecessorCounter = 0.0;
 		
-		Goal eventGoal = event.getEventRelatedGoal(JessEngine, ms);
+		Goal eventGoal = event.getEventRelatedGoal(JessEngine, mentalStates);
 		
 		if(eventGoal == null)
 			return 0.0;
@@ -110,7 +108,7 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblAvailableInputCounter = 0.0;
 		
-		ArrayList<String> goalInputsList = collaboration.getInputs(event.getEventRelatedGoal(JessEngine, ms));
+		List<String> goalInputsList = collaboration.getInputs(event.getEventRelatedGoal(JessEngine, mentalStates));
 		
 		if(goalInputsList.size() > 0) {
 			for (int i = 0; i < goalInputsList.size() ; i++) {

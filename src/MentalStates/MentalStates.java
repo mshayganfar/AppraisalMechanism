@@ -18,10 +18,10 @@ import jess.Value;
 public class MentalStates {
 
 	private Fact beliefFact          = null;
-	private Fact MotiveFact          = null;
-	private Fact IntentionFact       = null;
-	private Fact GoalFact            = null;
-	private Fact EmotionInstanceFact = null;
+	private Fact motiveFact          = null;
+	private Fact intentionFact       = null;
+	private Fact goalFact            = null;
+	private Fact emotionInstanceFact = null;
 	
 	public enum FACT_TYPE {BELIEF, INTENTION, MOTIVE, GOAL, EMOTION_INSTANCE};
 	public enum BELIEF_TYPE {EXTERNAL_EVENT, INTERNAL_EVENT, NONE};
@@ -53,16 +53,16 @@ public class MentalStates {
 	
 	public void assertMotive(Rete JessEngine, String strTurn, String strMotiveID, String strTask, String strEvent, String strAgent, String strMotive, String strMotiveStatus, String strMotiveType) {
 		try {
-			MotiveFact = new Fact("motive", JessEngine);
-			MotiveFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
-			MotiveFact.setSlotValue("id", new Value(strMotiveID, RU.STRING));
-			MotiveFact.setSlotValue("task", new Value(strTask, RU.STRING));
-			MotiveFact.setSlotValue("event", new Value(strEvent, RU.STRING));
-			MotiveFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
-			MotiveFact.setSlotValue("motive", new Value(strMotive, RU.STRING));
-			MotiveFact.setSlotValue("motive-status", new Value(strMotiveStatus, RU.SYMBOL));
-			MotiveFact.setSlotValue("motive-type", new Value(strMotiveType, RU.SYMBOL));
-		    JessEngine.assertFact(MotiveFact);
+			motiveFact = new Fact("motive", JessEngine);
+			motiveFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
+			motiveFact.setSlotValue("id", new Value(strMotiveID, RU.STRING));
+			motiveFact.setSlotValue("task", new Value(strTask, RU.STRING));
+			motiveFact.setSlotValue("event", new Value(strEvent, RU.STRING));
+			motiveFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
+			motiveFact.setSlotValue("motive", new Value(strMotive, RU.STRING));
+			motiveFact.setSlotValue("motive-status", new Value(strMotiveStatus, RU.SYMBOL));
+			motiveFact.setSlotValue("motive-type", new Value(strMotiveType, RU.SYMBOL));
+		    JessEngine.assertFact(motiveFact);
 		} catch (JessException e) {
 			e.printStackTrace();
 		}
@@ -70,14 +70,14 @@ public class MentalStates {
 	
 	public void assertIntention(Rete JessEngine, String strTurn, String strIntentionID, String strTask, String strEvent, String strAgent, String strIntention) {
 		try {
-			IntentionFact = new Fact("intention", JessEngine);
-			IntentionFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
-			IntentionFact.setSlotValue("id", new Value(strIntentionID, RU.STRING));
-			IntentionFact.setSlotValue("task", new Value(strTask, RU.STRING));
-			IntentionFact.setSlotValue("event", new Value(strEvent, RU.STRING));
-			IntentionFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
-			IntentionFact.setSlotValue("intention", new Value(strIntention, RU.STRING));
-		    JessEngine.assertFact(IntentionFact);
+			intentionFact = new Fact("intention", JessEngine);
+			intentionFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
+			intentionFact.setSlotValue("id", new Value(strIntentionID, RU.STRING));
+			intentionFact.setSlotValue("task", new Value(strTask, RU.STRING));
+			intentionFact.setSlotValue("event", new Value(strEvent, RU.STRING));
+			intentionFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
+			intentionFact.setSlotValue("intention", new Value(strIntention, RU.STRING));
+		    JessEngine.assertFact(intentionFact);
 		} catch (JessException e) {
 			e.printStackTrace();
 		}
@@ -85,14 +85,14 @@ public class MentalStates {
 	
 	public void assertGoal(Rete JessEngine, Integer intTurn, String strGoalID, Events event, AGENT agent, Goal goal, Goal parent) {
 		try {
-			GoalFact = new Fact("goal", JessEngine);
-			GoalFact.setSlotValue("turn", new Value(intTurn, RU.INTEGER));
-			GoalFact.setSlotValue("id", new Value(strGoalID, RU.STRING));
-			GoalFact.setSlotValue("event", new Value(event));
-			GoalFact.setSlotValue("agent", new Value(agent));
-			GoalFact.setSlotValue("goal", new Value(goal));
-			GoalFact.setSlotValue("parent", new Value(parent));
-		    JessEngine.assertFact(GoalFact);
+			goalFact = new Fact("goal", JessEngine);
+			goalFact.setSlotValue("turn", new Value(intTurn, RU.INTEGER));
+			goalFact.setSlotValue("id", new Value(strGoalID, RU.STRING));
+			goalFact.setSlotValue("event", new Value(event));
+			goalFact.setSlotValue("agent", new Value(agent));
+			goalFact.setSlotValue("goal", new Value(goal));
+			goalFact.setSlotValue("parent", new Value(parent));
+		    JessEngine.assertFact(goalFact);
 		} catch (JessException e) {
 			e.printStackTrace();
 		}
@@ -100,14 +100,14 @@ public class MentalStates {
 	
 	public void assertEmotionInstance(Rete JessEngine, String strTurn, String strEmotionInstanceID, String strTask, String strEvent, String strAgent, String strEmotionInstance) {
 		try {
-			EmotionInstanceFact = new Fact("emotion-instance", JessEngine);
-			EmotionInstanceFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
-			EmotionInstanceFact.setSlotValue("id", new Value(strEmotionInstanceID, RU.STRING));
-			EmotionInstanceFact.setSlotValue("task", new Value(strTask, RU.STRING));
-			EmotionInstanceFact.setSlotValue("event", new Value(strEvent, RU.STRING));
-			EmotionInstanceFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
-			EmotionInstanceFact.setSlotValue("emotion-instance", new Value(strEmotionInstance, RU.SYMBOL));
-		    JessEngine.assertFact(EmotionInstanceFact);
+			emotionInstanceFact = new Fact("emotion-instance", JessEngine);
+			emotionInstanceFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
+			emotionInstanceFact.setSlotValue("id", new Value(strEmotionInstanceID, RU.STRING));
+			emotionInstanceFact.setSlotValue("task", new Value(strTask, RU.STRING));
+			emotionInstanceFact.setSlotValue("event", new Value(strEvent, RU.STRING));
+			emotionInstanceFact.setSlotValue("agent", new Value(strAgent, RU.SYMBOL));
+			emotionInstanceFact.setSlotValue("emotion-instance", new Value(strEmotionInstance, RU.SYMBOL));
+		    JessEngine.assertFact(emotionInstanceFact);
 		} catch (JessException e) {
 			e.printStackTrace();
 		}

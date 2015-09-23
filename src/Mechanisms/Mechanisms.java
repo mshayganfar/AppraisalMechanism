@@ -12,7 +12,7 @@ public class Mechanisms {
 	public enum AGENT{SELF, OTHER, BOTH, NONE};
 	
 	protected static Rete JessEngine = new Rete();
-	public MentalStates ms = null;
+	public MentalStates mentalStates = null;
 	
 	protected static final String strAppraisalModuleTemplates = "templates/mental-states/mental-states-templates.clp";
 	
@@ -24,7 +24,7 @@ public class Mechanisms {
 	
 	public Mechanisms(MentalStates ms, Disco disco) {
 		turn = new Turns();
-		this.ms = ms;
+		this.mentalStates = ms;
 		this.disco = disco;
 	}
 	
