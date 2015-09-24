@@ -1,6 +1,10 @@
+import edu.wpi.cetask.Task;
+import edu.wpi.cetask.TaskModel;
 import edu.wpi.disco.Agent;
+import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.User;
+import edu.wpi.disco.lang.Propose;
 import jess.*;
 
 import Mechanisms.Appraisal.*;
@@ -37,7 +41,19 @@ public class AppraisalMechanism {
 												  args.length > 0 && args[0].length() > 0 ? args[0] : null);
 		interaciton.start(true);
 		
-		System.out.println(interaciton.getDisco());
+		Disco disco = interaciton.getDisco();
+		
+		System.out.println(disco);
+		
+		TaskModel taskModel = disco.load("/TaskModel/ABC.xml");
+		Task task = taskModel.getTaskClass("A").newInstance();
+		
+		System.out.println(task.toString());
+		System.out.println(taskModel.toString());
+
+		interaciton.done(false, Propose.Should.newInstance(disco, false, task), null);
+		
+		interaciton.getSystem().respond(interaciton, true, false, false);
 		
 		Relevance rap = new Relevance(ms, interaciton.getDisco());
 		rap.initializeMentalStates();
