@@ -49,24 +49,15 @@ public class Collaboration extends Mechanisms {
 			return false;
 	}
 	
-	public boolean isInputAvailable(Goal goal) {
+	public boolean isInputAvailable(Goal goal, Input input) {
 		
-		List<Input> inputList = goal.getGoal().getType().getInputs();
-		
-		for (int i=0 ; i < inputList.size() ; i++) {
-			if(!goal.getGoal().getGoal().isDefinedSlot(inputList.get(i).toString()))
-				return false;
-		}
+		if(!goal.getGoal().getGoal().isDefinedSlot(input.toString()))
+			return false;
 		
 		return true;
 	}
 	
 	public Disco getDisco() { return disco; }
-	
-	public FOCUS_STATUS getGoalStatus(Goal goal) {
-		
-		return FOCUS_STATUS.ACHIEVED;
-	}
 	
 	public FOCUS_TYPE getGoalType(Goal goal) {
 		
@@ -150,11 +141,9 @@ public class Collaboration extends Mechanisms {
 		return predecessorGoalList;
 	}
 	
-	public List<String> getInputs(Goal goal) {
+	public List<Input> getInputs(Goal goal) {
 		
-		List<String> goalInputsList = new ArrayList<String>();
-		
-		// Extract all inputs here.
+		List<Input> goalInputsList = goal.getGoal().getType().getInputs();
 		
 		return goalInputsList;
 	}

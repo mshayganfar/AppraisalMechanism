@@ -2,6 +2,8 @@ package Mechanisms.Appraisal;
 
 import java.util.List;
 
+import edu.wpi.cetask.TaskClass.Input;
+
 import jess.Fact;
 import jess.JessException;
 
@@ -108,12 +110,14 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblAvailableInputCounter = 0.0;
 		
-		List<String> goalInputsList = collaboration.getInputs(event.getEventRelatedGoal(JessEngine, mentalStates));
+		Goal eventGoal = event.getEventRelatedGoal(JessEngine, mentalStates);
+		
+		List<Input> goalInputsList = collaboration.getInputs(eventGoal);
 		
 		if(goalInputsList.size() > 0) {
 			for (int i = 0; i < goalInputsList.size() ; i++) {
 				if (!goalInputsList.get(i).equals(null))
-					if(collaboration.isInputAvailable(goalInputsList.get(i).toString()))
+					if(collaboration.isInputAvailable(eventGoal, goalInputsList.get(i)))
 						dblAvailableInputCounter++;
 			}
 			return ((double)dblAvailableInputCounter/goalInputsList.size());

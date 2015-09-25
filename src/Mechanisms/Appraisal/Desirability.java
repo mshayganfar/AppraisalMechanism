@@ -28,13 +28,13 @@ public class Desirability extends AppraisalProcesses{
 		Goal graphGoal    = mentalGraph.getGraphGoal();
 		Goal topLevelGoal = collaboration.getTopLevelGoal(event);
 		
-		if (collaboration.getGoalStatus(topLevelGoal).equals(TOP_LEVEL_TASK_STATUS.ACHIEVED)) return DESIRABILITY.HIGHEST_DESIRABLE;
-		if (collaboration.getGoalStatus(topLevelGoal).equals(TOP_LEVEL_TASK_STATUS.BLOCKED)) return DESIRABILITY.HIGHEST_UNDESIRABLE;
-		if (collaboration.getGoalStatus(topLevelGoal).equals(TOP_LEVEL_TASK_STATUS.INPROGRESS)) {
-			if (collaboration.getGoalStatus(graphGoal).equals(FOCUS_STATUS.ACHIEVED)) return DESIRABILITY.HIGH_DESIRABLE;
-			if (collaboration.getGoalStatus(graphGoal).equals(FOCUS_STATUS.BLOCKED)) return DESIRABILITY.HIGH_UNDESIRABLE;
-			if (collaboration.getGoalStatus(graphGoal).equals(FOCUS_STATUS.INPROGRESS)) return DESIRABILITY.MEDIUM_DESIRABLE;
-			if (collaboration.getGoalStatus(graphGoal).equals(FOCUS_STATUS.UNKNOWN)) {
+		if (collaboration.isGoalAchieved(topLevelGoal)) return DESIRABILITY.HIGHEST_DESIRABLE;
+		else if (!collaboration.isGoalAchieved(topLevelGoal)) return DESIRABILITY.HIGHEST_UNDESIRABLE;
+		else if (collaboration.isGoalAchieved(topLevelGoal) == null) {
+			if (collaboration.isGoalAchieved(graphGoal)) return DESIRABILITY.HIGH_DESIRABLE;
+			else if (!collaboration.isGoalAchieved(graphGoal)) return DESIRABILITY.HIGH_UNDESIRABLE;
+			else if (collaboration.isGoalAchieved(graphGoal) == null) return DESIRABILITY.MEDIUM_DESIRABLE; // Check this!
+			else if (collaboration.isGoalAchieved(graphGoal)) { // Check this too!
 				
 				Goal eventGoal = collaboration.recognizeGoal(event);
 				
