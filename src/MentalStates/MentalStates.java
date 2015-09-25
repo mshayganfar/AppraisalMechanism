@@ -6,6 +6,7 @@ import java.util.Map;
 import Mechanisms.Mechanisms.AGENT;
 import MetaInformation.Events;
 
+import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.Task;
 
 import jess.Context;
@@ -352,8 +353,8 @@ public class MentalStates {
 			String id    = idFact.stringValue(context);
 			Events event = (Events)eventFact.javaObjectValue(context);
 			AGENT agent  = (AGENT)agentFact.javaObjectValue(context);
-			Task goal    = (Task)goalFact.javaObjectValue(context);
-			Task parent  = (Task)parentFact.javaObjectValue(context);
+			Plan goal    = (Plan)goalFact.javaObjectValue(context);
+			Plan parent  = (Plan)parentFact.javaObjectValue(context);
 			
 			return new Goal(goal, parent, turn, id, event, agent);
 		} catch (JessException e) {

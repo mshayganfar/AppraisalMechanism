@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.cetask.Plan;
-import edu.wpi.cetask.Task;
+import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
@@ -41,12 +41,22 @@ public class Collaboration extends Mechanisms {
 		return goal.getGoal().isAchieved();
 	}
 	
-	public Boolean isGoalFocused(Goal goal) {
+	public boolean isGoalFocused(Goal goal) {
 		
-		return true;
+		if (getDisco().getFocus().equals(goal.getGoal()))
+			return true;
+		else
+			return false;
 	}
 	
-	public Boolean isInputAvailable(String strInput) {
+	public boolean isInputAvailable(Goal goal) {
+		
+		List<Input> inputList = goal.getGoal().getType().getInputs();
+		
+		for (int i=0 ; i < inputList.size() ; i++) {
+			if(!goal.getGoal().getGoal().isDefinedSlot(inputList.get(i).toString()))
+				return false;
+		}
 		
 		return true;
 	}
@@ -64,8 +74,8 @@ public class Collaboration extends Mechanisms {
 	}
 	
 	public Goal getFocusedGoal(Events event) {
-		Task task       = disco.getFocus().getGoal();
-		Task parentTask = disco.getFocus().getParent().getGoal();
+		Plan task       = disco.getFocus();
+		Plan parentTask = disco.getFocus().getParent();
 		String taskID   = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
 		
 		Goal goal = new Goal(task, parentTask, turn.value(), taskID, event, AGENT.SELF); // Change the agent type by reading the value from Disco.
@@ -75,7 +85,7 @@ public class Collaboration extends Mechanisms {
 	
 	public Goal getTopLevelGoal(Events event) {
 		
-		Task task = disco.getTop(disco.getFocus()).getGoal();
+		Plan task = disco.getTop(disco.getFocus());
 		String taskID = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
 		
 		Goal goal = new Goal(task, null, turn.value(), taskID, event, AGENT.SELF); // Change the agent type by reading the value from Disco.
@@ -85,9 +95,7 @@ public class Collaboration extends Mechanisms {
 	
 	public TASK_PRECONDITION_STATUS getGoalPreconditionStatus(Goal goal) {
 		
-		if (goal.getGoal().isApplicable() == null)
-			return TASK_PRECONDITION_STATUS.UNKNOWN;
-		else if (goal.getGoal().isApplicable())
+		if (goal.getGoal().isLive())
 			return TASK_PRECONDITION_STATUS.SATISFIED;
 		else
 			return TASK_PRECONDITION_STATUS.UNSATISFIED;
@@ -95,9 +103,7 @@ public class Collaboration extends Mechanisms {
 	
 	public TASK_POSTCONDITION_STATUS getGoalPostconditionStatus(Goal goal) {
 		
-		if (goal.getGoal().isApplicable() == null)
-			return TASK_POSTCONDITION_STATUS.UNKNOWN;
-		else if (goal.getGoal().isApplicable())
+		if (goal.getGoal().isDone())
 			return TASK_POSTCONDITION_STATUS.SATISFIED;
 		else
 			return TASK_POSTCONDITION_STATUS.UNSATISFIED;
@@ -113,16 +119,16 @@ public class Collaboration extends Mechanisms {
 		return true;
 	}
 	
-	public List<Goal> getContributingGoals(Events event, Task parentGoal) {
+	public List<Goal> getContributingGoals(Events event, Plan parentGoal) {
 		
-		Task task;
+		Plan task;
 		String taskID;
 		
 		List<Goal> contributerGoalList = new ArrayList<Goal>();
 		List<Plan> contributerPlanList = disco.getPlan(parentGoal.getType()).getChildren();
 		
 		for (int i=0 ; i < contributerPlanList.size() ; i++) {
-			task   = contributerPlanList.get(i).getGoal();
+			task   = contributerPlanList.get(i);
 			taskID = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
 			contributerGoalList.add(new Goal(task, parentGoal, turn.value(), taskID, event, AGENT.SELF)); // Change the agent type by reading the value from Disco.
 		}

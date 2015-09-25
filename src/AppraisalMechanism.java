@@ -46,12 +46,13 @@ public class AppraisalMechanism {
 		System.out.println(disco);
 		
 		TaskModel taskModel = disco.load("/TaskModel/ABC.xml");
-		Task task = taskModel.getTaskClass("A").newInstance();
+		Task task = taskModel.getTaskClass("d").newInstance();
 		
 		System.out.println(task.toString());
 		System.out.println(taskModel.toString());
 
-		interaciton.done(false, Propose.Should.newInstance(disco, false, task), null);
+//		interaciton.done(false, Propose.Should.newInstance(disco, false, task), null);
+		interaciton.done(false, task, null);
 		
 		interaciton.getSystem().respond(interaciton, true, false, false);
 		

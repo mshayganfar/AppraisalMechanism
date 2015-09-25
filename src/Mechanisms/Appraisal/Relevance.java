@@ -47,8 +47,8 @@ public class Relevance extends AppraisalProcesses {
 		System.out.println(collaboration.getDisco().getFocus().getGoal());
 		System.out.println(collaboration.getDisco().getFocus().getParent().getGoal());
 		
-		Goal child   = new Goal(collaboration.getDisco().getFocus().getGoal(), collaboration.getDisco().getFocus().getParent().getGoal(), 1, "testID", null, AGENT.BOTH);
-		Goal parent  = new Goal(collaboration.getDisco().getFocus().getGoal(), null, 1, "testID", null, AGENT.BOTH);
+		Goal child   = new Goal(collaboration.getDisco().getFocus(), collaboration.getDisco().getFocus().getParent(), 1, "testID", null, AGENT.BOTH);
+		Goal parent  = new Goal(collaboration.getDisco().getFocus(), null, 1, "testID", null, AGENT.BOTH);
 		
 		ms.assertGoal(JessEngine, 1, "G1-1", null, AGENT.SELF, child, parent);
 	}

@@ -1,12 +1,8 @@
 package MentalStates;
 
-import jess.Fact;
-import jess.JessException;
-import jess.RU;
-import jess.Value;
 import Mechanisms.Mechanisms.AGENT;
 import MetaInformation.Events;
-import edu.wpi.cetask.Task;
+import edu.wpi.cetask.Plan;
 
 public class Goal extends MentalStates{
 	
@@ -14,10 +10,10 @@ public class Goal extends MentalStates{
 	private String id;
 	private Events event;
 	private AGENT agent;
-	private Task goal;
-	private Task parent;
+	private Plan goal;
+	private Plan parent;
 	
-	public Goal(Task goal, Task parent, int turn, String id, Events event, AGENT agent) {
+	public Goal(Plan goal, Plan parent, int turn, String id, Events event, AGENT agent) {
 		this.turn   = turn;
 		this.id     = id;
 		this.event  = event;
@@ -26,7 +22,7 @@ public class Goal extends MentalStates{
 		this.parent = parent;
 	}
 	
-	public Task getGoal() {
+	public Plan getGoal() {
 		return this.goal;
 	}
 }
