@@ -25,13 +25,13 @@ public class Expectedness extends AppraisalProcesses{
 				Goal topLevelGoal = collaboration.getTopLevelGoal(event);
 				
 				if (!collaboration.isGoalAchieved(topLevelGoal)) {
-					if (collaboration.doesContibute(eventGoal, topLevelGoal))
+					if (collaboration.doesContribute(eventGoal, topLevelGoal))
 						return EXPECTEDNESS.EXPECTED;
 					else
 						return EXPECTEDNESS.UNEXPECTED;
 				}
 				else {
-					if (collaboration.doesContibute(eventGoal, graphGoal))
+					if (collaboration.doesContribute(eventGoal, graphGoal))
 						return EXPECTEDNESS.EXPECTED;
 					else {
 						if (collaboration.isGoalFocused(eventGoal))

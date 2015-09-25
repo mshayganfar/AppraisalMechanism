@@ -356,7 +356,7 @@ public class MentalStates {
 			Plan goal    = (Plan)goalFact.javaObjectValue(context);
 			Plan parent  = (Plan)parentFact.javaObjectValue(context);
 			
-			return new Goal(goal, parent, turn, id, event, agent);
+			return new Goal(goal, turn, id, event, agent);
 		} catch (JessException e) {
 			e.printStackTrace();
 		}

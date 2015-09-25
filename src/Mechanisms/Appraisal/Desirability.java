@@ -45,8 +45,8 @@ public class Desirability extends AppraisalProcesses{
 				if (collaboration.getGoalPreconditionStatus(eventGoal).equals(TASK_PRECONDITION_STATUS.UNSATISFIED)) return DESIRABILITY.LOW_UNDESIRABLE;
 				if (collaboration.getGoalPreconditionStatus(eventGoal).equals(TASK_PRECONDITION_STATUS.UNKNOWN)) {
 					
-					if (collaboration.doesContibute(eventGoal, graphGoal)) return DESIRABILITY.NEUTRAL;
-					if (!collaboration.doesContibute(eventGoal, graphGoal)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
+					if (collaboration.doesContribute(eventGoal, graphGoal)) return DESIRABILITY.NEUTRAL;
+					if (!collaboration.doesContribute(eventGoal, graphGoal)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
 				}
 			}
 		}

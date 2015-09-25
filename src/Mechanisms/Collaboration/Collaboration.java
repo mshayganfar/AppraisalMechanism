@@ -38,12 +38,12 @@ public class Collaboration extends Mechanisms {
 	
 	public Boolean isGoalAchieved(Goal goal) {
 		
-		return goal.getGoal().isAchieved();
+		return goal.getPlan().isAchieved();
 	}
 	
 	public boolean isGoalFocused(Goal goal) {
 		
-		if (getDisco().getFocus().equals(goal.getGoal()))
+		if (getDisco().getFocus().equals(goal.getPlan()))
 			return true;
 		else
 			return false;
@@ -51,7 +51,7 @@ public class Collaboration extends Mechanisms {
 	
 	public boolean isInputAvailable(Goal goal, Input input) {
 		
-		if(!goal.getGoal().getGoal().isDefinedSlot(input.toString()))
+		if(!goal.getPlan().getGoal().isDefinedSlot(input.getName()))
 			return false;
 		
 		return true;
@@ -66,10 +66,9 @@ public class Collaboration extends Mechanisms {
 	
 	public Goal getFocusedGoal(Events event) {
 		Plan task       = disco.getFocus();
-		Plan parentTask = disco.getFocus().getParent();
 		String taskID   = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
 		
-		Goal goal = new Goal(task, parentTask, turn.value(), taskID, event, AGENT.SELF); // Change the agent type by reading the value from Disco.
+		Goal goal = new Goal(task, turn.value(), taskID, event, AGENT.SELF); // Change the agent type by reading the value from Disco.
 		
 		return goal;
 	}
@@ -79,14 +78,14 @@ public class Collaboration extends Mechanisms {
 		Plan task = disco.getTop(disco.getFocus());
 		String taskID = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
 		
-		Goal goal = new Goal(task, null, turn.value(), taskID, event, AGENT.SELF); // Change the agent type by reading the value from Disco.
+		Goal goal = new Goal(task, turn.value(), taskID, event, AGENT.SELF); // Change the agent type by reading the value from Disco.
 		// Also change the place where needs to hold the goal. To be globally accessible.
 		return goal;
 	}
 	
 	public TASK_PRECONDITION_STATUS getGoalPreconditionStatus(Goal goal) {
 		
-		if (goal.getGoal().isLive())
+		if (goal.getPlan().isLive())
 			return TASK_PRECONDITION_STATUS.SATISFIED;
 		else
 			return TASK_PRECONDITION_STATUS.UNSATISFIED;
@@ -94,34 +93,32 @@ public class Collaboration extends Mechanisms {
 	
 	public TASK_POSTCONDITION_STATUS getGoalPostconditionStatus(Goal goal) {
 		
-		if (goal.getGoal().isDone())
+		if (goal.getPlan().isDone())
 			return TASK_POSTCONDITION_STATUS.SATISFIED;
 		else
 			return TASK_POSTCONDITION_STATUS.UNSATISFIED;
 	}
 	
-	public RECIPE_APPLICABILITY getRecipeApplicability(Goal goal) {
+	public boolean doesContribute(Goal contributingGoal, Goal contributedGoal) {
 		
-		return RECIPE_APPLICABILITY.APPLICABLE;
-	}
-	
-	public Boolean doesContibute(Goal contributingGoal, Goal contributedGoal) {
-		
-		return true;
+		if (contributedGoal.getPlan().equals(contributingGoal.getPlan().getParent()))
+			return true;
+		else
+			return false;
 	}
 	
 	public List<Goal> getContributingGoals(Events event, Plan parentGoal) {
 		
-		Plan task;
-		String taskID;
+		Plan goal;
+		String id;
 		
 		List<Goal> contributerGoalList = new ArrayList<Goal>();
-		List<Plan> contributerPlanList = disco.getPlan(parentGoal.getType()).getChildren();
+		List<Plan> contributerPlanList = parentGoal.getChildren();
 		
 		for (int i=0 ; i < contributerPlanList.size() ; i++) {
-			task   = contributerPlanList.get(i);
-			taskID = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
-			contributerGoalList.add(new Goal(task, parentGoal, turn.value(), taskID, event, AGENT.SELF)); // Change the agent type by reading the value from Disco.
+			goal = contributerPlanList.get(i);
+			id = goal.getType()+"@"+Integer.toHexString(System.identityHashCode(goal));
+			contributerGoalList.add(new Goal(goal, turn.value(), id, event, AGENT.SELF)); // Change the agent type by reading the value from Disco.
 		}
 		
 		return contributerGoalList;
@@ -129,8 +126,24 @@ public class Collaboration extends Mechanisms {
 	
 	public AGENT getResponsibleAgent(Goal goal) {
 		
-		return AGENT.SELF;
+		if(!goal.getPlan().isPrimitive())
+			return AGENT.BOTH;
+		else if (goal.getPlan().getGoal().getExternal()) // This must be changed!
+			return AGENT.SELF;
+		else
+			return AGENT.OTHER;
 	}
+	
+	public List<Input> getInputs(Goal goal) {
+		
+		return goal.getPlan().getGoal().getType().getInputs();
+	}
+	
+	public Goal recognizeGoal(Events event) {
+		return null; // This needs to be implemented.............................................
+	}
+	
+	public RECIPE_APPLICABILITY getRecipeApplicability(Goal goal) { return RECIPE_APPLICABILITY.APPLICABLE; }
 	
 	public List<Goal> getPredecessors(Goal goal) {
 		
@@ -139,16 +152,5 @@ public class Collaboration extends Mechanisms {
 		// Extract all predecessor here.
 		
 		return predecessorGoalList;
-	}
-	
-	public List<Input> getInputs(Goal goal) {
-		
-		List<Input> goalInputsList = goal.getGoal().getType().getInputs();
-		
-		return goalInputsList;
-	}
-	
-	public Goal recognizeGoal(Events event) {
-		return null; // This needs to be implemented.............................................
 	}
 }

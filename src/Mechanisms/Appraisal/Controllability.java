@@ -74,7 +74,7 @@ public class Controllability extends AppraisalProcesses{
 		if(eventGoal == null)
 			return 0.0;
 		
-		List<Goal> taskContributersList = collaboration.getContributingGoals(event, eventGoal.getGoal());
+		List<Goal> taskContributersList = collaboration.getContributingGoals(event, eventGoal.getPlan());
 		
 		for (int i = 0; i < taskContributersList.size() ; i++)
 			if(collaboration.getResponsibleAgent(taskContributersList.get(i)).equals(AGENT.SELF))
