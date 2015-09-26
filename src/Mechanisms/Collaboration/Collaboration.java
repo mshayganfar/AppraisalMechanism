@@ -126,7 +126,7 @@ public class Collaboration extends Mechanisms {
 	
 	public AGENT getResponsibleAgent(Goal goal) {
 		
-		if(!goal.getPlan().isPrimitive())
+		if(!goal.getPlan().getGoal().isPrimitive())
 			return AGENT.BOTH;
 		else if (goal.getPlan().getGoal().getExternal()) // This must be changed!
 			return AGENT.SELF;
