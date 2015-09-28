@@ -123,7 +123,7 @@ public class Controllability extends AppraisalProcesses{
 			return ((double)dblAvailableInputCounter/goalInputsList.size());
 		}
 		else
-			return dblAvailableInputCounter;
+			return 1.0;
 		
 	}
 	

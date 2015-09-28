@@ -61,7 +61,10 @@ public class Collaboration extends Mechanisms {
 	
 	public FOCUS_TYPE getGoalType(Goal goal) {
 		
-		return FOCUS_TYPE.PRIMITIVE;
+		if(goal.getPlan().getGoal().isPrimitive())
+			return FOCUS_TYPE.PRIMITIVE;
+		else
+			return FOCUS_TYPE.NONPRIMITIVE;
 	}
 	
 	public Goal getFocusedGoal(Events event) {
@@ -128,7 +131,7 @@ public class Collaboration extends Mechanisms {
 		
 		if(!goal.getPlan().getGoal().isPrimitive())
 			return AGENT.BOTH;
-		else if (goal.getPlan().getGoal().getExternal()) // This must be changed!
+		else if (goal.getPlan().getGoal().getExternal())
 			return AGENT.SELF;
 		else
 			return AGENT.OTHER;
