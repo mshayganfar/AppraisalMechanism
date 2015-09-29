@@ -17,7 +17,7 @@ import MetaInformation.Events;
 
 public class Collaboration extends Mechanisms {
 
-	public enum FOCUS_STATUS{ACHIEVED, BLOCKED, INPROGRESS, UNKNOWN};
+	public enum TASK_STATUS{ACHIEVED, BLOCKED, INPROGRESS, UNKNOWN};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
 	public enum TOP_LEVEL_TASK_STATUS{ACHIEVED, BLOCKED, INPROGRESS, UNKNOWN};
 	public enum TASK_PRECONDITION_STATUS{SATISFIED, UNSATISFIED, UNKNOWN};
@@ -38,12 +38,22 @@ public class Collaboration extends Mechanisms {
 	
 	public Boolean isPlanAchieved(Plan plan) {
 		
-		return plan.isDone(); // Needs to be revised.
+		if (getGoalPostconditionStatus(plan).equals(TASK_POSTCONDITION_STATUS.SATISFIED))
+			return true;
+		else if (getGoalPostconditionStatus(plan).equals(TASK_POSTCONDITION_STATUS.UNSATISFIED))
+			return false;
+		else
+			return null;
 	}
 	
 	public Boolean isGoalAchieved(Goal goal) {
 		
-		return goal.getPlan().isDone(); // Needs to be revised.
+		if (getGoalPostconditionStatus(goal.getPlan()).equals(TASK_POSTCONDITION_STATUS.SATISFIED))
+			return true;
+		else if (getGoalPostconditionStatus(goal.getPlan()).equals(TASK_POSTCONDITION_STATUS.UNSATISFIED))
+			return false;
+		else
+			return null;
 	}
 	
 	public boolean isGoalFocused(Goal goal) {
@@ -62,6 +72,14 @@ public class Collaboration extends Mechanisms {
 		return true;
 	}
 	
+	public boolean isGoalLive(Goal goal) {
+		
+		if (goal.getPlan().isLive())
+			return true;
+		else
+			return false;
+	}
+
 	public Disco getDisco() { return disco; }
 	
 	public FOCUS_TYPE getGoalType(Goal goal) {
@@ -91,20 +109,39 @@ public class Collaboration extends Mechanisms {
 		return goal;
 	}
 	
-	public TASK_PRECONDITION_STATUS getGoalPreconditionStatus(Goal goal) {
+	public TASK_STATUS getGoalPostconditionStatus(Plan plan) {
 		
-		if (goal.getPlan().isLive())
-			return TASK_PRECONDITION_STATUS.SATISFIED;
-		else
-			return TASK_PRECONDITION_STATUS.UNSATISFIED;
-	}
-	
-	public TASK_POSTCONDITION_STATUS getGoalPostconditionStatus(Goal goal) {
+		if (plan.isPrimitive()) {
+			if (plan.occurred()) {
+				if (plan.isSucceeded()) {
+					return TASK_STATUS.ACHIEVED;
+				}
+				else if (plan.isFailed()) {
+					return TASK_STATUS.BLOCKED;
+				}
+				else if (!plan.isSucceeded() && !plan.isFailed()) {
+					return TASK_STATUS.UNKNOWN;
+				}
+			}
+		}
+		else {
+			if (plan.isComplete()) {
+				if (plan.isSucceeded()) {
+					return TASK_STATUS.ACHIEVED;
+				}
+				else if (plan.isFailed()) {
+					return TASK_STATUS.BLOCKED;
+				}
+				else if (!plan.isSucceeded() && !plan.isFailed()) {
+					return TASK_STATUS.UNKNOWN;
+				}
+				else if (plan.isStarted() && !plan.isDone() && !plan.isFailed()) {
+					return TASK_STATUS.INPROGRESS;
+				}
+			}
+		}
 		
-		if (goal.getPlan().isDone())
-			return TASK_POSTCONDITION_STATUS.SATISFIED;
-		else
-			return TASK_POSTCONDITION_STATUS.UNSATISFIED;
+		return TASK_STATUS.UNKNOWN;
 	}
 	
 	public boolean doesContribute(Goal contributingGoal, Goal contributedGoal) {
@@ -149,6 +186,11 @@ public class Collaboration extends Mechanisms {
 	
 	public Goal recognizeGoal(Events event) {
 		return null; // This needs to be implemented.............................................
+	}
+	
+	public TASK_PRECONDITION_STATUS getGoalPreconditionStatus(Goal goal) {
+		
+		return TASK_PRECONDITION_STATUS.SATISFIED;
 	}
 	
 	public RECIPE_APPLICABILITY getRecipeApplicability(Goal goal) { return RECIPE_APPLICABILITY.APPLICABLE; }
