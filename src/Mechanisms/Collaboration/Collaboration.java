@@ -36,9 +36,14 @@ public class Collaboration extends Mechanisms {
 		System.out.println("Collaboration started! Disco = " + disco);
 	}
 	
+	public Boolean isPlanAchieved(Plan plan) {
+		
+		return plan.isDone(); // Needs to be revised.
+	}
+	
 	public Boolean isGoalAchieved(Goal goal) {
 		
-		return goal.getPlan().isAchieved();
+		return goal.getPlan().isDone(); // Needs to be revised.
 	}
 	
 	public boolean isGoalFocused(Goal goal) {
@@ -148,12 +153,8 @@ public class Collaboration extends Mechanisms {
 	
 	public RECIPE_APPLICABILITY getRecipeApplicability(Goal goal) { return RECIPE_APPLICABILITY.APPLICABLE; }
 	
-	public List<Goal> getPredecessors(Goal goal) {
+	public List<Plan> getPredecessors(Goal goal) {
 		
-		List<Goal> predecessorGoalList = new ArrayList<Goal>();
-		
-		// Extract all predecessor here.
-		
-		return predecessorGoalList;
+		return goal.getPlan().getPredecessors();
 	}
 }

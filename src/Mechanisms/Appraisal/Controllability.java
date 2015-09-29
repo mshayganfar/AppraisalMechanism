@@ -2,6 +2,7 @@ package Mechanisms.Appraisal;
 
 import java.util.List;
 
+import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 
 import jess.Fact;
@@ -92,11 +93,11 @@ public class Controllability extends AppraisalProcesses{
 		if(eventGoal == null)
 			return 0.0;
 		
-		List<Goal> predecessorGoalList = collaboration.getPredecessors(eventGoal);
+		List<Plan> predecessorGoalList = collaboration.getPredecessors(eventGoal);
 		
 		if(predecessorGoalList.size() > 0) {
 			for (int i = 0; i < predecessorGoalList.size() ; i++) {
-				if(collaboration.isGoalAchieved(predecessorGoalList.get(i)))
+				if(collaboration.isPlanAchieved(predecessorGoalList.get(i)))
 					dblSucceededPredecessorCounter++;
 			}
 			
