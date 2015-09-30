@@ -11,9 +11,9 @@ public class Mechanisms {
 
 	public enum AGENT{SELF, OTHER, BOTH, NONE};
 	
-	protected static Rete JessEngine = new Rete(); // Should be changed/removed!
+	//protected static Rete JessEngine = new Rete(); // Should be changed/removed!
 	
-	public MentalStates mentalStates = null;
+	public static MentalStates mentalStates = null;
 	
 	protected static final String strAppraisalModuleTemplates = "templates/mental-states/mental-states-templates.clp";
 	
@@ -23,17 +23,17 @@ public class Mechanisms {
 	
 	public Mechanisms() {}
 	
-	public Mechanisms(MentalStates ms, Disco disco) {
+	public Mechanisms(MentalStates mentalStates, Disco disco) {
 		turn = new Turns();
-		this.mentalStates = ms;
+		this.mentalStates = mentalStates;
 		this.disco = disco;
 	}
 	
 	public static void initializeMentalStates() {
 		try {
-			JessEngine.batch("modules/module-definitions.clp");
-			JessEngine.reset();
-			JessEngine.batch(strAppraisalModuleTemplates);
+			mentalStates.getJessEngine().batch("modules/module-definitions.clp");
+			mentalStates.getJessEngine().reset();
+			mentalStates.getJessEngine().batch(strAppraisalModuleTemplates);
 			
 		} catch (JessException e) {
 			e.printStackTrace();
