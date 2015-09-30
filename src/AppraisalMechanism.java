@@ -52,9 +52,9 @@ public class AppraisalMechanism {
 		System.out.println(taskModel.toString());
 
 //		interaciton.done(false, Propose.Should.newInstance(disco, false, task), null);
-		interaciton.done(false, task, null);
+		//interaciton.done(false, task, null);
 		
-		interaciton.getSystem().respond(interaciton, true, false, false);
+		//interaciton.getSystem().respond(interaciton, true, false, false);
 		
 		Relevance rap = new Relevance(ms, interaciton.getDisco());
 		rap.initializeMentalStates();

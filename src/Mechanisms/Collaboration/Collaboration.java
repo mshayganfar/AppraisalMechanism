@@ -17,7 +17,7 @@ import MetaInformation.Events;
 
 public class Collaboration extends Mechanisms {
 
-	public enum TASK_STATUS{ACHIEVED, BLOCKED, INPROGRESS, UNKNOWN};
+	public enum TASK_STATUS{DONE, FAILED, PENDING, BLOCKED, INPROGRESS, FUTURE};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
 	public enum TOP_LEVEL_TASK_STATUS{ACHIEVED, BLOCKED, INPROGRESS, UNKNOWN};
 	public enum TASK_PRECONDITION_STATUS{SATISFIED, UNSATISFIED, UNKNOWN};
@@ -83,7 +83,7 @@ public class Collaboration extends Mechanisms {
 	public Disco getDisco() { return disco; }
 	
 	public FOCUS_TYPE getGoalType(Goal goal) {
-		
+
 		if(goal.getPlan().getGoal().isPrimitive())
 			return FOCUS_TYPE.PRIMITIVE;
 		else
@@ -111,37 +111,55 @@ public class Collaboration extends Mechanisms {
 	
 	public TASK_STATUS getGoalPostconditionStatus(Plan plan) {
 		
-		if (plan.isPrimitive()) {
-			if (plan.occurred()) {
-				if (plan.isSucceeded()) {
-					return TASK_STATUS.ACHIEVED;
-				}
-				else if (plan.isFailed()) {
-					return TASK_STATUS.BLOCKED;
-				}
-				else if (!plan.isSucceeded() && !plan.isFailed()) {
-					return TASK_STATUS.UNKNOWN;
-				}
-			}
-		}
-		else {
-			if (plan.isComplete()) {
-				if (plan.isSucceeded()) {
-					return TASK_STATUS.ACHIEVED;
-				}
-				else if (plan.isFailed()) {
-					return TASK_STATUS.BLOCKED;
-				}
-				else if (!plan.isSucceeded() && !plan.isFailed()) {
-					return TASK_STATUS.UNKNOWN;
-				}
-				else if (plan.isStarted() && !plan.isDone() && !plan.isFailed()) {
-					return TASK_STATUS.INPROGRESS;
-				}
-			}
-		}
+//		if (plan.isPrimitive()) {
+//			if (plan.isO) {
+//				if (plan.isSucceeded()) {
+//					return TASK_STATUS.ACHIEVED;
+//				}
+//				else if (plan.isFailed()) {
+//					return TASK_STATUS.FAILED;
+//				}
+//				else if (!plan.isSucceeded() && !plan.isFailed()) {
+//					return TASK_STATUS.UNKNOWN;
+//				}
+//			}
+//		}
+//		else {
+//			if (plan.isComplete()) {
+//				if (plan.isSucceeded()) {
+//					return TASK_STATUS.ACHIEVED;
+//				}
+//				else if (plan.isFailed()) {
+//					return TASK_STATUS.FAILED;
+//				}
+//				else if (!plan.isSucceeded() && !plan.isFailed()) {
+//					return TASK_STATUS.UNKNOWN;
+//				}
+//				else if (plan.isStarted() && !plan.isDone() && !plan.isFailed()) {
+//					return TASK_STATUS.INPROGRESS;
+//				}
+//			}
+			
+			if (plan.isDone())
+				return TASK_STATUS.DONE;
+			else if (plan.isFailed())
+				return TASK_STATUS.FAILED;
+			else if (plan.isPrimitive())
+				return TASK_STATUS.FUTURE;
+			else if(plan.isStarted())
+				return TASK_STATUS.INPROGRESS;
+			else
+				return TASK_STATUS.FUTURE;
+			
+//			return plan.isDone() ? TASK_STATUS.ACHIEVED :
+//			     plan.isFailed() ? TASK_STATUS.FAILED :
+//			     // must not have been executed yet
+//			     plan.isPrimitive() ? TASK_STATUS.UNKNOWN :
+//			     plan.isStarted() ? TASK_STATUS.INPROGRESS :
+//			    	 TASK_STATUS.UNKNOWN;
+//		}
 		
-		return TASK_STATUS.UNKNOWN;
+//		return TASK_STATUS.UNKNOWN;
 	}
 	
 	public boolean doesContribute(Goal contributingGoal, Goal contributedGoal) {
