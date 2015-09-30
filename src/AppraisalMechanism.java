@@ -33,8 +33,10 @@ public class AppraisalMechanism {
 	
 	public static void main(String[] args) {
 		
-		MentalStates ms = new MentalStates();
-		MentalGraph mg = new MentalGraph();
+		JessEngine = new Rete();
+		
+		MentalStates ms = new MentalStates(JessEngine);
+		MentalGraph mg = new MentalGraph(ms);
 		Turns turn = new Turns();
 		
 		Interaction interaciton = new Interaction(new Agent("agent"), new User("user"),
@@ -60,7 +62,7 @@ public class AppraisalMechanism {
 		rap.initializeMentalStates();
 		
 	    try {
-	    	JessEngine = new Rete();
+	    	//JessEngine = new Rete();
 	    	
 	    	JessEngine.batch("modules/module-definitions.clp");
 			JessEngine.batch(strMentalStatesTemplates);
@@ -68,14 +70,14 @@ public class AppraisalMechanism {
 			
 //			JessEngine.executeCommand("(load-facts facts/sensoryData.dat)");
 			
-			ms.assertBelief(JessEngine, "turn:1", "B1-1", "install-panel", "ee-au-01", "UTTERANCE", "EXTERNAL_EVENT", "ROBOT", "PRIVATE", "UTTERANCE", "astronaut-frustrated", "HIGH", "LOW", "HIGH", "MEDIUM", "HIGH", "LOW");
-			ms.assertBelief(JessEngine, "turn:1", "B1-2", "install-panel", "ee-au-01", "UTTERANCE", "INTERNAL_EVENT", "ROBOT", "PRIVATE", "ENVIRONMENT", "disfunctional-measurement-tool", "LOW", "LOW", "MEDIUM", "HIGH", "MEDIUM", "HIGH");
-			ms.assertMotive(JessEngine, "turn:1", "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion", "ACTIVE", "INTERNAL");
-			ms.assertIntention(JessEngine, "turn:1", "I1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
+			ms.assertBelief("turn:1", "B1-1", "install-panel", "ee-au-01", "UTTERANCE", "EXTERNAL_EVENT", "ROBOT", "PRIVATE", "UTTERANCE", "astronaut-frustrated", "HIGH", "LOW", "HIGH", "MEDIUM", "HIGH", "LOW");
+			ms.assertBelief("turn:1", "B1-2", "install-panel", "ee-au-01", "UTTERANCE", "INTERNAL_EVENT", "ROBOT", "PRIVATE", "ENVIRONMENT", "disfunctional-measurement-tool", "LOW", "LOW", "MEDIUM", "HIGH", "MEDIUM", "HIGH");
+			ms.assertMotive("turn:1", "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion", "ACTIVE", "INTERNAL");
+			ms.assertIntention("turn:1", "I1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
 
 			rap.test(JessEngine, ms);
 			
-			ms.assertEmotionInstance(JessEngine, "turn:1", "E1-1", "install-panel", "ee-au-01", "HUMAN", "FRUSTRATION");
+			ms.assertEmotionInstance("turn:1", "E1-1", "install-panel", "ee-au-01", "HUMAN", "FRUSTRATION");
 		    JessEngine.run();
 			
 		    JessEngine.eval("(facts)");
@@ -83,9 +85,9 @@ public class AppraisalMechanism {
 			e.printStackTrace();
 		}
 
-	    mg.createGraph(JessEngine);
+	    mg.createGraph();
 
-	    Events event = new Events(ms.getFact(JessEngine, "\"B1-1\""), ms.getFact(JessEngine, "\"G1-1\""), ms.getFact(JessEngine, "\"E1-1\""), EVENT_TYPE.ACTION);
+	    Events event = new Events(ms.getFact("\"B1-1\""), ms.getFact("\"G1-1\""), ms.getFact("\"E1-1\""), EVENT_TYPE.ACTION);
 	    
 	    System.out.println(event.getEventRelatedBelief());
 	    

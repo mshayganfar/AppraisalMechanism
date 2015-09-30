@@ -88,8 +88,8 @@ public class Desirability extends AppraisalProcesses{
 				
 				if ((targetFact.getName().contains("MENTAL-STATE::belief"))) {
 					if (targetFact.getSlotValue("turn").toString().equals(turn.getLastTurn()))
-						if (mentalStates.getBeliefEventType(JessEngine, targetFact.getSlotValue("id").toString()).equals(eventType.toString())) {
-							mentalStateUtilityValue += getPathUtility(JessEngine, mentalStates, mentalGraph, targetFact, mentalStates.extractGoal(JessEngine, turn.getLastTurn()));
+						if (mentalStates.getBeliefEventType(targetFact.getSlotValue("id").toString()).equals(eventType.toString())) {
+							mentalStateUtilityValue += getPathUtility(JessEngine, mentalStates, mentalGraph, targetFact, mentalStates.extractGoal(turn.getLastTurn()));
 							intMentalStateUtilityCounter++;
 						}
 				}
@@ -114,7 +114,7 @@ public class Desirability extends AppraisalProcesses{
 //		List<Edge> shortestPathList = mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, "B1-1"), mentalStates.getFact(JessEngine, "G1-1"));
 		
 		try {
-			if (mentalStates.getBeliefEventOrigin(JessEngine, mentalStates.getFactID(JessEngine, FACT_TYPE.BELIEF, event.getEventRelatedBelief().getSlotValue("belief").toString())).equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
+			if (mentalStates.getBeliefEventOrigin(mentalStates.getFactID(FACT_TYPE.BELIEF, event.getEventRelatedBelief().getSlotValue("belief").toString())).equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
 			{
 				utteranceUtility = getUtteranceUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.UTTERANCE, turn);
 				actionUtility    = getActionUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.ACTION, turn);
@@ -127,7 +127,7 @@ public class Desirability extends AppraisalProcesses{
 				deltaUtility = (((utteranceUtility * dblUtteranceUtilityWeight) + (actionUtility * dblActioUtilityWeight) + (emotionUtility * dblEmotionUtilityWeight)) 
 								/ (dblUtteranceUtilityWeight + dblActioUtilityWeight + dblEmotionUtilityWeight));
 			}
-			else if (mentalStates.getBeliefEventOrigin(JessEngine, mentalStates.getFactID(JessEngine, FACT_TYPE.BELIEF, event.getEventRelatedBelief().getSlotValue("belief").toString())).equals(BELIEF_TYPE.INTERNAL_EVENT)){
+			else if (mentalStates.getBeliefEventOrigin(mentalStates.getFactID(FACT_TYPE.BELIEF, event.getEventRelatedBelief().getSlotValue("belief").toString())).equals(BELIEF_TYPE.INTERNAL_EVENT)){
 				
 				/** To Do: Think whether desirability is important for internal events, e.g., belief formation.*/
 			}

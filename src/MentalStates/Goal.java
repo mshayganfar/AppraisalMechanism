@@ -4,7 +4,7 @@ import Mechanisms.Mechanisms.AGENT;
 import MetaInformation.Events;
 import edu.wpi.cetask.Plan;
 
-public class Goal extends MentalStates{
+public class Goal{
 	
 	private int turn;
 	private String id;

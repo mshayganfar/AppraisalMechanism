@@ -11,7 +11,8 @@ public class Mechanisms {
 
 	public enum AGENT{SELF, OTHER, BOTH, NONE};
 	
-	protected static Rete JessEngine = new Rete();
+	protected static Rete JessEngine = new Rete(); // Should be changed/removed!
+	
 	public MentalStates mentalStates = null;
 	
 	protected static final String strAppraisalModuleTemplates = "templates/mental-states/mental-states-templates.clp";

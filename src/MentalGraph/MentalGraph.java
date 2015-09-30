@@ -16,7 +16,7 @@ import jess.Rete;
 import org.apache.commons.collections15.Transformer;
 
 import MentalStates.Goal;
-
+import MentalStates.MentalStates;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
@@ -31,7 +31,10 @@ public class MentalGraph {
 	
 	private static Graph<Fact, Edge> graph = null;
 	
-	public MentalGraph() {
+	private MentalStates mentalStates;
+	
+	public MentalGraph(MentalStates mentalStates) {
+		this.mentalStates = mentalStates;
 		this.graph = new DirectedSparseGraph<Fact, Edge>();
 	}
 	
@@ -48,18 +51,18 @@ public class MentalGraph {
 		return null;
 	}
 	
-	public void createGraph(Rete JessEngine) {
+	public void createGraph() {
 		
 		Fact factTemp = null, factSource = null, factTarget = null;
 		
-		Iterator<Fact> factList = JessEngine.listFacts();
+		Iterator<Fact> factList = mentalStates.getJessEngine().listFacts();
 		
 	    while(factList.hasNext()) {
 	    	factTemp = (Fact)factList.next();
 	    	graph.addVertex(factTemp);
 	    }
 	    
-	    factList = JessEngine.listFacts();
+	    factList = mentalStates.getJessEngine().listFacts();
 	    String strEdgePart1, strEdgePart2;
 	    
 	    while(factList.hasNext()) {
@@ -67,7 +70,7 @@ public class MentalGraph {
 	    		factSource = (Fact)factList.next();
 	    		
 	    		//graph.addVertex(factTemp);
-	    		factTarget = findTargetVertex(JessEngine, factSource);
+	    		factTarget = findTargetVertex(factSource);
 
 	    		if(factTarget != null) {
 	    			strEdgePart1 = factSource.getSlotValue("id").toString().charAt(1) + "2" + factTarget.getSlotValue("id").toString().charAt(1);
@@ -82,12 +85,12 @@ public class MentalGraph {
 	    initializeGraph();
 	}
 	
-	private Fact findTargetVertex(Rete JessEngine, Fact factSource) {
+	private Fact findTargetVertex(Fact factSource) {
 		
 		String strFactId;
 		Fact factTarget = null;
 		
-		Iterator<Fact> factList = JessEngine.listFacts();
+		Iterator<Fact> factList = mentalStates.getJessEngine().listFacts();
 		
 		try {
 			if (factSource.getSlotValue("id").toString().contains("B")) {
@@ -189,9 +192,9 @@ public class MentalGraph {
 	}
 	
 	//Example: mg.removeVertex(JessEngine, ms.getFact(JessEngine, "G1-1"));
-	public void removeVertex(Rete JessEngine, Fact targetFact) {
+	public void removeVertex(Fact targetFact) {
 		try {
-			JessEngine.retract(targetFact);
+			mentalStates.getJessEngine().retract(targetFact);
 		} catch (JessException e) {
 			e.printStackTrace();
 		}

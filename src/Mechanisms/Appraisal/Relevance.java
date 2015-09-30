@@ -50,6 +50,6 @@ public class Relevance extends AppraisalProcesses {
 		Goal child   = new Goal(collaboration.getDisco().getFocus(), 1, "testID", null, AGENT.BOTH);
 		Goal parent  = new Goal(collaboration.getDisco().getFocus(), 1, "testID", null, AGENT.BOTH);
 		
-		ms.assertGoal(JessEngine, 1, "G1-1", null, AGENT.SELF, child, parent);
+		ms.assertGoal(1, "G1-1", null, AGENT.SELF, child, parent);
 	}
 }

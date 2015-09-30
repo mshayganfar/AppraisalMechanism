@@ -7,7 +7,6 @@ import Mechanisms.Mechanisms.AGENT;
 import MetaInformation.Events;
 
 import edu.wpi.cetask.Plan;
-import edu.wpi.cetask.Task;
 
 import jess.Context;
 import jess.Fact;
@@ -18,6 +17,8 @@ import jess.Value;
 
 public class MentalStates {
 
+	private Rete JessEngine;
+	
 	private Fact beliefFact          = null;
 	private Fact motiveFact          = null;
 	private Fact intentionFact       = null;
@@ -27,7 +28,11 @@ public class MentalStates {
 	public enum FACT_TYPE {BELIEF, INTENTION, MOTIVE, GOAL, EMOTION_INSTANCE};
 	public enum BELIEF_TYPE {EXTERNAL_EVENT, INTERNAL_EVENT, NONE};
 	
-	public void assertBelief(Rete JessEngine, String strTurn, String strBeliefID, String strTask, String strEvent, String strEventType, String strEventOrigin, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief, String strStrength, String strAccuracy, String strFrequency, String strRecency, String strSaliency, String strPersistence) {
+	public MentalStates(Rete JessEngine) {
+		this.JessEngine = JessEngine;
+	}
+	
+	public void assertBelief(String strTurn, String strBeliefID, String strTask, String strEvent, String strEventType, String strEventOrigin, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief, String strStrength, String strAccuracy, String strFrequency, String strRecency, String strSaliency, String strPersistence) {
 		try {
 			beliefFact = new Fact("belief", JessEngine);
 			beliefFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
@@ -52,7 +57,7 @@ public class MentalStates {
 		}
 	}
 	
-	public void assertMotive(Rete JessEngine, String strTurn, String strMotiveID, String strTask, String strEvent, String strAgent, String strMotive, String strMotiveStatus, String strMotiveType) {
+	public void assertMotive(String strTurn, String strMotiveID, String strTask, String strEvent, String strAgent, String strMotive, String strMotiveStatus, String strMotiveType) {
 		try {
 			motiveFact = new Fact("motive", JessEngine);
 			motiveFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
@@ -69,7 +74,7 @@ public class MentalStates {
 		}
 	}
 	
-	public void assertIntention(Rete JessEngine, String strTurn, String strIntentionID, String strTask, String strEvent, String strAgent, String strIntention) {
+	public void assertIntention(String strTurn, String strIntentionID, String strTask, String strEvent, String strAgent, String strIntention) {
 		try {
 			intentionFact = new Fact("intention", JessEngine);
 			intentionFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
@@ -84,7 +89,7 @@ public class MentalStates {
 		}
 	}
 	
-	public void assertGoal(Rete JessEngine, Integer intTurn, String strGoalID, Events event, AGENT agent, Goal goal, Goal parent) {
+	public void assertGoal(Integer intTurn, String strGoalID, Events event, AGENT agent, Goal goal, Goal parent) {
 		try {
 			goalFact = new Fact("goal", JessEngine);
 			goalFact.setSlotValue("turn", new Value(intTurn, RU.INTEGER));
@@ -99,7 +104,7 @@ public class MentalStates {
 		}
 	}
 	
-	public void assertEmotionInstance(Rete JessEngine, String strTurn, String strEmotionInstanceID, String strTask, String strEvent, String strAgent, String strEmotionInstance) {
+	public void assertEmotionInstance(String strTurn, String strEmotionInstanceID, String strTask, String strEvent, String strAgent, String strEmotionInstance) {
 		try {
 			emotionInstanceFact = new Fact("emotion-instance", JessEngine);
 			emotionInstanceFact.setSlotValue("turn", new Value(strTurn, RU.STRING));
@@ -114,7 +119,7 @@ public class MentalStates {
 		}
 	}
 	
-	public Fact getFact(Rete JessEngine, String strFactID) {
+	public Fact getFact(String strFactID) {
 		
 		Fact targetFact = null;
 		Iterator<Fact> factList = JessEngine.listFacts();
@@ -136,7 +141,7 @@ public class MentalStates {
 	
 	// Example: ms.getFactID(JessEngine, FACT_TYPE.GOAL, "fix-problem");
 	//returns: Fact's ID in working memory.
-	public String getFactID(Rete JessEngine, FACT_TYPE factType, String strFact) {
+	public String getFactID(FACT_TYPE factType, String strFact) {
 		
 		Fact targetFact = null;
 		Iterator<Fact> factList = JessEngine.listFacts();
@@ -246,7 +251,7 @@ public class MentalStates {
 		}
 	}
 	
-	public BELIEF_TYPE getBeliefType(Rete JessEngine, String beliefFactID) {
+	public BELIEF_TYPE getBeliefType(String beliefFactID) {
 		
 		Fact targetFact = null;
 		Iterator<Fact> factList = JessEngine.listFacts();
@@ -271,7 +276,7 @@ public class MentalStates {
 		return BELIEF_TYPE.NONE;
 	}
 	
-	public String getBeliefEventOrigin(Rete JessEngine, String beliefFactID) {
+	public String getBeliefEventOrigin(String beliefFactID) {
 		
 		Fact targetFact = null;
 		Iterator<Fact> factList = JessEngine.listFacts();
@@ -293,7 +298,7 @@ public class MentalStates {
 		return null;
 	}
 	
-	public String getBeliefEventType(Rete JessEngine, String beliefFactID) {
+	public String getBeliefEventType(String beliefFactID) {
 		
 		Fact targetFact = null;
 		Iterator<Fact> factList = JessEngine.listFacts();
@@ -315,7 +320,7 @@ public class MentalStates {
 		return null;
 	}
 	
-	public Fact extractGoal(Rete JessEngine, String strTurn) {
+	public Fact extractGoal(String strTurn) {
 		
 		Fact targetFact = null;
 		Iterator<Fact> factList = JessEngine.listFacts();
@@ -337,7 +342,7 @@ public class MentalStates {
 		return null;
 	}
 	
-	public Goal getEventRelatedGoal(Rete JessEngine, Fact inputGoal) {
+	public Goal getEventRelatedGoal(Fact inputGoal) {
 		
 		try {
 			Context context = JessEngine.getGlobalContext();
@@ -358,8 +363,10 @@ public class MentalStates {
 			
 			return new Goal(goal, turn, id, event, agent);
 		} catch (JessException e) {
-			e.printStackTrace();
+			e.printStackTrace();	
 		}
 		return null;
 	}
+	
+	public Rete getJessEngine() { return JessEngine; }
 }

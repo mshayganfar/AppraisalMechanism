@@ -28,7 +28,7 @@ public class Events {
 	
 	public Goal getEventRelatedGoal(Rete JessEngine, MentalStates ms) {
 		
-		return ms.getEventRelatedGoal(JessEngine, goalFact);
+		return ms.getEventRelatedGoal(goalFact);
 	}
 	
 	public Fact getEventRelatedGoalFact() {
