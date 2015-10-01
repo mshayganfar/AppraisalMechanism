@@ -7,6 +7,7 @@ import edu.wpi.disco.User;
 import jess.*;
 
 import Mechanisms.Appraisal.*;
+import Mechanisms.Collaboration.Collaboration;
 import MentalStates.*;
 import MetaInformation.*;
 import MetaInformation.Events.EVENT_TYPE;
@@ -33,7 +34,6 @@ public class AppraisalMechanism {
 		
 		JessEngine = new Rete();
 		
-		MentalStates ms = new MentalStates(JessEngine);
 		//ms.initializeMentalStates(); //Test this!
 		
 		//MentalGraph mg = new MentalGraph(ms);
@@ -42,6 +42,9 @@ public class AppraisalMechanism {
 		
 		Interaction interaciton = new Interaction(new Agent("agent"), new User("user"),
 												  args.length > 0 && args[0].length() > 0 ? args[0] : null);
+		
+		MentalStates ms = new MentalStates(JessEngine, interaciton.getDisco());
+		
 		interaciton.start(true);
 		
 		Disco disco = interaciton.getDisco();
@@ -59,7 +62,7 @@ public class AppraisalMechanism {
 		
 		//interaciton.getSystem().respond(interaciton, true, false, false);
 		
-		Relevance rap = new Relevance(ms, interaciton.getDisco());
+		Relevance rap = new Relevance();
 		
 	    try {
 	    	//JessEngine = new Rete();
@@ -75,8 +78,6 @@ public class AppraisalMechanism {
 			ms.assertMotive("turn:1", "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion", "ACTIVE", "INTERNAL");
 			ms.assertIntention("turn:1", "I1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
 
-			rap.test();
-			
 			ms.assertEmotionInstance("turn:1", "E1-1", "install-panel", "ee-au-01", "HUMAN", "FRUSTRATION");
 		    JessEngine.run();
 			
@@ -85,11 +86,14 @@ public class AppraisalMechanism {
 			e.printStackTrace();
 		}
 
-	    ms.getMentalGraph().createGraph();
-
 	    Events event = new Events(ms.getFact("\"B1-1\""), ms.getFact("\"G1-1\""), ms.getFact("\"E1-1\""), EVENT_TYPE.ACTION);
 	    
 	    System.out.println(event.getEventRelatedBelief());
+	    
+	    Collaboration collaboration = new Collaboration(ms);
+	    collaboration.test();
+	    
+	    ms.getMentalGraph().createGraph();
 	    
 	    System.out.println(rap.isEventRelevant(event));
 	    

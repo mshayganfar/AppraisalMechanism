@@ -26,9 +26,9 @@ public class Collaboration extends Mechanisms {
 	
 	private Disco disco;
 	
-	public Collaboration(MentalStates mentalStates, Disco disco) {
-		super(mentalStates, disco);
-		this.disco = disco;
+	public Collaboration(MentalStates mentalState) {
+		super(mentalState);
+		disco = mentalState.getDisco();
 	}
 	
 	public Collaboration(String strAgent, String strUser) {
@@ -216,5 +216,28 @@ public class Collaboration extends Mechanisms {
 	public List<Plan> getPredecessors(Goal goal) {
 		
 		return goal.getPlan().getPredecessors();
+	}
+	
+	public void test() {
+		
+//		Fact childFact;
+//		try {
+//			//childFact = new Fact("My Fake Child Goal", JessEngine);
+//			//Fact parentFact  = new Fact("My Fake Parent Goal", JessEngine);
+//			
+//			//Events event = new Events(new Fact("My Fake Belief", JessEngine), childFact, EVENT_TYPE.UTTERANCE);
+//			
+//		} catch (JessException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		System.out.println(this.getDisco().getFocus());
+		System.out.println(this.getDisco().getFocus().getGoal());
+		System.out.println(this.getDisco().getFocus().getParent().getGoal());
+		
+		Goal child   = new Goal(this.getDisco().getFocus(), 1, "testID", null, AGENT.BOTH);
+		Goal parent  = new Goal(this.getDisco().getFocus(), 1, "testID", null, AGENT.BOTH);
+		
+		mentalState.assertGoal(1, "G1-1", null, AGENT.SELF, child, parent);
 	}
 }

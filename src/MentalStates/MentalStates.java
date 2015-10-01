@@ -8,7 +8,7 @@ import MentalGraph.MentalGraph;
 import MetaInformation.Events;
 
 import edu.wpi.cetask.Plan;
-
+import edu.wpi.disco.Disco;
 import jess.Context;
 import jess.Fact;
 import jess.JessException;
@@ -29,12 +29,14 @@ public class MentalStates {
 	private static final String strAppraisalModuleTemplates = "templates/mental-states/mental-states-templates.clp";
 	
 	private MentalGraph mentalGraph;
+	private Disco disco;
 	
 	public enum FACT_TYPE {BELIEF, INTENTION, MOTIVE, GOAL, EMOTION_INSTANCE};
 	public enum BELIEF_TYPE {EXTERNAL_EVENT, INTERNAL_EVENT, NONE};
 	
-	public MentalStates(Rete JessEngine) {
+	public MentalStates(Rete JessEngine, Disco disco) {
 		this.JessEngine  = JessEngine;
+		this.disco = disco;
 		this.mentalGraph = new MentalGraph(this);
 	}
 	
@@ -388,4 +390,6 @@ public class MentalStates {
 	public Rete getJessEngine() { return JessEngine; }
 	
 	public MentalGraph getMentalGraph() { return mentalGraph; }
+	
+	public Disco getDisco() { return disco; }
 }

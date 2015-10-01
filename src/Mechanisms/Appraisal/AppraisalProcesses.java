@@ -4,25 +4,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.wpi.disco.Disco;
-
 import Mechanisms.*;
-import Mechanisms.Collaboration.*;
-
+import Mechanisms.Collaboration.Collaboration;
 import jess.Fact;
 import jess.JessException;
 
-import MentalStates.MentalStates;
 
 public class AppraisalProcesses extends Mechanisms{
 
 	protected Collaboration collaboration;
 	
-	public AppraisalProcesses() {}
-	
-	public AppraisalProcesses(MentalStates mentalStates, Disco disco) {
-		super(mentalStates, disco);
-		collaboration = new Collaboration(mentalStates, disco);
+	public AppraisalProcesses() {
+		//collaboration = new Collaboration();
 	}
 
 	protected double getEventUtility(Fact beliefFact, Fact motiveFact) {
@@ -496,7 +489,7 @@ public class AppraisalProcesses extends Mechanisms{
 		double dblGoalUtilityValue            = 0.0;
 		double dblEmotionInstanceUtilityValue = 0.0;
 		
-		List<Fact> pathList = mentalStates.getMentalGraph().getShortestPathVertices(beliefFact, goalFact);
+		List<Fact> pathList = mentalState.getMentalGraph().getShortestPathVertices(beliefFact, goalFact);
 		
 		for (int i = 0 ; i < pathList.size() ; i++) {
 			if (pathList.get(i).getName().toString().contains("MENTAL-STATE::belief")) dblBeliefUtilityValue = getBeliefUtility(pathList.get(i));

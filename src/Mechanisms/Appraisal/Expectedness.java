@@ -10,7 +10,7 @@ public class Expectedness extends AppraisalProcesses{
 	public EXPECTEDNESS isEventExpected(Events event) {
 		
 		Goal eventGoal = collaboration.recognizeGoal(event);
-		Goal graphGoal = mentalStates.getMentalGraph().getGraphGoal();
+		Goal graphGoal = mentalState.getMentalGraph().getGraphGoal();
 		
 		if(eventGoal == null)
 			return EXPECTEDNESS.UNEXPECTED;

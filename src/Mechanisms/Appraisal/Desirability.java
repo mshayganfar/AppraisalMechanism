@@ -22,7 +22,7 @@ public class Desirability extends AppraisalProcesses{
 	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., 2 in B2-3.
 	public DESIRABILITY isEventDesirable(Events event) {
 		
-		Goal graphGoal    = mentalStates.getMentalGraph().getGraphGoal();
+		Goal graphGoal    = mentalState.getMentalGraph().getGraphGoal();
 		Goal topLevelGoal = collaboration.getTopLevelGoal(event);
 		
 		if (collaboration.isGoalAchieved(topLevelGoal)) return DESIRABILITY.HIGHEST_DESIRABLE;
@@ -77,7 +77,7 @@ public class Desirability extends AppraisalProcesses{
 		double mentalStateUtilityValue = 0.0;
 
 		Fact targetFact = null;
-		Iterator<Fact> factList = mentalStates.getJessEngine().listFacts();
+		Iterator<Fact> factList = mentalState.getJessEngine().listFacts();
 		
 		while(factList.hasNext()) {
 			try {
@@ -85,8 +85,8 @@ public class Desirability extends AppraisalProcesses{
 				
 				if ((targetFact.getName().contains("MENTAL-STATE::belief"))) {
 					if (targetFact.getSlotValue("turn").toString().equals(turn.getLastTurn()))
-						if (mentalStates.getBeliefEventType(targetFact.getSlotValue("id").toString()).equals(eventType.toString())) {
-							mentalStateUtilityValue += getPathUtility(targetFact, mentalStates.extractGoal(turn.getLastTurn()));
+						if (mentalState.getBeliefEventType(targetFact.getSlotValue("id").toString()).equals(eventType.toString())) {
+							mentalStateUtilityValue += getPathUtility(targetFact, mentalState.extractGoal(turn.getLastTurn()));
 							intMentalStateUtilityCounter++;
 						}
 				}
@@ -111,7 +111,7 @@ public class Desirability extends AppraisalProcesses{
 //		List<Edge> shortestPathList = mentalGraph.getShortestPath(mentalStates.getFact(JessEngine, "B1-1"), mentalStates.getFact(JessEngine, "G1-1"));
 		
 		try {
-			if (mentalStates.getBeliefEventOrigin(mentalStates.getFactID(FACT_TYPE.BELIEF, event.getEventRelatedBelief().getSlotValue("belief").toString())).equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
+			if (mentalState.getBeliefEventOrigin(mentalState.getFactID(FACT_TYPE.BELIEF, event.getEventRelatedBelief().getSlotValue("belief").toString())).equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
 			{
 				utteranceUtility = getUtteranceUtility(EVENT_TYPE.UTTERANCE, turn);
 				actionUtility    = getActionUtility(EVENT_TYPE.ACTION, turn);
@@ -124,7 +124,7 @@ public class Desirability extends AppraisalProcesses{
 				deltaUtility = (((utteranceUtility * dblUtteranceUtilityWeight) + (actionUtility * dblActioUtilityWeight) + (emotionUtility * dblEmotionUtilityWeight)) 
 								/ (dblUtteranceUtilityWeight + dblActioUtilityWeight + dblEmotionUtilityWeight));
 			}
-			else if (mentalStates.getBeliefEventOrigin(mentalStates.getFactID(FACT_TYPE.BELIEF, event.getEventRelatedBelief().getSlotValue("belief").toString())).equals(BELIEF_TYPE.INTERNAL_EVENT)){
+			else if (mentalState.getBeliefEventOrigin(mentalState.getFactID(FACT_TYPE.BELIEF, event.getEventRelatedBelief().getSlotValue("belief").toString())).equals(BELIEF_TYPE.INTERNAL_EVENT)){
 				
 				/** To Do: Think whether desirability is important for internal events, e.g., belief formation.*/
 			}

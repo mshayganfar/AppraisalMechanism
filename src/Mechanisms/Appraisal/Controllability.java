@@ -42,7 +42,7 @@ public class Controllability extends AppraisalProcesses{
 		if(eventGoal == null)
 			return 0.0;
 		
-		MentalGraph mentalGraph = mentalStates.getMentalGraph();
+		MentalGraph mentalGraph = mentalState.getMentalGraph();
 		
 		if(mentalGraph.getShortestPath(eventBelief, eventGoal).size() != 0)
 		{
@@ -72,7 +72,7 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblSelfCounter = 0;
 		
-		Goal eventGoal = event.getEventRelatedGoal(mentalStates);
+		Goal eventGoal = event.getEventRelatedGoal(mentalState);
 		
 		if(eventGoal == null)
 			return 0.0;
@@ -90,7 +90,7 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblSucceededPredecessorCounter = 0.0;
 		
-		Goal eventGoal = event.getEventRelatedGoal(mentalStates);
+		Goal eventGoal = event.getEventRelatedGoal(mentalState);
 		
 		if(eventGoal == null)
 			return 0.0;
@@ -113,7 +113,7 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblAvailableInputCounter = 0.0;
 		
-		Goal eventGoal = event.getEventRelatedGoal(mentalStates);
+		Goal eventGoal = event.getEventRelatedGoal(mentalState);
 		
 		List<Input> goalInputsList = collaboration.getInputs(eventGoal);
 		
