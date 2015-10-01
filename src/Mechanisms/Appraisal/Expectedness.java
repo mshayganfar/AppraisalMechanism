@@ -1,6 +1,5 @@
 package Mechanisms.Appraisal;
 
-import MentalGraph.*;
 import MentalStates.Goal;
 import MetaInformation.Events;
 
@@ -8,10 +7,10 @@ public class Expectedness extends AppraisalProcesses{
 	
 	public enum EXPECTEDNESS {EXPECTED, UNEXPECTED};
 	
-	public EXPECTEDNESS isEventExpected(MentalGraph mentalGraph, Events event) {
+	public EXPECTEDNESS isEventExpected(Events event) {
 		
 		Goal eventGoal = collaboration.recognizeGoal(event);
-		Goal graphGoal = mentalGraph.getGraphGoal();
+		Goal graphGoal = mentalStates.getMentalGraph().getGraphGoal();
 		
 		if(eventGoal == null)
 			return EXPECTEDNESS.UNEXPECTED;

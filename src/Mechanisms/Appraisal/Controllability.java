@@ -14,10 +14,10 @@ import MetaInformation.Events;
 
 public class Controllability extends AppraisalProcesses{
 
-	public boolean isEventControllable(MentalGraph mentalGraph, Events event) {
+	public boolean isEventControllable(Events event) {
 		
-		double dblAgency       = getAgencyValue(mentalGraph, event);
-		double dblAutonomy     = getAutonomyValue(mentalGraph, event);
+		double dblAgency       = getAgencyValue(event);
+		double dblAutonomy     = getAutonomyValue(event);
 		double dblPredecessors = checkSucceededPredecessorsRatio(event);
 		double dblInputs       = checkAvailableInputRatio(event);
 		
@@ -32,7 +32,7 @@ public class Controllability extends AppraisalProcesses{
 	}
 	
 	// Agency: The capacity, condition, or state of acting or of exerting power.
-	private Double getAgencyValue(MentalGraph mentalGraph, Events event) {
+	private Double getAgencyValue(Events event) {
 		
 		Fact pathMotive = null;
 		
@@ -41,6 +41,8 @@ public class Controllability extends AppraisalProcesses{
 		
 		if(eventGoal == null)
 			return 0.0;
+		
+		MentalGraph mentalGraph = mentalStates.getMentalGraph();
 		
 		if(mentalGraph.getShortestPath(eventBelief, eventGoal).size() != 0)
 		{
@@ -66,7 +68,7 @@ public class Controllability extends AppraisalProcesses{
 	}
 	
 	// Autonomy: The quality or state of being self-governing. Self-directing freedom or self-governing state.
-	private Double getAutonomyValue(MentalGraph mentalGraph, Events event) {
+	private Double getAutonomyValue(Events event) {
 		
 		double dblSelfCounter = 0;
 		

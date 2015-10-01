@@ -11,9 +11,7 @@ import Mechanisms.Collaboration.*;
 
 import jess.Fact;
 import jess.JessException;
-import jess.Rete;
 
-import MentalGraph.MentalGraph;
 import MentalStates.MentalStates;
 
 public class AppraisalProcesses extends Mechanisms{
@@ -490,7 +488,7 @@ public class AppraisalProcesses extends Mechanisms{
 	protected double getEmotionInstanceWeight() { return 1.0; }
 	
 	// Returns a weighted average of all five mental states' utilities.
-	public double getPathUtility(MentalGraph mentalGraph, Fact beliefFact, Fact goalFact) {
+	public double getPathUtility(Fact beliefFact, Fact goalFact) {
 
 		double dblBeliefUtilityValue          = 0.0;
 		double dblIntentionUtilityValue       = 0.0;
@@ -498,7 +496,7 @@ public class AppraisalProcesses extends Mechanisms{
 		double dblGoalUtilityValue            = 0.0;
 		double dblEmotionInstanceUtilityValue = 0.0;
 		
-		List<Fact> pathList = mentalGraph.getShortestPathVertices(beliefFact, goalFact);
+		List<Fact> pathList = mentalStates.getMentalGraph().getShortestPathVertices(beliefFact, goalFact);
 		
 		for (int i = 0 ; i < pathList.size() ; i++) {
 			if (pathList.get(i).getName().toString().contains("MENTAL-STATE::belief")) dblBeliefUtilityValue = getBeliefUtility(pathList.get(i));

@@ -8,7 +8,6 @@ import jess.*;
 
 import Mechanisms.Appraisal.*;
 import MentalStates.*;
-import MentalGraph.*;
 import MetaInformation.*;
 import MetaInformation.Events.EVENT_TYPE;
 
@@ -35,7 +34,7 @@ public class AppraisalMechanism {
 		JessEngine = new Rete();
 		
 		MentalStates ms = new MentalStates(JessEngine);
-		ms.initializeMentalStates(); //Test this!
+		//ms.initializeMentalStates(); //Test this!
 		
 		//MentalGraph mg = new MentalGraph(ms);
 		
@@ -56,7 +55,7 @@ public class AppraisalMechanism {
 		System.out.println(taskModel.toString());
 
 //		interaciton.done(false, Propose.Should.newInstance(disco, false, task), null);
-		//interaciton.done(false, task, null);
+		interaciton.occurred(false, task, null);
 		
 		//interaciton.getSystem().respond(interaciton, true, false, false);
 		
@@ -92,13 +91,13 @@ public class AppraisalMechanism {
 	    
 	    System.out.println(event.getEventRelatedBelief());
 	    
-	    System.out.println(rap.isEventRelevant(ms.getMentalGraph(), event));
+	    System.out.println(rap.isEventRelevant(event));
 	    
 	    Desirability desirability = new Desirability();
 	    //System.out.println(desirability.isEventDesirable(mg, event));
 	    
 	    Expectedness expectedness = new Expectedness();
-	    System.out.println(expectedness.isEventExpected(ms.getMentalGraph(), event));
+	    System.out.println(expectedness.isEventExpected(event));
 	    
 	    Controllability controllability = new Controllability();
 	    //System.out.println(controllability.isEventControllable(mg, event));
