@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 
 import jess.Fact;
 import jess.JessException;
-import jess.Rete;
 
 import org.apache.commons.collections15.Transformer;
 

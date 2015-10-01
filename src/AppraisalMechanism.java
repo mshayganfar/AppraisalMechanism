@@ -4,7 +4,6 @@ import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.User;
-import edu.wpi.disco.lang.Propose;
 import jess.*;
 
 import Mechanisms.Appraisal.*;
@@ -36,7 +35,10 @@ public class AppraisalMechanism {
 		JessEngine = new Rete();
 		
 		MentalStates ms = new MentalStates(JessEngine);
-		MentalGraph mg = new MentalGraph(ms);
+		ms.initializeMentalStates(); //Test this!
+		
+		//MentalGraph mg = new MentalGraph(ms);
+		
 		Turns turn = new Turns();
 		
 		Interaction interaciton = new Interaction(new Agent("agent"), new User("user"),
@@ -59,7 +61,6 @@ public class AppraisalMechanism {
 		//interaciton.getSystem().respond(interaciton, true, false, false);
 		
 		Relevance rap = new Relevance(ms, interaciton.getDisco());
-		rap.initializeMentalStates();
 		
 	    try {
 	    	//JessEngine = new Rete();
@@ -75,7 +76,7 @@ public class AppraisalMechanism {
 			ms.assertMotive("turn:1", "M1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion", "ACTIVE", "INTERNAL");
 			ms.assertIntention("turn:1", "I1-1", "install-panel", "ee-au-01", "ROBOT", "acknowledge-emotion");
 
-			rap.test(JessEngine, ms);
+			rap.test();
 			
 			ms.assertEmotionInstance("turn:1", "E1-1", "install-panel", "ee-au-01", "HUMAN", "FRUSTRATION");
 		    JessEngine.run();
@@ -85,19 +86,19 @@ public class AppraisalMechanism {
 			e.printStackTrace();
 		}
 
-	    mg.createGraph();
+	    ms.getMentalGraph().createGraph();
 
 	    Events event = new Events(ms.getFact("\"B1-1\""), ms.getFact("\"G1-1\""), ms.getFact("\"E1-1\""), EVENT_TYPE.ACTION);
 	    
 	    System.out.println(event.getEventRelatedBelief());
 	    
-	    System.out.println(rap.isEventRelevant(mg, event));
+	    System.out.println(rap.isEventRelevant(ms.getMentalGraph(), event));
 	    
 	    Desirability desirability = new Desirability();
 	    //System.out.println(desirability.isEventDesirable(mg, event));
 	    
 	    Expectedness expectedness = new Expectedness();
-	    System.out.println(expectedness.isEventExpected(mg, event));
+	    System.out.println(expectedness.isEventExpected(ms.getMentalGraph(), event));
 	    
 	    Controllability controllability = new Controllability();
 	    //System.out.println(controllability.isEventControllable(mg, event));

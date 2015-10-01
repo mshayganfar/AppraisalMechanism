@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import Mechanisms.Mechanisms.AGENT;
+import MentalGraph.MentalGraph;
 import MetaInformation.Events;
 
 import edu.wpi.cetask.Plan;
@@ -17,7 +18,7 @@ import jess.Value;
 
 public class MentalStates {
 
-	private Rete JessEngine;
+	private static Rete JessEngine;
 	
 	private Fact beliefFact          = null;
 	private Fact motiveFact          = null;
@@ -25,11 +26,27 @@ public class MentalStates {
 	private Fact goalFact            = null;
 	private Fact emotionInstanceFact = null;
 	
+	private static final String strAppraisalModuleTemplates = "templates/mental-states/mental-states-templates.clp";
+	
+	private MentalGraph mentalGraph;
+	
 	public enum FACT_TYPE {BELIEF, INTENTION, MOTIVE, GOAL, EMOTION_INSTANCE};
 	public enum BELIEF_TYPE {EXTERNAL_EVENT, INTERNAL_EVENT, NONE};
 	
 	public MentalStates(Rete JessEngine) {
-		this.JessEngine = JessEngine;
+		this.JessEngine  = JessEngine;
+		this.mentalGraph = new MentalGraph(this);
+	}
+	
+	public static void initializeMentalStates() {
+		try {
+			JessEngine.batch("modules/module-definitions.clp");
+			JessEngine.reset();
+			JessEngine.batch(strAppraisalModuleTemplates);
+			
+		} catch (JessException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void assertBelief(String strTurn, String strBeliefID, String strTask, String strEvent, String strEventType, String strEventOrigin, String strAgent, String strBeliefType, String strBeliefAbout, String strBelief, String strStrength, String strAccuracy, String strFrequency, String strRecency, String strSaliency, String strPersistence) {
@@ -369,4 +386,6 @@ public class MentalStates {
 	}
 	
 	public Rete getJessEngine() { return JessEngine; }
+	
+	public MentalGraph getMentalGraph() { return mentalGraph; }
 }

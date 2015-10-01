@@ -490,7 +490,7 @@ public class AppraisalProcesses extends Mechanisms{
 	protected double getEmotionInstanceWeight() { return 1.0; }
 	
 	// Returns a weighted average of all five mental states' utilities.
-	public double getPathUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Fact beliefFact, Fact goalFact) {
+	public double getPathUtility(MentalGraph mentalGraph, Fact beliefFact, Fact goalFact) {
 
 		double dblBeliefUtilityValue          = 0.0;
 		double dblIntentionUtilityValue       = 0.0;

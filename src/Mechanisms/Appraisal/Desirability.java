@@ -58,29 +58,29 @@ public class Desirability extends AppraisalProcesses{
 	private double getActionUtilityWeight()    { return 1.0; }
 	private double getEmotionUtilityWeight()   { return 1.0; }
 	
-	private double getUtteranceUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, EVENT_TYPE eventType, Turns turn) {
+	private double getUtteranceUtility(MentalGraph mentalGraph, EVENT_TYPE eventType, Turns turn) {
 		
-		return getMentalStatesUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.UTTERANCE, turn);
+		return getMentalStatesUtility(mentalGraph, EVENT_TYPE.UTTERANCE, turn);
 	}
 	
-	private double getActionUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, EVENT_TYPE eventType, Turns turn) {
+	private double getActionUtility(MentalGraph mentalGraph, EVENT_TYPE eventType, Turns turn) {
 		
-		return getMentalStatesUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.ACTION, turn);
+		return getMentalStatesUtility(mentalGraph, EVENT_TYPE.ACTION, turn);
 	}
 	
-	private double getEmotionUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, EVENT_TYPE eventType, Turns turn) {
+	private double getEmotionUtility(MentalGraph mentalGraph, EVENT_TYPE eventType, Turns turn) {
 		
-		return getMentalStatesUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.EMOTION, turn);
+		return getMentalStatesUtility(mentalGraph, EVENT_TYPE.EMOTION, turn);
 	}
 	
-	private double getMentalStatesUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, EVENT_TYPE eventType, Turns turn) {
+	private double getMentalStatesUtility(MentalGraph mentalGraph, EVENT_TYPE eventType, Turns turn) {
 		
 		int intMentalStateUtilityCounter = 0;
 		String strBeliefID = null;
 		double mentalStateUtilityValue = 0.0;
 
 		Fact targetFact = null;
-		Iterator<Fact> factList = JessEngine.listFacts();
+		Iterator<Fact> factList = mentalStates.getJessEngine().listFacts();
 		
 		while(factList.hasNext()) {
 			try {
@@ -89,7 +89,7 @@ public class Desirability extends AppraisalProcesses{
 				if ((targetFact.getName().contains("MENTAL-STATE::belief"))) {
 					if (targetFact.getSlotValue("turn").toString().equals(turn.getLastTurn()))
 						if (mentalStates.getBeliefEventType(targetFact.getSlotValue("id").toString()).equals(eventType.toString())) {
-							mentalStateUtilityValue += getPathUtility(JessEngine, mentalStates, mentalGraph, targetFact, mentalStates.extractGoal(turn.getLastTurn()));
+							mentalStateUtilityValue += getPathUtility(mentalGraph, targetFact, mentalStates.extractGoal(turn.getLastTurn()));
 							intMentalStateUtilityCounter++;
 						}
 				}
@@ -104,7 +104,7 @@ public class Desirability extends AppraisalProcesses{
 			return 0.0;
 	}
 	
-	private double getMentalStatesUtility(Rete JessEngine, MentalStates mentalStates, MentalGraph mentalGraph, Turns turn, Events event) {
+	private double getMentalStatesUtility(MentalGraph mentalGraph, Turns turn, Events event) {
 		
 		double deltaUtility     = 0.0;
 		double utteranceUtility = 0.0;
@@ -116,9 +116,9 @@ public class Desirability extends AppraisalProcesses{
 		try {
 			if (mentalStates.getBeliefEventOrigin(mentalStates.getFactID(FACT_TYPE.BELIEF, event.getEventRelatedBelief().getSlotValue("belief").toString())).equals(BELIEF_TYPE.EXTERNAL_EVENT.toString()))
 			{
-				utteranceUtility = getUtteranceUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.UTTERANCE, turn);
-				actionUtility    = getActionUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.ACTION, turn);
-				emotionUtility   = getEmotionUtility(JessEngine, mentalStates, mentalGraph, EVENT_TYPE.EMOTION, turn);
+				utteranceUtility = getUtteranceUtility(mentalGraph, EVENT_TYPE.UTTERANCE, turn);
+				actionUtility    = getActionUtility(mentalGraph, EVENT_TYPE.ACTION, turn);
+				emotionUtility   = getEmotionUtility(mentalGraph, EVENT_TYPE.EMOTION, turn);
 				
 				double dblUtteranceUtilityWeight = getUtteranceUtilityWeight();
 				double dblActioUtilityWeight     = getActionUtilityWeight();

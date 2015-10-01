@@ -1,7 +1,6 @@
 package Mechanisms.Appraisal;
 
 import edu.wpi.disco.Disco;
-import jess.Rete;
 import MentalGraph.*;
 import MentalStates.Goal;
 import MentalStates.MentalStates;
@@ -30,7 +29,7 @@ public class Relevance extends AppraisalProcesses {
 		}
 	}
 	
-	public void test(Rete JessEngine, MentalStates ms) {
+	public void test() {
 		
 //		Fact childFact;
 //		try {
@@ -50,6 +49,6 @@ public class Relevance extends AppraisalProcesses {
 		Goal child   = new Goal(collaboration.getDisco().getFocus(), 1, "testID", null, AGENT.BOTH);
 		Goal parent  = new Goal(collaboration.getDisco().getFocus(), 1, "testID", null, AGENT.BOTH);
 		
-		ms.assertGoal(1, "G1-1", null, AGENT.SELF, child, parent);
+		mentalStates.assertGoal(1, "G1-1", null, AGENT.SELF, child, parent);
 	}
 }

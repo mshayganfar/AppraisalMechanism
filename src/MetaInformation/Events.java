@@ -26,9 +26,9 @@ public class Events {
 		return eventType;
 	}
 	
-	public Goal getEventRelatedGoal(Rete JessEngine, MentalStates ms) {
+	public Goal getEventRelatedGoal(MentalStates mentalStates) {
 		
-		return ms.getEventRelatedGoal(goalFact);
+		return mentalStates.getEventRelatedGoal(goalFact);
 	}
 	
 	public Fact getEventRelatedGoalFact() {
