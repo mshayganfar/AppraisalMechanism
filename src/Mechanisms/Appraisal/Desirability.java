@@ -14,10 +14,11 @@ import MentalStates.MentalStates.FACT_TYPE;
 import MetaInformation.Events;
 import MetaInformation.Events.EVENT_TYPE;
 import MetaInformation.Turns;
+import edu.wpi.cetask.Plan;
 
 public class Desirability extends AppraisalProcesses{
 	
-	public enum DESIRABILITY {HIGHEST_DESIRABLE, HIGH_DESIRABLE, MEDIUM_DESIRABLE, LOW_DESIRABLE, NEUTRAL, HIGHEST_UNDESIRABLE, HIGH_UNDESIRABLE, MEDIUM_UNDESIRABLE, LOW_UNDESIRABLE};
+	public enum DESIRABILITY {HIGHEST_DESIRABLE, HIGH_DESIRABLE, MEDIUM_DESIRABLE, LOW_DESIRABLE, LOWEST_DESIRABLE, NEUTRAL, HIGHEST_UNDESIRABLE, HIGH_UNDESIRABLE, MEDIUM_UNDESIRABLE, LOW_UNDESIRABLE, LOWEST_UNDESIRABLE};
 	
 	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., 2 in B2-3.
 	public DESIRABILITY isEventDesirable(Events event) {
@@ -25,26 +26,29 @@ public class Desirability extends AppraisalProcesses{
 		Goal graphGoal    = mentalState.getMentalGraph().getGraphGoal();
 		Goal topLevelGoal = collaboration.getTopLevelGoal(event);
 		
-		if (collaboration.isGoalAchieved(topLevelGoal)) return DESIRABILITY.HIGHEST_DESIRABLE;
-		else if (!collaboration.isGoalAchieved(topLevelGoal)) return DESIRABILITY.HIGHEST_UNDESIRABLE;
-		else if (collaboration.isGoalAchieved(topLevelGoal) == null) {
-			if (collaboration.isGoalAchieved(graphGoal)) return DESIRABILITY.HIGH_DESIRABLE;
-			else if (!collaboration.isGoalAchieved(graphGoal)) return DESIRABILITY.HIGH_UNDESIRABLE;
-			else if (collaboration.isGoalAchieved(graphGoal) == null) return DESIRABILITY.MEDIUM_DESIRABLE; // Check this!
-			else if (collaboration.isGoalAchieved(graphGoal)) { // Check this too!
+		Plan graphGoalPlan    = graphGoal.getPlan();
+		Plan topLevelGoalPlan = topLevelGoal.getPlan();
+		
+		if (collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.ACHIEVED)) return DESIRABILITY.HIGHEST_DESIRABLE;
+		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.FAILED)) return DESIRABILITY.HIGHEST_UNDESIRABLE;
+		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.BLOCKED)) return DESIRABILITY.HIGH_UNDESIRABLE;
+		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.INAPPLICABLE)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
+		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.PENDING)) return DESIRABILITY.NEUTRAL;
+		else if (collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.INPROGRESS)) {
+			if (collaboration.getGoalStatus(graphGoalPlan).equals(TASK_STATUS.ACHIEVED)) return DESIRABILITY.HIGH_DESIRABLE;
+			else if (!collaboration.getGoalStatus(graphGoalPlan).equals(TASK_STATUS.FAILED)) return DESIRABILITY.HIGH_UNDESIRABLE;
+			else if (collaboration.getGoalStatus(graphGoalPlan).equals(TASK_STATUS.BLOCKED)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
+			else if (collaboration.getGoalStatus(graphGoalPlan).equals(TASK_STATUS.INAPPLICABLE)) return DESIRABILITY.LOW_UNDESIRABLE;
+			else if (collaboration.getGoalStatus(graphGoalPlan).equals(TASK_STATUS.PENDING)) return DESIRABILITY.NEUTRAL;
+			else if (collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.INPROGRESS)) {
 				
 				Goal eventGoal = collaboration.recognizeGoal(event);
 				
 				if(eventGoal == null)
 					return DESIRABILITY.HIGH_UNDESIRABLE;
 
-				if (collaboration.getGoalPreconditionStatus(eventGoal).equals(TASK_PRECONDITION_STATUS.SATISFIED)) return DESIRABILITY.LOW_DESIRABLE;
-				if (collaboration.getGoalPreconditionStatus(eventGoal).equals(TASK_PRECONDITION_STATUS.UNSATISFIED)) return DESIRABILITY.LOW_UNDESIRABLE;
-				if (collaboration.getGoalPreconditionStatus(eventGoal).equals(TASK_PRECONDITION_STATUS.UNKNOWN)) {
-					
-					if (collaboration.doesContribute(eventGoal, graphGoal)) return DESIRABILITY.NEUTRAL;
-					if (!collaboration.doesContribute(eventGoal, graphGoal)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
-				}
+				if (collaboration.doesContribute(eventGoal, graphGoal)) return DESIRABILITY.LOW_DESIRABLE;
+				else if (!collaboration.doesContribute(eventGoal, graphGoal)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
 			}
 		}
 		

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.cetask.Plan;
+import edu.wpi.cetask.Plan.Status;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
@@ -17,7 +18,7 @@ import MetaInformation.Events;
 
 public class Collaboration extends Mechanisms {
 
-	public enum TASK_STATUS{DONE, FAILED, PENDING, BLOCKED, INPROGRESS, FUTURE};
+	public enum TASK_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
 	public enum TOP_LEVEL_TASK_STATUS{ACHIEVED, BLOCKED, INPROGRESS, UNKNOWN};
 	public enum TASK_PRECONDITION_STATUS{SATISFIED, UNSATISFIED, UNKNOWN};
@@ -38,9 +39,9 @@ public class Collaboration extends Mechanisms {
 	
 	public Boolean isPlanAchieved(Plan plan) {
 		
-		if (getGoalPostconditionStatus(plan).equals(TASK_POSTCONDITION_STATUS.SATISFIED))
+		if (getGoalStatus(plan).equals(TASK_POSTCONDITION_STATUS.SATISFIED))
 			return true;
-		else if (getGoalPostconditionStatus(plan).equals(TASK_POSTCONDITION_STATUS.UNSATISFIED))
+		else if (getGoalStatus(plan).equals(TASK_POSTCONDITION_STATUS.UNSATISFIED))
 			return false;
 		else
 			return null;
@@ -48,9 +49,9 @@ public class Collaboration extends Mechanisms {
 	
 	public Boolean isGoalAchieved(Goal goal) {
 		
-		if (getGoalPostconditionStatus(goal.getPlan()).equals(TASK_POSTCONDITION_STATUS.SATISFIED))
+		if (getGoalStatus(goal.getPlan()).equals(TASK_POSTCONDITION_STATUS.SATISFIED))
 			return true;
-		else if (getGoalPostconditionStatus(goal.getPlan()).equals(TASK_POSTCONDITION_STATUS.UNSATISFIED))
+		else if (getGoalStatus(goal.getPlan()).equals(TASK_POSTCONDITION_STATUS.UNSATISFIED))
 			return false;
 		else
 			return null;
@@ -101,65 +102,38 @@ public class Collaboration extends Mechanisms {
 	
 	public Goal getTopLevelGoal(Events event) {
 		
-		Plan task = disco.getTop(disco.getFocus());
-		String taskID = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
+		Plan plan = disco.getTop(disco.getFocus());
+		String taskID = plan.getType()+"@"+Integer.toHexString(System.identityHashCode(plan));
 		
-		Goal goal = new Goal(task, turn.value(), taskID, event, AGENT.SELF); // Change the agent type by reading the value from Disco.
+		Goal goal = new Goal(plan, turn.value(), taskID, event, AGENT.SELF); // Change the agent type by reading the value from Disco.
 		// Also change the place where needs to hold the goal. To be globally accessible.
 		return goal;
 	}
 	
-	public TASK_STATUS getGoalPostconditionStatus(Plan plan) {
+	public TASK_STATUS getGoalStatus(Plan plan) {
 		
-//		if (plan.isPrimitive()) {
-//			if (plan.isO) {
-//				if (plan.isSucceeded()) {
-//					return TASK_STATUS.ACHIEVED;
-//				}
-//				else if (plan.isFailed()) {
-//					return TASK_STATUS.FAILED;
-//				}
-//				else if (!plan.isSucceeded() && !plan.isFailed()) {
-//					return TASK_STATUS.UNKNOWN;
-//				}
-//			}
-//		}
-//		else {
-//			if (plan.isComplete()) {
-//				if (plan.isSucceeded()) {
-//					return TASK_STATUS.ACHIEVED;
-//				}
-//				else if (plan.isFailed()) {
-//					return TASK_STATUS.FAILED;
-//				}
-//				else if (!plan.isSucceeded() && !plan.isFailed()) {
-//					return TASK_STATUS.UNKNOWN;
-//				}
-//				else if (plan.isStarted() && !plan.isDone() && !plan.isFailed()) {
-//					return TASK_STATUS.INPROGRESS;
-//				}
-//			}
-			
-			if (plan.isDone())
-				return TASK_STATUS.DONE;
-			else if (plan.isFailed())
-				return TASK_STATUS.FAILED;
-			else if (plan.isPrimitive())
-				return TASK_STATUS.FUTURE;
-			else if(plan.isStarted())
-				return TASK_STATUS.INPROGRESS;
-			else
-				return TASK_STATUS.FUTURE;
-			
-//			return plan.isDone() ? TASK_STATUS.ACHIEVED :
-//			     plan.isFailed() ? TASK_STATUS.FAILED :
-//			     // must not have been executed yet
-//			     plan.isPrimitive() ? TASK_STATUS.UNKNOWN :
-//			     plan.isStarted() ? TASK_STATUS.INPROGRESS :
-//			    	 TASK_STATUS.UNKNOWN;
-//		}
+		Status postCondStatus = plan.getStatus();
 		
-//		return TASK_STATUS.UNKNOWN;
+		if (isAchieved(plan))
+			return TASK_STATUS.ACHIEVED;
+		else if (postCondStatus.equals(Status.FAILED))
+			return TASK_STATUS.FAILED;
+		else if (postCondStatus.equals(Status.IN_PROGRESS))
+			return TASK_STATUS.INPROGRESS;
+		else if (postCondStatus.equals(Status.BLOCKED))
+			return TASK_STATUS.BLOCKED;
+		else if (postCondStatus.equals(Status.PENDING))
+			return TASK_STATUS.PENDING;
+		else
+			return TASK_STATUS.INAPPLICABLE;
+	}
+	
+	private boolean isAchieved(Plan plan) {
+		
+		if (plan.isDone() && plan.isSucceeded())
+			return true;
+		else
+			return false;
 	}
 	
 	public boolean doesContribute(Goal contributingGoal, Goal contributedGoal) {
