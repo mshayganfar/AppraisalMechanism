@@ -12,6 +12,7 @@ import edu.wpi.disco.Interaction;
 import edu.wpi.disco.User;
 
 import Mechanisms.Mechanisms;
+import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import MentalStates.Goal;
 import MentalStates.MentalStates;
 import MetaInformation.Events;
@@ -26,10 +27,12 @@ public class Collaboration extends Mechanisms {
 	public enum RECIPE_APPLICABILITY{APPLICABLE, INAPPLICABLE, UNKNOWN};
 	
 	private Disco disco;
+	private Plan prevFocus;
 	
 	public Collaboration(MentalStates mentalState) {
 		super(mentalState);
 		disco = mentalState.getDisco();
+		prevFocus = disco.getFocus();
 	}
 	
 	public Collaboration(String strAgent, String strUser) {
@@ -130,7 +133,7 @@ public class Collaboration extends Mechanisms {
 	
 	private boolean isAchieved(Plan plan) {
 		
-		if (plan.isDone() && plan.isSucceeded())
+		if (plan.isSucceeded())
 			return true;
 		else
 			return false;
@@ -190,6 +193,49 @@ public class Collaboration extends Mechanisms {
 	public List<Plan> getPredecessors(Goal goal) {
 		
 		return goal.getPlan().getPredecessors();
+	}
+	
+	public EXPECTEDNESS isPlanExpected(Goal currentGoal, Goal eventGoal) {
+		
+		List<Plan> goalSuccessorList   = currentGoal.getPlan().getSuccessors();
+		List<Plan> parentSuccessorList = currentGoal.getPlan().getParent().getSuccessors();
+		
+		if (disco.getFocus().equals(prevFocus)) {
+			if (goalSuccessorList.size() > 0) {
+				for (int i=0 ; i < goalSuccessorList.size() ; i++)
+					if (goalSuccessorList.get(i).equals(eventGoal.getPlan()))
+						if(goalSuccessorList.get(i).isLive())
+							return EXPECTEDNESS.MOST_EXPECTED;
+			}
+			else if (parentSuccessorList.size() > 0) {
+				for (int i=0 ; i < parentSuccessorList.size() ; i++)
+					if (parentSuccessorList.get(i).equals(eventGoal.getPlan()))
+						if(parentSuccessorList.get(i).isLive())
+							return EXPECTEDNESS.MOST_EXPECTED;
+			}
+			else
+				return EXPECTEDNESS.UNEXPECTED;
+		}
+		else {
+			if (eventGoal.getPlan().getType().isPathFrom(disco.getTop(prevFocus).getType())) {
+				if (eventGoal.getPlan().isLive())
+					return EXPECTEDNESS.LESS_EXPECTED;
+				else
+					return EXPECTEDNESS.UNEXPECTED;
+			}
+			if (disco.getSegment().isInterruption()){
+				if (eventGoal.getPlan().getType().isPathFrom(disco.getTop(prevFocus).getType()))
+					return EXPECTEDNESS.UNEXPECTED;
+				else
+					return EXPECTEDNESS.MOST_UNEXPECTED;
+			}
+		}
+		
+		return EXPECTEDNESS.UNEXPECTED;
+	}
+	
+	public void updateCollaboraitonState() {
+		prevFocus = disco.getFocus();
 	}
 	
 	public void test() {

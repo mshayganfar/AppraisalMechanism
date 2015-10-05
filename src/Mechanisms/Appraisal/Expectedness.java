@@ -5,7 +5,7 @@ import MetaInformation.Events;
 
 public class Expectedness extends AppraisalProcesses{
 	
-	public enum EXPECTEDNESS {EXPECTED, UNEXPECTED};
+	public enum EXPECTEDNESS {MOST_EXPECTED, EXPECTED, LESS_EXPECTED, LESS_UNEXPECTED, UNEXPECTED, MOST_UNEXPECTED};
 	
 	public EXPECTEDNESS isEventExpected(Events event) {
 		
