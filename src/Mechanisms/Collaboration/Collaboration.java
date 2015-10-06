@@ -178,41 +178,21 @@ public class Collaboration extends Mechanisms {
 	
 	public EXPECTEDNESS isPlanExpected(Goal currentGoal, Goal eventGoal) {
 		
-		List<Plan> goalSuccessorList   = currentGoal.getPlan().getSuccessors();
-		List<Plan> parentSuccessorList = currentGoal.getPlan().getParent().getSuccessors();
-		
 		if (disco.getFocus().equals(prevFocus)) {
-			if (goalSuccessorList.size() > 0) {
-				for (int i=0 ; i < goalSuccessorList.size() ; i++)
-					if (goalSuccessorList.get(i).equals(eventGoal.getPlan()))
-						if(goalSuccessorList.get(i).isLive())
-							return EXPECTEDNESS.MOST_EXPECTED;
-			}
-			else if (parentSuccessorList.size() > 0) {
-				for (int i=0 ; i < parentSuccessorList.size() ; i++)
-					if (parentSuccessorList.get(i).equals(eventGoal.getPlan()))
-						if(parentSuccessorList.get(i).isLive())
-							return EXPECTEDNESS.MOST_EXPECTED;
+			return EXPECTEDNESS.MOST_EXPECTED;
+		}
+		else { // Focus changed
+			if (!prevFocus.isDone())
+				return EXPECTEDNESS.UNEXPECTED;
+			else if (disco.getSegment().isInterruption()){
+				if (disco.getTop(prevFocus).getType().isPathFrom(eventGoal.getPlan().getType()))
+					return EXPECTEDNESS.LESS_UNEXPECTED; // Premature or redundant
+				else
+					return EXPECTEDNESS.MOST_UNEXPECTED; // A goal outside of the plan!
 			}
 			else
-				return EXPECTEDNESS.UNEXPECTED;
+				return EXPECTEDNESS.EXPECTED;
 		}
-		else {
-			if (eventGoal.getPlan().getType().isPathFrom(disco.getTop(prevFocus).getType())) {
-				if (eventGoal.getPlan().isLive())
-					return EXPECTEDNESS.LESS_EXPECTED;
-				else
-					return EXPECTEDNESS.UNEXPECTED;
-			}
-			if (disco.getSegment().isInterruption()){
-				if (eventGoal.getPlan().getType().isPathFrom(disco.getTop(prevFocus).getType()))
-					return EXPECTEDNESS.UNEXPECTED;
-				else
-					return EXPECTEDNESS.MOST_UNEXPECTED;
-			}
-		}
-		
-		return EXPECTEDNESS.UNEXPECTED;
 	}
 	
 	public void updateCollaboraitonState() {
