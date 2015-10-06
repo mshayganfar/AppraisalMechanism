@@ -1,4 +1,4 @@
-package MentalStates;
+package MentalState;
 
 import Mechanisms.Mechanisms.AGENT;
 import MetaInformation.Events;

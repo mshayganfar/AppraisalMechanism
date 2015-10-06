@@ -14,8 +14,8 @@ import jess.JessException;
 
 import org.apache.commons.collections15.Transformer;
 
-import MentalStates.Goal;
-import MentalStates.MentalStates;
+import MentalState.Goal;
+import MentalState.MentalState;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
@@ -30,10 +30,10 @@ public class MentalGraph {
 	
 	private static Graph<Fact, Edge> graph = null;
 	
-	private MentalStates mentalStates;
+	private MentalState mentalState;
 	
-	public MentalGraph(MentalStates mentalStates) {
-		this.mentalStates = mentalStates;
+	public MentalGraph(MentalState mentalStates) {
+		this.mentalState = mentalStates;
 		this.graph = new DirectedSparseGraph<Fact, Edge>();
 	}
 	
@@ -54,14 +54,14 @@ public class MentalGraph {
 		
 		Fact factTemp = null, factSource = null, factTarget = null;
 		
-		Iterator<Fact> factList = mentalStates.getJessEngine().listFacts();
+		Iterator<Fact> factList = mentalState.getJessEngine().listFacts();
 		
 	    while(factList.hasNext()) {
 	    	factTemp = (Fact)factList.next();
 	    	graph.addVertex(factTemp);
 	    }
 	    
-	    factList = mentalStates.getJessEngine().listFacts();
+	    factList = mentalState.getJessEngine().listFacts();
 	    String strEdgePart1, strEdgePart2;
 	    
 	    while(factList.hasNext()) {
@@ -89,7 +89,7 @@ public class MentalGraph {
 		String strFactId;
 		Fact factTarget = null;
 		
-		Iterator<Fact> factList = mentalStates.getJessEngine().listFacts();
+		Iterator<Fact> factList = mentalState.getJessEngine().listFacts();
 		
 		try {
 			if (factSource.getSlotValue("id").toString().contains("B")) {
@@ -193,7 +193,7 @@ public class MentalGraph {
 	//Example: mg.removeVertex(JessEngine, ms.getFact(JessEngine, "G1-1"));
 	public void removeVertex(Fact targetFact) {
 		try {
-			mentalStates.getJessEngine().retract(targetFact);
+			mentalState.getJessEngine().retract(targetFact);
 		} catch (JessException e) {
 			e.printStackTrace();
 		}

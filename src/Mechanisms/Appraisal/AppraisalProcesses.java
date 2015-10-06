@@ -9,14 +9,13 @@ import Mechanisms.Collaboration.Collaboration;
 import jess.Fact;
 import jess.JessException;
 
-
 public class AppraisalProcesses extends Mechanisms{
 
 	protected Collaboration collaboration;
 	
-	public AppraisalProcesses() {
-		//collaboration = new Collaboration();
-	}
+//	public AppraisalProcesses() {
+//		//collaboration = new Collaboration();
+//	}
 
 	protected double getEventUtility(Fact beliefFact, Fact motiveFact) {
 		

@@ -8,7 +8,7 @@ import jess.*;
 
 import Mechanisms.Appraisal.*;
 import Mechanisms.Collaboration.Collaboration;
-import MentalStates.*;
+import MentalState.*;
 import MetaInformation.*;
 import MetaInformation.Events.EVENT_TYPE;
 
@@ -43,7 +43,7 @@ public class AppraisalMechanism {
 		Interaction interaciton = new Interaction(new Agent("agent"), new User("user"),
 												  args.length > 0 && args[0].length() > 0 ? args[0] : null);
 		
-		MentalStates ms = new MentalStates(JessEngine, interaciton.getDisco());
+		MentalState ms = new MentalState(JessEngine, interaciton.getDisco());
 		
 		interaciton.start(true);
 		

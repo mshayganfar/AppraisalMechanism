@@ -6,11 +6,9 @@ import jess.Fact;
 import jess.JessException;
 
 import Mechanisms.Collaboration.Collaboration.*;
-
-import MentalStates.*;
-import MentalStates.MentalStates.BELIEF_TYPE;
-import MentalStates.MentalStates.FACT_TYPE;
-
+import MentalState.*;
+import MentalState.MentalState.BELIEF_TYPE;
+import MentalState.MentalState.FACT_TYPE;
 import MetaInformation.Events;
 import MetaInformation.Events.EVENT_TYPE;
 import MetaInformation.Turns;
@@ -29,18 +27,18 @@ public class Desirability extends AppraisalProcesses{
 		Plan graphGoalPlan    = graphGoal.getPlan();
 		Plan topLevelGoalPlan = topLevelGoal.getPlan();
 		
-		if (collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.ACHIEVED)) return DESIRABILITY.HIGHEST_DESIRABLE;
-		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.FAILED)) return DESIRABILITY.HIGHEST_UNDESIRABLE;
-		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.BLOCKED)) return DESIRABILITY.HIGH_UNDESIRABLE;
-		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.INAPPLICABLE)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
-		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.PENDING)) return DESIRABILITY.NEUTRAL;
-		else if (collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.INPROGRESS)) {
-			if (collaboration.getGoalStatus(graphGoalPlan).equals(TASK_STATUS.ACHIEVED)) return DESIRABILITY.HIGH_DESIRABLE;
-			else if (!collaboration.getGoalStatus(graphGoalPlan).equals(TASK_STATUS.FAILED)) return DESIRABILITY.HIGH_UNDESIRABLE;
-			else if (collaboration.getGoalStatus(graphGoalPlan).equals(TASK_STATUS.BLOCKED)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
-			else if (collaboration.getGoalStatus(graphGoalPlan).equals(TASK_STATUS.INAPPLICABLE)) return DESIRABILITY.LOW_UNDESIRABLE;
-			else if (collaboration.getGoalStatus(graphGoalPlan).equals(TASK_STATUS.PENDING)) return DESIRABILITY.NEUTRAL;
-			else if (collaboration.getGoalStatus(topLevelGoalPlan).equals(TASK_STATUS.INPROGRESS)) {
+		if (collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.ACHIEVED)) return DESIRABILITY.HIGHEST_DESIRABLE;
+		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.FAILED)) return DESIRABILITY.HIGHEST_UNDESIRABLE;
+		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.BLOCKED)) return DESIRABILITY.HIGH_UNDESIRABLE;
+		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.INAPPLICABLE)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
+		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.PENDING)) return DESIRABILITY.NEUTRAL;
+		else if (collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.INPROGRESS)) {
+			if (collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.ACHIEVED)) return DESIRABILITY.HIGH_DESIRABLE;
+			else if (!collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.FAILED)) return DESIRABILITY.HIGH_UNDESIRABLE;
+			else if (collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.BLOCKED)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
+			else if (collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.INAPPLICABLE)) return DESIRABILITY.LOW_UNDESIRABLE;
+			else if (collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.PENDING)) return DESIRABILITY.NEUTRAL;
+			else if (collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.INPROGRESS)) {
 				
 				Goal eventGoal = collaboration.recognizeGoal(event);
 				

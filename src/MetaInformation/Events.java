@@ -1,7 +1,7 @@
 package MetaInformation;
 
-import MentalStates.Goal;
-import MentalStates.MentalStates;
+import MentalState.Goal;
+import MentalState.MentalState;
 import jess.Fact;
 import jess.Rete;
 
@@ -26,7 +26,7 @@ public class Events {
 		return eventType;
 	}
 	
-	public Goal getEventRelatedGoal(MentalStates mentalStates) {
+	public Goal getEventRelatedGoal(MentalState mentalStates) {
 		
 		return mentalStates.getEventRelatedGoal(goalFact);
 	}

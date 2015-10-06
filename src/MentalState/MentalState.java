@@ -1,4 +1,4 @@
-package MentalStates;
+package MentalState;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -16,7 +16,7 @@ import jess.RU;
 import jess.Rete;
 import jess.Value;
 
-public class MentalStates {
+public class MentalState {
 
 	private static Rete JessEngine;
 	
@@ -34,7 +34,7 @@ public class MentalStates {
 	public enum FACT_TYPE {BELIEF, INTENTION, MOTIVE, GOAL, EMOTION_INSTANCE};
 	public enum BELIEF_TYPE {EXTERNAL_EVENT, INTERNAL_EVENT, NONE};
 	
-	public MentalStates(Rete JessEngine, Disco disco) {
+	public MentalState(Rete JessEngine, Disco disco) {
 		this.JessEngine  = JessEngine;
 		this.disco = disco;
 		this.mentalGraph = new MentalGraph(this);

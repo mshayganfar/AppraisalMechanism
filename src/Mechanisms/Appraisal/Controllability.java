@@ -9,7 +9,7 @@ import jess.Fact;
 import jess.JessException;
 
 import MentalGraph.MentalGraph;
-import MentalStates.Goal;
+import MentalState.Goal;
 import MetaInformation.Events;
 
 public class Controllability extends AppraisalProcesses{

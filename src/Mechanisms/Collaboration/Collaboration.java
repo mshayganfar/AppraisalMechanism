@@ -13,23 +13,20 @@ import edu.wpi.disco.User;
 
 import Mechanisms.Mechanisms;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
-import MentalStates.Goal;
-import MentalStates.MentalStates;
+import MentalState.Goal;
+import MentalState.MentalState;
 import MetaInformation.Events;
 
 public class Collaboration extends Mechanisms {
 
-	public enum TASK_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE};
+	public enum GOAL_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
-	public enum TOP_LEVEL_TASK_STATUS{ACHIEVED, BLOCKED, INPROGRESS, UNKNOWN};
-	public enum TASK_PRECONDITION_STATUS{SATISFIED, UNSATISFIED, UNKNOWN};
-	public enum TASK_POSTCONDITION_STATUS{SATISFIED, UNSATISFIED, UNKNOWN};
 	public enum RECIPE_APPLICABILITY{APPLICABLE, INAPPLICABLE, UNKNOWN};
 	
 	private Disco disco;
 	private Plan prevFocus;
 	
-	public Collaboration(MentalStates mentalState) {
+	public Collaboration(MentalState mentalState) {
 		super(mentalState);
 		disco = mentalState.getDisco();
 		prevFocus = disco.getFocus();
@@ -40,24 +37,21 @@ public class Collaboration extends Mechanisms {
 		System.out.println("Collaboration started! Disco = " + disco);
 	}
 	
-	public Boolean isPlanAchieved(Plan plan) {
+	public boolean isPlanAchieved(Plan plan) {
 		
-		if (getGoalStatus(plan).equals(TASK_POSTCONDITION_STATUS.SATISFIED))
+		//if (getGoalStatus(plan).equals(GOAL_STATUS.ACHIEVED))
+		if (plan.isSucceeded())
 			return true;
-		else if (getGoalStatus(plan).equals(TASK_POSTCONDITION_STATUS.UNSATISFIED))
-			return false;
 		else
-			return null;
+			return false;
 	}
 	
-	public Boolean isGoalAchieved(Goal goal) {
+	public boolean isGoalAchieved(Goal goal) {
 		
-		if (getGoalStatus(goal.getPlan()).equals(TASK_POSTCONDITION_STATUS.SATISFIED))
+		if (getGoalStatus(goal.getPlan()).equals(GOAL_STATUS.ACHIEVED))
 			return true;
-		else if (getGoalStatus(goal.getPlan()).equals(TASK_POSTCONDITION_STATUS.UNSATISFIED))
-			return false;
 		else
-			return null;
+			return false;
 	}
 	
 	public boolean isGoalFocused(Goal goal) {
@@ -113,30 +107,22 @@ public class Collaboration extends Mechanisms {
 		return goal;
 	}
 	
-	public TASK_STATUS getGoalStatus(Plan plan) {
+	public GOAL_STATUS getGoalStatus(Plan plan) {
 		
 		Status postCondStatus = plan.getStatus();
 		
-		if (isAchieved(plan))
-			return TASK_STATUS.ACHIEVED;
+		if (isPlanAchieved(plan))
+			return GOAL_STATUS.ACHIEVED;
 		else if (postCondStatus.equals(Status.FAILED))
-			return TASK_STATUS.FAILED;
+			return GOAL_STATUS.FAILED;
 		else if (postCondStatus.equals(Status.IN_PROGRESS))
-			return TASK_STATUS.INPROGRESS;
+			return GOAL_STATUS.INPROGRESS;
 		else if (postCondStatus.equals(Status.BLOCKED))
-			return TASK_STATUS.BLOCKED;
+			return GOAL_STATUS.BLOCKED;
 		else if (postCondStatus.equals(Status.PENDING))
-			return TASK_STATUS.PENDING;
+			return GOAL_STATUS.PENDING;
 		else
-			return TASK_STATUS.INAPPLICABLE;
-	}
-	
-	private boolean isAchieved(Plan plan) {
-		
-		if (plan.isSucceeded())
-			return true;
-		else
-			return false;
+			return GOAL_STATUS.INAPPLICABLE;
 	}
 	
 	public boolean doesContribute(Goal contributingGoal, Goal contributedGoal) {
@@ -181,11 +167,6 @@ public class Collaboration extends Mechanisms {
 	
 	public Goal recognizeGoal(Events event) {
 		return null; // This needs to be implemented.............................................
-	}
-	
-	public TASK_PRECONDITION_STATUS getGoalPreconditionStatus(Goal goal) {
-		
-		return TASK_PRECONDITION_STATUS.SATISFIED;
 	}
 	
 	public RECIPE_APPLICABILITY getRecipeApplicability(Goal goal) { return RECIPE_APPLICABILITY.APPLICABLE; }

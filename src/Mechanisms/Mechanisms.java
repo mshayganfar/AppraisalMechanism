@@ -1,19 +1,19 @@
 package Mechanisms;
 
-import MentalStates.MentalStates;
+import MentalState.MentalState;
 import MetaInformation.Turns;
 
 public class Mechanisms {
 
 	public enum AGENT{SELF, OTHER, BOTH, NONE};
 	
-	public MentalStates mentalState;
+	public MentalState mentalState;
 	
 	protected Turns turn;
 	
 	public Mechanisms() {}
 	
-	public Mechanisms(MentalStates mentalState) {
+	public Mechanisms(MentalState mentalState) {
 		turn = new Turns();
 		this.mentalState = mentalState;
 	}

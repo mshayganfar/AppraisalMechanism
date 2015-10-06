@@ -1,6 +1,6 @@
 package Mechanisms.Appraisal;
 
-import MentalStates.Goal;
+import MentalState.Goal;
 import MetaInformation.Events;
 
 public class Expectedness extends AppraisalProcesses{
