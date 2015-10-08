@@ -8,9 +8,9 @@
 
     <subtasks id="recipeA">
       <step name="prepare" task="PreparePanel"/>
-      <step name="put" task="PutPanelOnFrame" requires="prepare"/>
-      <step name="attach" task="AttachPanelToFrame" requires="put"/>
-      <step name="test" task="TestInstalledPanel" requires="attach"/>
+      <step name="put" task="PutPanelOnFrame"/>
+      <step name="attach" task="AttachPanelToFrame"/>
+      <step name="test" task="TestInstalledPanel"/>
 
       <binding slot="$prepare.input" value="$this.panel"/>
       <binding slot="$put.input" value="$prepare.output"/>
@@ -26,7 +26,7 @@
 
     <subtasks id="recipeB">
       <step name="bring" task ="BringPanel"/>
-      <step name="check" task="CheckConnectors" requires="bring"/>
+      <step name="check" task="CheckConnectors"/>
 
       <binding slot="$bring.input" value="$this.input"/>
       <binding slot="$check.input" value="$bring.output"/>
@@ -60,7 +60,7 @@
 
     <subtasks id="recipeC">
       <step name="preptool" task ="PrepareMeasurementTool"/>
-      <step name="measure" task="DoMeasurement" requires="preptool"/>
+      <step name="measure" task="DoMeasurement"/>
 
       <binding slot="$preptool.input" value="$this.tool"/>
       <binding slot="$measure.tool" value="$preptool.output"/>
