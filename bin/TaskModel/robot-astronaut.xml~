@@ -1,0 +1,82 @@
+<taskModel about="urn:shayganfar.wpi.edu:models:ABC" 
+           xmlns="http://www.cs.wpi.edu/~rich/cetask/cea-2018-ext"
+           xmlns:disco="urn:disco.wpi.edu:Disco">
+
+  <task id="InstallSolarPanel">
+    <input name="panel" type="Panel"/>
+    <input name="tool" type="Tool"/>
+
+    <subtasks id="recipeA">
+      <step name="prepare" task="PreparePanel"/>
+      <step name="put" task="PutPanelOnFrame" requires="prepare"/>
+      <step name="attach" task="AttachPanelToFrame" requires="put"/>
+      <step name="test" task="TestInstalledPanel" requires="attach"/>
+
+      <binding slot="$prepare.input" value="$this.panel"/>
+      <binding slot="$put.input" value="$prepare.output"/>
+      <binding slot="$attach.input" value="$put.output"/>
+      <binding slot="$test.panel" value="$attach.output"/>
+      <binding slot="$test.tool" value="$this.tool"/>
+    </subtasks>
+  </task>
+
+  <task id="PreparePanel">
+    <input name="input" type="Panel" modified="output"/>
+    <output name="output" type="Panel"/>
+
+    <subtasks id="recipeB">
+      <step name="bring" task ="BringPanel"/>
+      <step name="check" task="CheckConnectors" requires="bring"/>
+
+      <binding slot="$bring.input" value="$this.input"/>
+      <binding slot="$check.input" value="$bring.output"/>
+      <binding slot="$this.output" value="$check.output"/>
+    </subtasks>
+  </task>
+
+  <task id="BringPanel">
+    <input name="input" type="Panel" modified="output"/>
+    <output name="output" type="Panel"/>    
+  </task>
+
+  <task id="CheckConnectors">
+    <input name="input" type="Panel" modified="output"/>
+    <output name="output" type="Panel"/>
+  </task>
+
+  <task id="PutPanelOnFrame">
+    <input name="input" type="Panel" modified="output"/>
+    <output name="output" type="Panel"/>
+  </task>
+
+  <task id="AttachPanelToFrame">
+    <input name="input" type="Panel" modified="output"/>
+    <output name="output" type="Panel"/>
+  </task>
+
+  <task id="TestInstalledPanel">
+    <input name="tool" type="Tool"/>
+    <input name="panel" type="Panel"/>
+
+    <subtasks id="recipeC">
+      <step name="preptool" task ="PrepareMeasurementTool"/>
+      <step name="measure" task="DoMeasurement" requires="preptool"/>
+
+      <binding slot="$preptool.input" value="$this.tool"/>
+      <binding slot="$measure.tool" value="$preptool.output"/>
+      <binding slot="$measure.input" value="$this.panel"/>
+    </subtasks>
+  </task>
+
+  <task id="PrepareMeasurementTool">
+    <input name="input" type="Tool" modified="output"/>
+    <output name="output" type="Tool"/>
+  </task>
+
+  <task id="DoMeasurement">
+    <input name="tool" type="Tool"/>
+    <input name="input" type="Panel" modified="output"/>
+    <output name="output" type="Panel"/>
+  </task>
+  
+</taskModel>

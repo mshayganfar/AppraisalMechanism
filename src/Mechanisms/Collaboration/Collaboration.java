@@ -12,7 +12,6 @@ import edu.wpi.disco.Interaction;
 import edu.wpi.disco.User;
 
 import Mechanisms.Mechanisms;
-import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import MentalState.Goal;
 import MentalState.MentalState;
 import MetaInformation.Events;
@@ -174,25 +173,6 @@ public class Collaboration extends Mechanisms {
 	public List<Plan> getPredecessors(Goal goal) {
 		
 		return goal.getPlan().getPredecessors();
-	}
-	
-	public EXPECTEDNESS isPlanExpected(Goal currentGoal, Goal eventGoal) {
-		
-		if (disco.getFocus().equals(prevFocus)) {
-			return EXPECTEDNESS.MOST_EXPECTED;
-		}
-		else { // Focus changed
-			if (!prevFocus.isDone())
-				return EXPECTEDNESS.UNEXPECTED;
-			else if (disco.getSegment().isInterruption()){
-				if (disco.getTop(prevFocus).getType().isPathFrom(eventGoal.getPlan().getType()))
-					return EXPECTEDNESS.LESS_UNEXPECTED; // Premature or redundant
-				else
-					return EXPECTEDNESS.MOST_UNEXPECTED; // A goal outside of the plan!
-			}
-			else
-				return EXPECTEDNESS.EXPECTED;
-		}
 	}
 	
 	public void updateCollaboraitonState() {

@@ -2,6 +2,7 @@ package Mechanisms.Appraisal;
 
 import MentalState.Goal;
 import MetaInformation.Events;
+import edu.wpi.disco.Disco;
 
 public class Expectedness extends AppraisalProcesses{
 	
@@ -9,37 +10,21 @@ public class Expectedness extends AppraisalProcesses{
 	
 	public EXPECTEDNESS isEventExpected(Events event) {
 
-		Goal eventGoal = collaboration.recognizeGoal(event);
-		Goal graphGoal = mentalState.getMentalGraph().getGraphGoal();
+		Disco disco = mentalState.getDisco();
+		Goal eventGoal = collaboration.recognizeGoal(event); // This needs to be changed!
 		
-		if(eventGoal == null)
-			return EXPECTEDNESS.MOST_UNEXPECTED;
-		
-		if (eventGoal.equals(graphGoal))
-			return EXPECTEDNESS.EXPECTED;
-		else {
-			if (!collaboration.isGoalAchieved(graphGoal))
+		if (disco.getSegment().isInterruption()) {
+			if (disco.getTop(disco.getFocus()).getType().isPathFrom(eventGoal.getPlan().getType()))
 				return EXPECTEDNESS.UNEXPECTED;
-			else {
-				Goal topLevelGoal = collaboration.getTopLevelGoal(event);
-				
-				if (!collaboration.isGoalAchieved(topLevelGoal)) {
-					if (collaboration.doesContribute(eventGoal, topLevelGoal))
-						return EXPECTEDNESS.EXPECTED;
-					else
-						return EXPECTEDNESS.UNEXPECTED;
-				}
-				else {
-					if (collaboration.doesContribute(eventGoal, graphGoal))
-						return EXPECTEDNESS.EXPECTED;
-					else {
-						if (collaboration.isGoalFocused(eventGoal))
-							return EXPECTEDNESS.EXPECTED;
-						else
-							return EXPECTEDNESS.UNEXPECTED;
-					}
-				}
-			}
+			else
+				return EXPECTEDNESS.MOST_UNEXPECTED;
 		}
+		else {
+			if (!disco.isLastShift())
+				return EXPECTEDNESS.MOST_EXPECTED;
+			else
+				return EXPECTEDNESS.EXPECTED;
+		}
+		
 	}
 }
