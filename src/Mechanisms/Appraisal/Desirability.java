@@ -27,9 +27,7 @@ public class Desirability extends AppraisalProcesses{
 		Plan graphGoalPlan    = graphGoal.getPlan();
 		Plan topLevelGoalPlan = topLevelGoal.getPlan();
 		
-		Goal eventGoal = collaboration.recognizeGoal(event);
-		
-		if(eventGoal == null)
+		if(collaboration.recognizeGoal(event) == null)
 			return DESIRABILITY.NEUTRAL;
 		
 		if (collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.ACHIEVED)) return DESIRABILITY.HIGH_DESIRABLE;
