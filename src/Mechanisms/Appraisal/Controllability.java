@@ -69,10 +69,10 @@ public class Controllability extends AppraisalProcesses{
 	
 	// Autonomy: The quality or state of being self-governing. Self-directing freedom or self-governing state.
 	private Double getAutonomyValue(Events event) {
-		
+		// Add predecessors beside the contributers.
 		double dblSelfCounter = 0;
 		
-		Goal eventGoal = event.getEventRelatedGoal(mentalState);
+		Goal eventGoal = event.getEventRelatedGoal(mentalState); //Should be changed to recogniseGoal()
 		
 		if(eventGoal == null)
 			return 0.0;
