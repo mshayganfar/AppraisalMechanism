@@ -16,7 +16,7 @@ import edu.wpi.cetask.Plan;
 
 public class Desirability extends AppraisalProcesses{
 	
-	public enum DESIRABILITY {HIGHEST_DESIRABLE, HIGH_DESIRABLE, MEDIUM_DESIRABLE, LOW_DESIRABLE, LOWEST_DESIRABLE, NEUTRAL, HIGHEST_UNDESIRABLE, HIGH_UNDESIRABLE, MEDIUM_UNDESIRABLE, LOW_UNDESIRABLE, LOWEST_UNDESIRABLE};
+	public enum DESIRABILITY {HIGH_DESIRABLE, DESIRABLE, NEUTRAL, HIGH_UNDESIRABLE, UNDESIRABLE};
 	
 	// TO DO: This method needs to extract the ID of the belief asserted with respect to the new event, e.g., 2 in B2-3.
 	public DESIRABILITY isEventDesirable(Events event) {
@@ -27,27 +27,25 @@ public class Desirability extends AppraisalProcesses{
 		Plan graphGoalPlan    = graphGoal.getPlan();
 		Plan topLevelGoalPlan = topLevelGoal.getPlan();
 		
-		if (collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.ACHIEVED)) return DESIRABILITY.HIGHEST_DESIRABLE;
-		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.FAILED)) return DESIRABILITY.HIGHEST_UNDESIRABLE;
-		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.BLOCKED)) return DESIRABILITY.HIGH_UNDESIRABLE;
-		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.INAPPLICABLE)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
-		else if (!collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.PENDING)) return DESIRABILITY.NEUTRAL;
-		else if (collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.INPROGRESS)) {
-			if (collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.ACHIEVED)) return DESIRABILITY.HIGH_DESIRABLE;
-			else if (!collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.FAILED)) return DESIRABILITY.HIGH_UNDESIRABLE;
-			else if (collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.BLOCKED)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
-			else if (collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.INAPPLICABLE)) return DESIRABILITY.LOW_UNDESIRABLE;
-			else if (collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.PENDING)) return DESIRABILITY.NEUTRAL;
-			else if (collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.INPROGRESS)) {
-				
-				Goal eventGoal = collaboration.recognizeGoal(event);
-				
-				if(eventGoal == null)
-					return DESIRABILITY.HIGH_UNDESIRABLE;
+		Goal eventGoal = collaboration.recognizeGoal(event);
+		
+		if(eventGoal == null)
+			return DESIRABILITY.NEUTRAL;
+		
+		if (collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.ACHIEVED)) return DESIRABILITY.HIGH_DESIRABLE;
+		else if (collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.FAILED)) return DESIRABILITY.HIGH_UNDESIRABLE;
+		else if ((collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.BLOCKED)) ||
+				(collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.INAPPLICABLE))) return DESIRABILITY.UNDESIRABLE;
+		else if ((collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.PENDING)) ||
+				(collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.INPROGRESS))) {
 
-				if (collaboration.doesContribute(eventGoal, graphGoal)) return DESIRABILITY.LOW_DESIRABLE;
-				else if (!collaboration.doesContribute(eventGoal, graphGoal)) return DESIRABILITY.MEDIUM_UNDESIRABLE;
-			}
+				if (collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.ACHIEVED)) return DESIRABILITY.DESIRABLE; //postcondition
+				else if (collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.FAILED)) return DESIRABILITY.HIGH_UNDESIRABLE; //postcondition
+				else if ((collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.BLOCKED)) ||
+						(collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.INAPPLICABLE))) return DESIRABILITY.UNDESIRABLE; //predecessors & preconditions
+				else if ((collaboration.getGoalStatus(graphGoalPlan).equals(GOAL_STATUS.PENDING)) ||
+						(collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.INPROGRESS))) { return DESIRABILITY.NEUTRAL; //live
+				}
 		}
 		
 		return DESIRABILITY.NEUTRAL;
