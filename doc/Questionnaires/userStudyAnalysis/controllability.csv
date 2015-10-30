@@ -1,0 +1,41 @@
+unit_id,created_at,id,started_at,tainted,channel,trust,worker_id,country,region,city,ip,Q10,Q11,Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q12
+817794310,10/29/2015 22:02:53,1785623602,10/29/2015 22:01:50,false,neodev,0.6667,33433217,USA,DE,Wilmington,52.26.8.237,False B,True,False B,True,True,True,False B,False A,False B,True,False A,False B
+817794310,10/29/2015 22:04:16,1785624506,10/29/2015 22:01:38,false,prodege,0.6833,1924522,USA,NY,New York,96.224.7.25,True,True,True,True,True,True,False B,True,True,True,True,False A
+817794310,10/29/2015 22:04:18,1785624520,10/29/2015 22:00:31,false,bitcoinget,0.7,21678835,USA,OH,Ironton,76.177.160.209,True,True,True,True,True,True,True,True,True,True,False A,False A
+817794310,10/29/2015 22:06:11,1785625987,10/29/2015 22:02:51,false,neodev,0.6528,33895262,USA,DE,Wilmington,52.25.162.196,False A,True,True,True,True,True,False B,True,False A,False A,False A,False B
+817794310,10/29/2015 22:06:42,1785626404,10/29/2015 22:00:34,false,neodev,0.5833,33110177,USA,DE,,108.59.8.218,False A,True,True,True,True,True,True,False A,False A,False B,False B,False A
+817794310,10/29/2015 22:07:42,1785627022,10/29/2015 22:01:26,false,neodev,0.6667,30495280,USA,VA,Manassas,207.244.77.4,False B,True,True,True,True,True,False C,True,True,True,False A,True
+817794310,10/29/2015 22:11:30,1785629486,10/29/2015 22:09:19,false,elite,0.3854,34320995,USA,MI,Auburn Hills,159.203.104.33,True,True,False C,False C,False C,True,False C,False C,True,True,True,True
+817794310,10/29/2015 22:13:28,1785630543,10/29/2015 22:12:22,false,neodev,0.5463,34553326,USA,OR,Boardman,54.68.163.64,False A,False C,True,True,True,True,False B,True,False B,False A,False B,False A
+817794310,10/29/2015 22:14:35,1785631233,10/29/2015 22:11:51,false,neodev,0.5093,34553667,USA,DE,Wilmington,52.10.143.139,False A,False C,False B,True,True,True,True,False C,False B,True,False B,False A
+817794310,10/29/2015 22:19:28,1785634297,10/29/2015 22:12:43,false,zoombucks,0.6154,7876293,USA,IN,Warsaw,184.1.136.234,True,True,True,False C,True,True,False C,True,True,True,True,True
+817794310,10/29/2015 22:19:38,1785634376,10/29/2015 22:17:56,false,clixsense,0.6538,33721948,USA,OH,Mansfield,76.1.210.233,True,True,True,True,True,True,False C,True,True,True,True,True
+817794310,10/29/2015 22:20:30,1785634895,10/29/2015 22:16:34,false,clixsense,0.619,31580375,GBR,H4,Leicester,5.67.162.207,True,True,True,False A,True,True,True,True,True,True,True,True
+817794310,10/29/2015 22:20:33,1785634912,10/29/2015 22:12:09,false,clixsense,0.5714,6330705,USA,VT,Shelburne,73.194.208.135,False B,True,True,False C,True,True,True,True,True,False A,False A,True
+817794310,10/29/2015 22:21:12,1785635424,10/29/2015 22:15:45,false,clixsense,0.631,20512953,USA,CA,Fairfield,76.232.182.5,False A,True,True,False C,True,True,True,True,True,True,True,False A
+817794310,10/29/2015 22:23:53,1785637141,10/29/2015 22:23:02,false,neodev,0.3281,34479072,USA,DE,Wilmington,52.26.8.237,False B,False A,False B,False A,True,False A,False B,True,False A,False A,False B,False A
+817794310,10/29/2015 22:24:46,1785637696,10/29/2015 22:22:29,false,elite,0.3177,34296415,GBR,,,178.159.10.221,False B,True,False B,True,False A,False C,True,False C,False B,False A,False B,False B
+817794310,10/29/2015 22:38:56,1785648372,10/29/2015 22:31:49,false,clixsense,0.6029,24170547,USA,NJ,Lawnside,71.168.201.142,True,True,True,False C,True,True,True,True,True,True,True,True
+817794310,10/29/2015 22:42:47,1785651378,10/29/2015 22:38:02,false,clixsense,0.6316,33980820,USA,IL,Chicago,69.47.106.218,True,True,True,True,True,True,False C,True,True,True,True,True
+817794310,10/29/2015 22:42:50,1785651404,10/29/2015 22:37:52,false,neodev,0.6053,20306047,GBR,,,80.41.0.252,False A,True,True,True,True,True,True,True,True,False A,False B,True
+817794310,10/29/2015 22:50:38,1785656924,10/29/2015 22:42:14,false,elite,0.5833,34633411,USA,,,66.85.139.244,True,True,True,True,True,True,True,True,False A,False A,False A,False A
+817794310,10/29/2015 22:52:29,1785658081,10/29/2015 22:46:58,false,instagc,0.6349,15625290,USA,MO,Bridgeton,108.206.221.169,True,True,True,False C,True,True,True,True,True,True,True,True
+817794310,10/29/2015 22:57:18,1785660916,10/29/2015 22:54:44,false,memolink,0.5906,6546042,USA,CA,Chula Vista,99.95.214.33,True,True,False C,False C,True,True,True,True,True,True,True,False A
+817794310,10/29/2015 22:57:48,1785661353,10/29/2015 22:55:57,false,clixsense,0.6558,6524027,USA,,,100.14.92.251,True,True,True,True,True,True,False C,True,True,True,True,True
+817794310,10/29/2015 23:09:48,1785668587,10/29/2015 23:06:28,false,instagc,0.6111,29086933,USA,WI,Madison,107.204.176.85,False A,True,True,False A,True,True,True,True,True,True,False A,True
+817794310,10/29/2015 23:12:47,1785670381,10/29/2015 23:10:20,false,instagc,0.6933,33058612,USA,IL,Glenview,162.229.106.229,True,True,True,True,True,True,True,True,True,True,True,True
+817794310,10/29/2015 23:16:22,1785672307,10/29/2015 23:04:26,false,clixsense,0.5994,6337710,USA,,,64.134.26.210,False A,True,True,False A,True,True,True,True,True,False A,False A,True
+817794310,10/29/2015 23:23:59,1785676563,10/29/2015 23:18:00,false,neodev,0.6296,11295497,GBR,H8,Liverpool,92.28.72.134,True,True,True,False A,True,True,False C,True,True,True,False A,True
+817794310,10/29/2015 23:29:04,1785679593,10/29/2015 23:23:44,false,elite,0.6577,29025907,GBR,Z4,Wrexham,86.183.93.79,False A,True,True,True,True,True,False B,True,True,True,True,True
+817794310,10/29/2015 23:33:12,1785682002,10/29/2015 23:23:55,false,instagc,0.5402,22477380,USA,PA,Glen Mills,173.49.238.142,False A,True,False C,False C,False C,True,True,True,True,True,True,True
+817794310,10/29/2015 23:37:42,1785684420,10/29/2015 23:30:00,false,neodev,0.5722,31596423,USA,DE,Wilmington,199.115.116.80,False A,False C,True,True,True,True,True,False C,True,True,True,True
+817794310,10/29/2015 23:46:05,1785688841,10/29/2015 23:42:29,false,instagc,0.6586,22850156,USA,IL,Edwardsville,24.178.226.57,True,True,True,True,True,True,True,True,True,False A,False A,True
+817794310,10/29/2015 23:54:31,1785693085,10/29/2015 23:53:05,false,neodev,0.5303,33714737,USA,VA,Manassas,207.244.89.114,False B,True,True,False A,True,True,True,False C,True,True,False B,False B
+817794310,10/29/2015 23:55:29,1785693485,10/29/2015 23:46:39,false,clixsense,0.5985,7074645,USA,,,73.221.254.240,True,True,False C,False C,True,True,False C,True,True,True,True,True
+817794310,10/29/2015 23:56:52,1785694262,10/29/2015 23:54:15,false,clixsense,0.6838,21963184,GBR,,,84.51.184.195,True,True,True,True,True,True,False C,True,True,True,True,True
+817794310,10/30/2015 00:00:16,1785696113,10/29/2015 23:56:10,false,instagc,0.6238,27770607,USA,TX,El Paso,173.175.164.207,True,True,True,True,True,True,False C,False C,True,True,False A,True
+817794310,10/30/2015 00:04:03,1785697832,10/29/2015 23:54:37,false,coinworker,0.6959,33935063,USA,CA,Santa Rosa,184.23.210.44,True,True,True,True,True,True,True,True,True,True,False B,True
+817794310,10/30/2015 00:04:57,1785698245,10/30/2015 00:00:41,false,neodev,0.6441,20043657,USA,PA,Coopersburg,70.15.32.175,True,True,True,True,True,True,False C,True,True,False B,True,True
+817794310,10/30/2015 00:11:39,1785701303,10/29/2015 23:53:56,false,neodev,0.5241,32424428,USA,DE,Wilmington,199.115.116.84,True,True,False C,False C,False C,True,True,True,True,True,False A,False A
+817794310,10/30/2015 00:31:18,1785709724,10/30/2015 00:26:38,false,instagc,0.7222,19480545,USA,MA,Brookline,209.6.138.58,True,True,True,True,True,True,True,True,True,True,True,True
+817794310,10/30/2015 00:32:24,1785710303,10/30/2015 00:28:33,false,neodev,0.6479,18208698,USA,,,73.225.178.28,True,True,True,False C,True,True,True,True,True,False A,False A,True

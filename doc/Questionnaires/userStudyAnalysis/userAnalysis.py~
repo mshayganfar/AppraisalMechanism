@@ -1,0 +1,7 @@
+import csv
+
+def readFile(strFileName):
+  fh = open(strFileName, 'r')
+  reader = csv.DictReader(fh)
+  for row in reader:
+    print(row['unit_id'])
