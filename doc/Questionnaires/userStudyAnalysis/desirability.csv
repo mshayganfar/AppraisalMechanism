@@ -1,0 +1,41 @@
+id,Q10,Q11,Q12,Q13,Q14,Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9
+1787325581,True,True,True,True,True,True,True,True,True,True,True,True,False A,True
+1787325598,True,False B,True,True,True,True,True,True,True,True,True,True,False A,True
+1787327298,True,True,True,True,True,True,True,True,True,True,True,True,False A,True
+1787327709,False A,False A,True,False B,False B,True,True,True,True,True,True,True,True,True
+1787328650,False A,True,True,False B,True,True,True,True,True,True,True,True,False A,True
+1787331708,True,True,True,False B,True,True,True,True,True,True,True,True,True,True
+1787333006,False A,False A,True,True,False B,True,True,True,True,True,True,True,False A,True
+1787333368,False A,True,True,True,True,True,True,True,True,True,True,True,True,False B
+1787334961,False A,True,True,True,True,True,False C,True,True,True,True,True,True,True
+1787337414,True,False B,True,False A,False B,True,True,True,True,True,True,True,True,False B
+1787337768,True,True,True,True,True,True,True,True,True,True,True,True,True,True
+1787340037,True,False A,True,True,True,True,True,True,True,True,True,True,False A,True
+1787343313,False A,True,True,False A,False A,True,True,True,True,True,True,True,True,False A
+1787349270,True,True,True,True,True,True,True,True,True,True,True,True,True,True
+1787350311,False A,False A,True,False B,False A,True,False B,True,True,True,True,True,False A,False B
+1787351756,True,True,True,True,True,True,True,True,True,True,True,True,True,True
+1787352707,False A,False A,True,False B,True,True,True,True,True,True,True,True,False A,False B
+1787353482,False A,True,True,False A,False B,True,True,True,True,True,True,True,True,False B
+1787354153,False A,True,False A,False B,True,True,True,True,True,True,True,True,False A,False B
+1787356729,True,True,False A,True,True,True,True,True,True,True,True,True,False A,True
+1787360512,True,True,True,True,True,True,True,True,True,True,True,True,True,True
+1787364629,True,True,True,False B,True,True,True,True,True,True,True,True,False A,True
+1787369880,True,False A,True,False B,False A,True,True,True,True,True,True,False A,False B,False A
+1787371242,False A,False A,True,True,True,True,False B,True,True,True,True,True,False B,True
+1787372039,False A,True,True,True,True,True,True,True,False C,True,True,True,True,False B
+1787376542,True,True,True,True,True,True,True,True,True,True,True,True,False A,True
+1787378283,False B,False B,True,False B,True,False C,True,True,False C,True,True,True,False B,False B
+1787381489,True,False B,True,False B,True,True,True,True,True,True,True,True,True,True
+1787384101,False A,True,True,True,True,True,True,True,True,True,True,True,False A,True
+1787404216,True,False A,True,True,True,True,True,True,True,True,True,True,False B,False B
+1787404367,True,True,True,True,True,True,True,True,True,True,True,True,False A,True
+1787422650,True,False A,True,True,True,True,True,True,True,True,True,True,False A,False B
+1787423984,True,False A,True,True,True,True,False C,True,True,True,True,True,False A,True
+1787430420,True,True,True,True,True,True,True,True,True,True,True,True,False A,True
+1787432023,False A,False A,True,False A,False B,True,True,True,True,True,True,True,False A,False B
+1787434972,False A,True,True,False B,False A,True,True,True,True,True,True,True,True,False A
+1787435297,True,False A,True,False B,True,True,True,True,True,True,True,True,False A,True
+1787436576,False A,True,True,False B,True,True,False C,True,True,True,True,True,True,False B
+1787451531,True,True,True,True,True,True,True,True,True,True,True,True,True,True
+1787455683,False A,False B,True,True,True,True,False C,True,True,True,True,True,False B,True
