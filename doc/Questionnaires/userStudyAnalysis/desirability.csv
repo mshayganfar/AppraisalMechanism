@@ -34,3 +34,4 @@ _unit_id,_created_at,_id,_started_at,_tainted,_channel,_trust,_worker_id,_countr
 819142646,10/31/2015 21:56:05,1787436576,10/31/2015 21:49:17,false,fusioncash,0.6955,31757234,USA,KY,Ashland,108.167.91.156,False A,True,True,False B,True,True,False C,True,True,True,True,True,True,False B,0.67,,,
 819142646,10/31/2015 22:30:16,1787451531,10/31/2015 22:25:50,false,zoombucks,0.8022,9383666,USA,,,73.146.49.152,True,True,True,True,True,True,True,True,True,True,True,True,True,True,1,,,
 819142646,10/31/2015 22:40:02,1787455683,10/31/2015 22:36:27,false,clixsense,0.6857,17950689,GBR,Q4,Kidderminster,217.39.98.237,False A,False B,True,True,True,True,False C,True,True,True,True,True,False B,True,0.584,,0.7785714286,0.1507407759
+,,,,,,,,,,,,0.543,0.571,,0.6,0.771,1,0.829,1,0.971,,1,1,0.457,0.657,,,,
